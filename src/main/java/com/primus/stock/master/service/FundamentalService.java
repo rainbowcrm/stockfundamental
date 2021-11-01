@@ -5,12 +5,17 @@ import com.primus.stock.master.dao.FundamentalsDAO;
 import com.primus.stock.master.model.FundamentalData;
 import com.primus.stock.master.model.StocksMaster;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class FundamentalService {
@@ -26,6 +31,42 @@ public class FundamentalService {
 
     public void createFundamentals(FundamentalData fundamentalData){
         fundamentalsDAO.create(fundamentalData);
+    }
+
+    public void exportToXLS() throws Exception
+    {
+        List<FundamentalData> fundamentalDataList = fundamentalsDAO.getAllFundamentals();
+        HSSFWorkbook workbook = new HSSFWorkbook ();
+        HSSFSheet spreadsheet
+                = workbook.createSheet(" Stock Fundamentals ");
+        HSSFRow rowhead = spreadsheet.createRow((short)0);
+        rowhead.createCell(0).setCellValue("Scrip Code");
+        rowhead.createCell(1).setCellValue("Company");
+        rowhead.createCell(2).setCellValue("Industry");
+        rowhead.createCell(3).setCellValue("Sector");
+        rowhead.createCell(4).setCellValue("Price");
+        rowhead.createCell(5).setCellValue("EPS");
+        rowhead.createCell(6).setCellValue("Book Value");
+
+        AtomicInteger integer = new AtomicInteger(1) ;
+        for (FundamentalData fundamentalData : fundamentalDataList) {
+            HSSFRow row = spreadsheet.createRow((short)integer.getAndAdd(1));
+            row.createCell(0).setCellValue(fundamentalData.getBseCode());
+            row.createCell(1).setCellValue(fundamentalData.getCompany());
+            row.createCell(2).setCellValue(fundamentalData.getIndustry());
+            row.createCell(3).setCellValue(fundamentalData.getSector());
+            row.createCell(4).setCellValue(fundamentalData.getCurPrice());
+            row.createCell(5).setCellValue(fundamentalData.getEps());
+            row.createCell(6).setCellValue(fundamentalData.getBookValue());
+        }
+        FileOutputStream fileOut = new FileOutputStream("results.xls");
+        workbook.write(fileOut);
+//closing the Stream
+        fileOut.close();
+//closing the workbook
+
+
+
     }
 
     public void updateFundamentals(FundamentalData fundamentalData){
@@ -81,7 +122,7 @@ public class FundamentalService {
         else
             fundamentalData.setEps(0.0);
         if(NumberUtils.isNumber(fdMap.get("PB")))
-            fundamentalData.setBookValue(Double.parseDouble(fdMap.get("PB")) * fundamentalData.getCurPrice());
+            fundamentalData.setBookValue( fundamentalData.getCurPrice()/ Double.parseDouble(fdMap.get("PB")) );
         else
             fundamentalData.setBookValue(0.0);
         if(NumberUtils.isNumber(fdMap.get("ROE")))

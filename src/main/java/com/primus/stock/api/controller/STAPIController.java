@@ -91,4 +91,22 @@ public class STAPIController {
         return  entity;
 
     }
+
+    @RequestMapping(value = "/exportAllFundamentals", method = RequestMethod.GET)
+    public ResponseEntity<String> exportAllFundamentals()
+    {
+
+        try {
+            fundamentalService.exportToXLS();
+            ResponseEntity entity =  new ResponseEntity<String>("Success", HttpStatus.OK);
+            return  entity;
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+
+        }
+        ResponseEntity entity =  new ResponseEntity<String>("error", HttpStatus.BAD_REQUEST);
+        return  entity;
+
+    }
 }
