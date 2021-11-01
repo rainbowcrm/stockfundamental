@@ -73,4 +73,22 @@ public class STAPIController {
         return  entity;
 
     }
+
+    @RequestMapping(value = "/saveAllFundamentals", method = RequestMethod.GET)
+    public ResponseEntity<String> saveAllFundamentals()
+    {
+
+        try {
+            fundamentalService.saveAllFundamentals("X ");
+            ResponseEntity entity =  new ResponseEntity<String>("Success", HttpStatus.OK);
+            return  entity;
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+
+        }
+        ResponseEntity entity =  new ResponseEntity<String>("error", HttpStatus.BAD_REQUEST);
+        return  entity;
+
+    }
 }

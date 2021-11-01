@@ -112,4 +112,13 @@ public class FundamentalData {
     public void setRoe(Double roe) {
         this.roe = roe;
     }
+
+    @Override
+    public String toString() {
+        return "FundamentalData{" +
+                "bseCode='" + bseCode + '\'' +
+                ", company='" + company + '\'' +
+                ", curPrice=" + curPrice +
+                '}';
+    }
 }
