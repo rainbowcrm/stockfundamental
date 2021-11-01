@@ -2,6 +2,8 @@ package com.primus.stock.api.controller;
 
 
 import com.primus.stock.api.service.APIService;
+import com.primus.stock.master.model.FundamentalData;
+import com.primus.stock.master.service.FundamentalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,11 @@ public class STAPIController {
 
     @Autowired
     APIService apiService;
+
+    @Autowired
+    FundamentalService fundamentalService ;
+
+
 
 
     @RequestMapping(value = "/justTry", method = RequestMethod.GET)
@@ -34,11 +41,29 @@ public class STAPIController {
             Map<String,Object> comHeaderData = apiService.getCompanyHeader(scripCode);
             Map<String,Object> scripHeaderData = apiService.getScripHeaderData(scripCode);
             Map<String,Object> fundamentalData = new HashMap<>();
-            fundamentalData.put("Comp",comHeaderData) ;
-            fundamentalData.put("Scrip",scripHeaderData);
+            fundamentalData.put("CompHeaderData",comHeaderData) ;
+            fundamentalData.put("ScripHeaderData",scripHeaderData);
             ResponseEntity entity =  new ResponseEntity<Map<String,Object>>(fundamentalData, HttpStatus.OK);
             return  entity;
 
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+
+        }
+        ResponseEntity entity =  new ResponseEntity<String>("error", HttpStatus.BAD_REQUEST);
+        return  entity;
+
+    }
+
+    @RequestMapping(value = "/saveFundamentals", method = RequestMethod.GET)
+    public ResponseEntity<String> readAndSaveFundamentals(@RequestParam String scripCode)
+    {
+
+        try {
+            FundamentalData fundamentalData = fundamentalService.saveFundamentals(scripCode);
+            ResponseEntity entity =  new ResponseEntity<String>("Hello", HttpStatus.OK);
+            return  entity;
 
         }catch (Exception ex){
             ex.printStackTrace();

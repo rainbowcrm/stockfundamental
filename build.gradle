@@ -32,9 +32,12 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
     compile("org.springframework:spring-jdbc")
     compile group: 'commons-io', name: 'commons-io', version: '2.0.1'
+    compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.0'
     implementation group: 'org.jdom', name: 'jdom', version: '2.0.0'
     implementation group: 'org.jsoup', name: 'jsoup', version: '1.14.3'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.8.7'
+
+    runtime("mysql:mysql-connector-java:8.0.11")
 
 }
 

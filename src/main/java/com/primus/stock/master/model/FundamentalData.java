@@ -2,6 +2,7 @@ package com.primus.stock.master.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
@@ -20,6 +21,7 @@ public class FundamentalData {
     Double roe;
 
     @Column(name  ="BSE_CODE")
+    @Id
     public String getBseCode() {
         return bseCode;
     }
