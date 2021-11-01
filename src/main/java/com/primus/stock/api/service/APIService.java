@@ -9,13 +9,14 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Map;
 
 @Service
 public class APIService {
 
-    public ComHeaderData getCompanyHeader(String scripCode) throws  Exception
+    public Map<String,Object> getCompanyHeader(String scripCode) throws  Exception
     {
-        String api = "https://api.bseindia.com/BseIndiaAPI/api/ComHeader/w?quotetype=EQ&scripcode=" +  scripCode + "&seriesid=" + scripCode ;
+        String api = "https://api.bseindia.com/BseIndiaAPI/api/ComHeader/w?quotetype=EQ&scripcode=" +  scripCode + "&seriesid="  ;
         URL obj = new URL(api);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("GET");
@@ -28,13 +29,13 @@ public class APIService {
         }
         in.close();
         ObjectMapper objectMapper =  new ObjectMapper();
-        return objectMapper.readValue(response.toString(),ComHeaderData.class);
+        return objectMapper.readValue(response.toString(), Map.class);
 
     }
 
-    public ScripHeaderData getScripHeaderData (String scripCode) throws Exception
+    public Map<String,Object> getScripHeaderData (String scripCode) throws Exception
     {
-        String api = "https://api.bseindia.com/BseIndiaAPI/api/ComHeader/w?quotetype=EQ&scripcode=" +  scripCode + "&seriesid=" + scripCode ;
+        String api = "https://api.bseindia.com/BseIndiaAPI/api/getScripHeaderData/w?Debtflag=&scripcode=" +  scripCode + "&seriesid="  ;
         URL obj = new URL(api);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("GET");
@@ -47,7 +48,7 @@ public class APIService {
         }
         in.close();
         ObjectMapper objectMapper =  new ObjectMapper();
-        return objectMapper.readValue(response.toString(),ScripHeaderData.class);
+        return objectMapper.readValue(response.toString(),Map.class);
 
     }
 }
