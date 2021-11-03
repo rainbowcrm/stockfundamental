@@ -3,6 +3,7 @@ package com.primus.stock.master.service;
 import com.primus.stock.api.service.APIService;
 import com.primus.stock.master.dao.FundamentalsDAO;
 import com.primus.stock.master.model.FundamentalData;
+import com.primus.stock.master.model.ReportData;
 import com.primus.stock.master.model.StocksMaster;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -12,9 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.FileOutputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
@@ -33,6 +32,55 @@ public class FundamentalService {
         fundamentalsDAO.create(fundamentalData);
     }
 
+    private List<ReportData> makeReportDataList(List<FundamentalData> fundamentalDataList)
+    {
+        Map<String,List<FundamentalData>> map = new HashMap<>() ;
+        Map<String,List<Double>> mpAverages = new HashMap<>() ;
+        for (FundamentalData fundamentalData : fundamentalDataList)
+        {
+            if (map.containsKey(fundamentalData.getIndustry())) {
+                ((List)map.get(fundamentalData.getIndustry())).add(fundamentalData);
+            }else
+            {
+                map.put(fundamentalData.getIndustry(), new ArrayList<>()) ;
+            }
+        }
+
+        for (Map.Entry<String,List<FundamentalData>> entry : map.entrySet()) {
+            List<FundamentalData> industryList = entry.getValue() ;
+            Double sumPE = 0.0 ;
+            Double sumPB = 0.0 ;
+            for (  FundamentalData fdData : industryList) {
+                if (fdData.getEps() != 0 ) {
+                    Double pe = fdData.getCurPrice() / fdData.getEps();
+                    sumPE += pe;
+                }
+                 if (fdData.getBookValue() != 0) {
+                     Double pb = fdData.getCurPrice() / fdData.getBookValue();
+                     sumPB += pb;
+                 }
+
+
+            }
+            Double avgPE = sumPE / industryList.size() ;
+            Double avgPB = sumPB / industryList.size() ;
+            mpAverages.put(entry.getKey(), Arrays.asList(avgPE,avgPB)) ;
+        }
+        List<ReportData> reportDataList  = new ArrayList<>() ;
+        for (FundamentalData fundamentalData : fundamentalDataList)
+        {
+            ReportData reportData  = new ReportData(fundamentalData);
+            reportData.setIndustryAvgPE(mpAverages.get(reportData.getIndustry()).get(0));
+            reportData.setIndustryAvgPB(mpAverages.get(reportData.getIndustry()).get(1));
+            reportData.setIntrinsicValPE(reportData.getIndustryAvgPE() * reportData.getEps());
+            reportData.setIntrinsicValPB(reportData.getIndustryAvgPB() * reportData.getBookValue());
+            reportDataList.add(reportData);
+        }
+
+        return reportDataList ;
+
+    }
+
     public void exportToXLS() throws Exception
     {
         List<FundamentalData> fundamentalDataList = fundamentalsDAO.getAllFundamentals();
@@ -45,19 +93,31 @@ public class FundamentalService {
         rowhead.createCell(2).setCellValue("Industry");
         rowhead.createCell(3).setCellValue("Sector");
         rowhead.createCell(4).setCellValue("Price");
-        rowhead.createCell(5).setCellValue("EPS");
-        rowhead.createCell(6).setCellValue("Book Value");
-
+        rowhead.createCell(5).setCellValue("Intrinsic Value(PE)");
+        rowhead.createCell(6).setCellValue("Intrinsic Value(PB)");
+        rowhead.createCell(7).setCellValue("EPS");
+        rowhead.createCell(8).setCellValue("PE");
+        rowhead.createCell(9).setCellValue("Industry avg PE");
+        rowhead.createCell(10).setCellValue("Book Value");
+        rowhead.createCell(11).setCellValue("PB");
+        rowhead.createCell(12).setCellValue("Industry Avg PB");
         AtomicInteger integer = new AtomicInteger(1) ;
-        for (FundamentalData fundamentalData : fundamentalDataList) {
+        List<ReportData> reportDataList = makeReportDataList(fundamentalDataList);
+        for (ReportData reportData : reportDataList) {
             HSSFRow row = spreadsheet.createRow((short)integer.getAndAdd(1));
-            row.createCell(0).setCellValue(fundamentalData.getBseCode());
-            row.createCell(1).setCellValue(fundamentalData.getCompany());
-            row.createCell(2).setCellValue(fundamentalData.getIndustry());
-            row.createCell(3).setCellValue(fundamentalData.getSector());
-            row.createCell(4).setCellValue(fundamentalData.getCurPrice());
-            row.createCell(5).setCellValue(fundamentalData.getEps());
-            row.createCell(6).setCellValue(fundamentalData.getBookValue());
+            row.createCell(0).setCellValue(reportData.getBseCode());
+            row.createCell(1).setCellValue(reportData.getCompany());
+            row.createCell(2).setCellValue(reportData.getIndustry());
+            row.createCell(3).setCellValue(reportData.getSector());
+            row.createCell(4).setCellValue(reportData.getCurPrice());
+            row.createCell(5).setCellValue(reportData.getIntrinsicValPE());
+            row.createCell(6).setCellValue(reportData.getIntrinsicValPB());
+            row.createCell(7).setCellValue(reportData.getEps());
+            row.createCell(8).setCellValue(reportData.getCurPrice()/ reportData.getEps());
+            row.createCell(9).setCellValue(reportData.getIndustryAvgPE());
+            row.createCell(10).setCellValue(reportData.getBookValue());
+            row.createCell(11).setCellValue(reportData.getCurPrice()/ reportData.getBookValue());
+            row.createCell(12).setCellValue(reportData.getIndustryAvgPB());
         }
         FileOutputStream fileOut = new FileOutputStream("results.xls");
         workbook.write(fileOut);
