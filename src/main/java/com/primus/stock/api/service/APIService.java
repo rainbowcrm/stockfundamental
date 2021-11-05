@@ -51,4 +51,25 @@ public class APIService {
         return objectMapper.readValue(response.toString(),Map.class);
 
     }
+
+    public Map<String,Object> getFinancialData (String scripCode) throws Exception
+    {
+        String api = "https://api.bseindia.com/BseIndiaAPI/api/GetReportNewFor_Result/w?scripcode=" +  scripCode   ;
+        URL obj = new URL(api);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        con.setRequestMethod("GET");
+        BufferedReader in = new BufferedReader(new InputStreamReader(
+                con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+        ObjectMapper objectMapper =  new ObjectMapper();
+        return objectMapper.readValue(response.toString(),Map.class);
+
+    }
+
+
 }

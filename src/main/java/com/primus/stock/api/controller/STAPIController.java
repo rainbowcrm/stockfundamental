@@ -3,6 +3,7 @@ package com.primus.stock.api.controller;
 
 import com.primus.stock.api.service.APIService;
 import com.primus.stock.master.model.FundamentalData;
+import com.primus.stock.master.service.FinancialService;
 import com.primus.stock.master.service.FundamentalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,8 @@ public class STAPIController {
     @Autowired
     FundamentalService fundamentalService ;
 
+    @Autowired
+    FinancialService financialService ;
 
 
 
@@ -44,6 +47,26 @@ public class STAPIController {
             fundamentalData.put("CompHeaderData",comHeaderData) ;
             fundamentalData.put("ScripHeaderData",scripHeaderData);
             ResponseEntity entity =  new ResponseEntity<Map<String,Object>>(fundamentalData, HttpStatus.OK);
+            return  entity;
+
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+
+        }
+        ResponseEntity entity =  new ResponseEntity<String>("error", HttpStatus.BAD_REQUEST);
+        return  entity;
+
+    }
+
+
+    @RequestMapping(value = "/getFinancials", method = RequestMethod.GET)
+    public ResponseEntity<String> readFinancials(@RequestParam String scripCode)
+    {
+
+        try {
+            financialService.saveFinancialData(scripCode);
+            ResponseEntity entity =  new ResponseEntity<String>("Success", HttpStatus.OK);
             return  entity;
 
 

@@ -22,6 +22,7 @@ public class StocksMaster {
  String apiCode;
  Boolean isTracked;
  String bseCode;
+ Boolean useJavaAPI ;
 
     @Column(name  ="ID")
     @Id
@@ -139,5 +140,14 @@ public class StocksMaster {
 
     public void setBseCode(String bseCode) {
         this.bseCode = bseCode;
+    }
+
+    @Column(name  ="USE_JAVA_API")
+    public Boolean getUseJavaAPI() {
+        return useJavaAPI;
+    }
+
+    public void setUseJavaAPI(Boolean useJavaAPI) {
+        this.useJavaAPI = useJavaAPI;
     }
 }
