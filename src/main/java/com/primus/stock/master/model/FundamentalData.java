@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 @Entity
 @Table(name ="FUNDAMENTALS")
@@ -19,6 +20,10 @@ public class FundamentalData {
     Double qtrRevenue;
     Double netIncome;
     Double roe;
+
+    Date priceLastUpdated;
+    Date fundaLastUpdated;
+
 
     @Column(name  ="BSE_CODE")
     @Id
@@ -111,6 +116,24 @@ public class FundamentalData {
 
     public void setRoe(Double roe) {
         this.roe = roe;
+    }
+
+    @Column(name  ="PRICE_LAST_UPDATED")
+    public Date getPriceLastUpdated() {
+        return priceLastUpdated;
+    }
+
+    public void setPriceLastUpdated(Date priceLastUpdated) {
+        this.priceLastUpdated = priceLastUpdated;
+    }
+
+    @Column(name  ="FUND_LAST_UPDATED")
+    public Date getFundaLastUpdated() {
+        return fundaLastUpdated;
+    }
+
+    public void setFundaLastUpdated(Date fundaLastUpdated) {
+        this.fundaLastUpdated = fundaLastUpdated;
     }
 
     @Override

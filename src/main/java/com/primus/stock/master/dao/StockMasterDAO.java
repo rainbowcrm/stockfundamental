@@ -19,7 +19,7 @@ public class StockMasterDAO {
 
     public List<StocksMaster> listAllTrackedData(String groupC )
     {
-        Query query =  em.createQuery("from StocksMaster where tracked = true and id> 0 and groupC='" + groupC + "'"  );
+        Query query =  em.createQuery("from StocksMaster where  id> 2315 and groupC='" + groupC + "'"  );
         List<StocksMaster> ans = query.getResultList();
         return ans;
     }

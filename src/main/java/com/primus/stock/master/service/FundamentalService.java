@@ -43,6 +43,7 @@ public class FundamentalService {
             }else
             {
                 map.put(fundamentalData.getIndustry(), new ArrayList<>()) ;
+                ((List)map.get(fundamentalData.getIndustry())).add(fundamentalData);
             }
         }
 
@@ -144,8 +145,14 @@ public class FundamentalService {
             fdMAP.put("ScripHeaderData", scripHeaderData);
             FundamentalData fundamentalData = createFullFDFromMap(fdMAP);
             System.out.println("id=" + stocksMaster.getId() + ":" + fundamentalData);
-            createFundamentals(fundamentalData);
+            if( fundamentalData.getCurPrice() >0.0) {
+                createFundamentals(fundamentalData);
+            }else {
+                System.out.println("Skipping =  " + fundamentalData );
+            }
+
             Thread.sleep(500);
+
         }
 
 
@@ -160,7 +167,9 @@ public class FundamentalService {
         fdMAP.put("CompHeaderData",comHeaderData) ;
         fdMAP.put("ScripHeaderData",scripHeaderData);
         FundamentalData fundamentalData = createFullFDFromMap(fdMAP);
-        createFundamentals(fundamentalData);
+        if (fundamentalData.getCurPrice() >0.0) {
+            createFundamentals(fundamentalData);
+        }
         return fundamentalData ;
 
     }
@@ -173,15 +182,24 @@ public class FundamentalService {
         Map<String, String> compNamMap =  (Map) sHMap.get("Cmpname");
         FundamentalData fundamentalData = new FundamentalData();
         fundamentalData.setBseCode(fdMap.get("SecurityCode"));
-        fundamentalData.setCompany(compNamMap.get("FullN"));
+        if (compNamMap.get("FullN").length() > 99 )
+        {
+            fundamentalData.setCompany( fdMap.get("SecurityCode") + compNamMap.get("FullN").substring(0,70));
+
+        }else {
+            fundamentalData.setCompany(compNamMap.get("FullN"));
+        }
         fundamentalData.setIndustry(fdMap.get("Industry"));
         fundamentalData.setSector(fdMap.get("Sector"));
-        fundamentalData.setCurPrice(Double.parseDouble(curMap.get("LTP")));
+        if(NumberUtils.isNumber(curMap.get("LTP")))
+            fundamentalData.setCurPrice(Double.parseDouble(curMap.get("LTP")));
+        else
+            fundamentalData.setCurPrice(-1.0);
         if(NumberUtils.isNumber(fdMap.get("EPS")))
             fundamentalData.setEps(Double.parseDouble(fdMap.get("EPS")));
         else
             fundamentalData.setEps(0.0);
-        if(NumberUtils.isNumber(fdMap.get("PB")))
+        if(NumberUtils.isNumber(fdMap.get("PB")) && Double.parseDouble(fdMap.get("PB") ) !=0.0 )
             fundamentalData.setBookValue( fundamentalData.getCurPrice()/ Double.parseDouble(fdMap.get("PB")) );
         else
             fundamentalData.setBookValue(0.0);
@@ -189,6 +207,8 @@ public class FundamentalService {
             fundamentalData.setRoe(Double.parseDouble(fdMap.get("ROE")));
         else
             fundamentalData.setRoe(0.0);
+        fundamentalData.setFundaLastUpdated( new java.util.Date());
+        fundamentalData.setPriceLastUpdated(new java.util.Date());
         return fundamentalData;
     }
 }
