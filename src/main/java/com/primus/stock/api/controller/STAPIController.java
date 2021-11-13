@@ -65,7 +65,7 @@ public class STAPIController {
     {
 
         try {
-            financialService.saveFinancialData(scripCode);
+            financialService.saveFinancialData(scripCode,1L);
             ResponseEntity entity =  new ResponseEntity<String>("Success", HttpStatus.OK);
             return  entity;
 
@@ -103,6 +103,24 @@ public class STAPIController {
 
         try {
             fundamentalService.saveAllFundamentals("X ");
+            ResponseEntity entity =  new ResponseEntity<String>("Success", HttpStatus.OK);
+            return  entity;
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+
+        }
+        ResponseEntity entity =  new ResponseEntity<String>("error", HttpStatus.BAD_REQUEST);
+        return  entity;
+
+    }
+
+    @RequestMapping(value = "/saveAllFinancials", method = RequestMethod.GET)
+    public ResponseEntity<String> saveAllFinancials()
+    {
+
+        try {
+            financialService.saveAllFinancialData("X ");
             ResponseEntity entity =  new ResponseEntity<String>("Success", HttpStatus.OK);
             return  entity;
 

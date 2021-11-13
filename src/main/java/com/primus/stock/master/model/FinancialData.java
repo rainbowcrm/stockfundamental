@@ -16,6 +16,7 @@ public class FinancialData {
     Double expenditure;
     Double netProfit;
     Double equit;
+    Double divident;
 
     @Column(name  ="BSE_CODE")
     @Id
@@ -79,5 +80,14 @@ public class FinancialData {
 
     public void setEquit(Double equit) {
         this.equit = equit;
+    }
+
+    @Column(name  ="DIVIDENT")
+    public Double getDivident() {
+        return divident;
+    }
+
+    public void setDivident(Double divident) {
+        this.divident = divident;
     }
 }

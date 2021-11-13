@@ -71,5 +71,24 @@ public class APIService {
 
     }
 
+    public Map<String,Object> getDividentData (String scripCode,Integer year) throws Exception
+    {
+        String api = "https://api.bseindia.com/BseIndiaAPI/api/CorporateAction/w?scripcode=" +  scripCode   ;
+        URL obj = new URL(api);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        con.setRequestMethod("GET");
+        BufferedReader in = new BufferedReader(new InputStreamReader(
+                con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+        ObjectMapper objectMapper =  new ObjectMapper();
+        return objectMapper.readValue(response.toString(),Map.class);
+
+    }
+
 
 }

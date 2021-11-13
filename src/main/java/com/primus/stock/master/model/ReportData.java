@@ -18,6 +18,7 @@ public class ReportData  extends FundamentalData{
         this.netIncome = fundamentalData.netIncome ;
         this.qtrRevenue =fundamentalData.qtrRevenue ;
         this.roe= fundamentalData.roe ;
+        this.sector = fundamentalData.sector;
 
     }
 
