@@ -32,6 +32,11 @@ public class FundamentalService {
         fundamentalsDAO.create(fundamentalData);
     }
 
+    public List<FundamentalData> listData( int from , int to , String whereCondition, String orderby )
+    {
+        return fundamentalsDAO.listData(from,to,whereCondition,orderby);
+    }
+
     private List<ReportData> makeReportDataList(List<FundamentalData> fundamentalDataList)
     {
         Map<String,List<FundamentalData>> map = new HashMap<>() ;

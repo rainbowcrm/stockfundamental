@@ -18,4 +18,8 @@ public class StockMasterService {
         return stockMasterDAO.listAllTrackedData(groupC);
     }
 
+    public List<StocksMaster> getAllStocks (  ){
+        return  stockMasterDAO.getAllStocks() ;
+    }
+
 }

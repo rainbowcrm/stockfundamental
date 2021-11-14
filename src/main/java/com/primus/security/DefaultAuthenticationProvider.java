@@ -18,7 +18,6 @@ public class DefaultAuthenticationProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String name = authentication.getName();
         String password = authentication.getCredentials().toString();
-
         if ("thomas".equals(password) && "thomas".equalsIgnoreCase(name))
             return new UsernamePasswordAuthenticationToken(
                 name, password, new ArrayList<>());

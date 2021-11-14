@@ -152,4 +152,9 @@ public class FinancialService {
         return  null;
 
     }
+
+    public List<FinancialData> getAllFinancials (  )
+    {
+        return financialsDAO.getAllFinancials();
+    }
 }
