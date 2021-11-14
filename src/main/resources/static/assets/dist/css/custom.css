@@ -1,0 +1,189 @@
+/*
+* ------------------------------------------------------------------
+*
+* Project: G- Admin
+* Version: 1.0
+* Created : 05/09/2018
+* Template URI: 
+* Author Name: Shelley C Antony
+* Author URI: 
+* Description: Garments
+* Developer: Fsh Design;
+*
+*
+* -------------------------------------------------------------------
+*/
+
+/******SCPL****/
+
+.padding {
+	padding: 15px;
+}
+.padding-left {
+	padding-left: 10px;
+}
+.padding-right {
+	padding-right: 10px;
+}
+
+.no-padding {
+	padding-left: 0;
+	padding-right: 0;
+}
+.margin-top {
+	margin-top:15px;
+}
+.margin-top2 {
+	margin-top:30px;
+}
+.margin-bottom{
+	margin-bottom:15px;
+}
+.padding-bottom{
+	padding-bottom:15px;
+}
+.padding-bottom2{
+	padding-bottom:30px;
+}
+.padding-bottom3{
+	padding-bottom:60px;
+}
+.shadow {
+	
+	-webkit-box-shadow: 1px 1px 1px 1px #D6D6D6;
+box-shadow: 1px 1px 1px 1px #D6D6D6;
+}
+
+:focus {
+       outline:none;
+}
+
+.padding-top {
+	padding-top: 15px;
+}
+.padding-top2 {
+	padding-top: 30px;
+}
+.padding-top3 {
+	padding-top: 60px;
+}
+.no-padding-left {
+	padding-left:0;
+}
+.no-padding-right {
+	padding-right:0;
+}
+.margin-centre {
+	margin-right: auto;
+	margin-left: auto;
+}
+.alignment {
+	text-align: center;
+	color: #FFF;
+}
+.alignment p {
+	line-height: 25px;
+	font-size: 15px;
+}
+.alignment h1 {
+	/*margin-bottom: 47px;*/
+	font-size: 43px;
+}
+
+.border {
+	border: 1px solid #ddd;
+}
+.border-theme {
+	border: 1px solid #009688;
+}
+.border-radius{
+	border-radius:5px;
+}
+.no-border {
+	border: none;
+}
+
+.color-text-white{
+	color: #FFF;
+}
+.color-white{
+	background-color: #FFF;
+}
+.color-text-black{
+	color: #000;
+}
+.color-black{
+	background-color: #000;
+}
+
+.form-width-set-200{
+	width:200px;
+}
+.width-set-80{
+	width:80px;
+}
+.edit-calnotes a {
+	color:#fff;
+
+	}	
+/******SCPL****/
+
+/*search filter*/
+.dropdown.dropdown-lg .dropdown-menu {
+    margin-top: -1px;
+    padding: 6px 20px;
+}
+.input-group-btn .btn-group {
+    display: flex !important;
+}
+.btn-group .btn {
+    border-radius: 0;
+    margin-left: -1px;
+}
+.btn-group .btn:last-child {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+.btn-group .form-horizontal .btn[type="submit"] {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+.form-horizontal .form-group {
+    margin-left: 0;
+    margin-right: 0;
+}
+.form-group .form-control:last-child {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+@media screen and (min-width: 768px) {
+    #adv-search {
+        width: 100%;
+        margin: 0 auto;
+    }
+    .dropdown.dropdown-lg {
+        position: static !important;
+    }
+    .dropdown.dropdown-lg .dropdown-menu {
+        min-width: 500px;
+    }
+}
+/*search filter*/
+
+.form-horizontal .form-group {
+    margin-right: 0px !important;
+    margin-left: 0px !important;
+}
+.pagination>li>a, .pagination>li>span { border-radius: 50% !important;margin: 0 5px;}
+
+.phoneBox
+{
+	width:80%;
+	float:left;
+}
+.phoneBoxbtn{
+		width:20%;
+	float:left;
+}
+	

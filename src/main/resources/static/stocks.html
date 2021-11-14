@@ -14,8 +14,134 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="./scripts/stockdisplay.js" ></script>
+<div class="col-sm-12">
+    <div class="panel panel-bd lobidrag">
+        <div class="panel-heading">
+            <div class="btn-group padding-left" id="buttonexport">
+                <a href="#">
+                    <h4>Securities</h4>
+                </a>
+            </div>
+        </div>
+        <!--search lead-->
 
-Display Stocks.....
+        <div class="padding-top padding-bottom">
+            <form class="form-horizontal" role="form">
+                <div class="row">
+                <div class="col-md-4 col-sm-1 col-lg-3 form-group">
+
+                    <select class="form-control">
+                        <option value="0" selected>Industry</option>
+                        <option value="1">Ernakulam</option>
+                        <option value="2">Thrissur</option>
+                        <option value="3">Kottayam</option>
+                        <option value="4">Kannur</option>
+                    </select>
+                </div>
+                <div class=" col-md-4 col-sm-1 col-lg-3 form-group">
+                     <input class="form-control" placeholder="Sector" type="text" />
+                </div>
+                <div class=" col-md-4 col-sm-1 col-lg-3 form-group">
+                   <input class="form-control" placeholder="Security" type="text" />
+                </div>
+                    <div class="col-md-4 col-sm-1 col-lg-3 form-group">
+                        <input class="form-control" placeholder="BSE Code" type="text" />
+                    </div>
+                    <div class="col-md-4 col-sm-1 col-lg-3 form-group">
+                        <button type="button" class="btn btn-primary">Filter</button>
+                    </div>
+
+                </div>
+            </form>
+
+        </div>
+
+<div class="panel-body">
+    <!-- Plugin content:powerpoint,txt,pdf,png,word,xl -->
+    <div class="btn-group">
+
+        <button class="btn btn-exp btn-info dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bars"></i> Export Table Data</button>
+        <ul class="dropdown-menu exp-drop" role="menu">
+            <li>
+                <a href="#" onclick="$('#dataTableExample1').tableExport({type:'json',escape:'false'});">
+                    <img src="assets/dist/img/json.png" width="24" alt="logo"> JSON</a>
+            </li>
+            <li class="divider"></li>
+            <li><a href="#" onclick="$('#dataTableExample1').tableExport({type:'xml',escape:'false'});">
+                <img src="assets/dist/img/xml.png" width="24" alt="logo"> XML</a>
+            </li>
+            <li><a href="#" onclick="$('#dataTableExample1').tableExport({type:'sql'});">
+                <img src="assets/dist/img/sql.png" width="24" alt="logo"> SQL</a>
+            </li>
+            <hr/>
+            <li>
+                <a href="#" onclick="$('#dataTableExample1').tableExport({type:'csv',escape:'false'});">
+                    <img src="assets/dist/img/csv.png" width="24" alt="logo"> CSV</a>
+            </li>
+            <li>
+                <a href="#" onclick="$('#dataTableExample1').tableExport({type:'txt',escape:'false'});">
+                    <img src="assets/dist/img/txt.png" width="24" alt="logo"> TXT</a>
+            </li>
+            <hr/>
+            <li>
+                <a href="#" onclick="$('#dataTableExample1').tableExport({type:'excel',escape:'false'});">
+                    <img src="assets/dist/img/xls.png" width="24" alt="logo"> XLS</a>
+            </li>
+
+            <li>
+                <a href="#" onclick="$('#dataTableExample1').tableExport({type:'pdf',pdfFontSize:'7',escape:'false'});">
+                    <img src="assets/dist/img/pdf.png" width="24" alt="logo"> PDF</a>
+            </li>
+        </ul>
+    </div>
+
+<div class="table-responsive">
+    <table id="dataTableExample1" class="table table-bordered table-striped table-hover">
+        <thead>
+        <tr class="table-primary">
+            <th>BSE Code</th>
+            <th>Security</th>
+            <th>Industry</th>
+            <th>Sector</th>
+            <th>Group</th>
+            <th>Cur Price</th>
+            <th>EPS</th>
+            <th>Book Value</th>
+            <th>Revenue</th>
+            <th>Profit</th>
+            <th>Divident Paid</th>
+        </tr>
+        </thead>
+        <tbody>
+                <script>
+                    getStockList(0,30);
+                </script>
+
+        </tbody>
+    </table>
+</div>
+
+
+
+<!--pagination-->
+    <nav aria-label="...">
+        <ul class="pagination">
+            <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1">Previous</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item active">
+                <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+            </li>
+        </ul>
+    </nav>
+<!--pagination-->
+
 
 </body>
 </html>
