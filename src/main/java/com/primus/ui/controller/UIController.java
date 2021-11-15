@@ -26,6 +26,15 @@ public class UIController {
         return  entity;
 
     }
+    @RequestMapping(value = "/getAllStockCount", method = RequestMethod.GET)
+    public ResponseEntity<Integer> getAllStockCount()
+    {
+        Integer returnData = uiService.getAllStockCount();
+        ResponseEntity entity =  new ResponseEntity<Integer>(returnData, HttpStatus.OK);
+        return  entity;
+
+    }
+
 
 
 }

@@ -55,6 +55,7 @@ function nextPage(recordsPerPage)
    $("#btnNext").attr('class',"page-item") ;
   }
   displayPage= currentPage ;
+  $("#navDetails").html("page " + (displayPage+1) + " of " + totalPages  );
      var from = currentPage * recordsPerPage;
      var to= from  + recordsPerPage;
      let request = formRequest("GET",url+'uiapi/getAllStocks?from=' + from + '&to=' + to);
@@ -67,6 +68,16 @@ function nextPage(recordsPerPage)
 
  }
 
+function getAllStockCount()
+{
+    let request = formRequest("GET",url+'uiapi/getAllStockCount');
+     setToken(request);
+     request.send() ;
+     var snapsotresponse  =   JSON.parse(request.responseText)  ;
+     console.log("Responsse =" + request.responseText );
+     return request.responseText;
+
+}
  function reRenderTable(tableId,data)
  {
          var dataTable = document.getElementById(tableId);

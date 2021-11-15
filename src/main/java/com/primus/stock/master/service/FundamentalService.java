@@ -2,6 +2,7 @@ package com.primus.stock.master.service;
 
 import com.primus.stock.api.service.APIService;
 import com.primus.stock.master.dao.FundamentalsDAO;
+import com.primus.stock.master.model.FinancialData;
 import com.primus.stock.master.model.FundamentalData;
 import com.primus.stock.master.model.ReportData;
 import com.primus.stock.master.model.StocksMaster;
@@ -35,6 +36,11 @@ public class FundamentalService {
     public List<FundamentalData> listData( int from , int to , String whereCondition, String orderby )
     {
         return fundamentalsDAO.listData(from,to,whereCondition,orderby);
+    }
+
+    public List<FundamentalData> getAllFundamentals ( )
+    {
+        return fundamentalsDAO.getAllFundamentals();
     }
 
     private List<ReportData> makeReportDataList(List<FundamentalData> fundamentalDataList)

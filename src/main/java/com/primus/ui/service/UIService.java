@@ -26,6 +26,12 @@ public class UIService {
     @Autowired
     FinancialService financialService;
 
+    public int getAllStockCount()
+    {
+        List<FundamentalData> fundamentalDataList = fundamentalService.getAllFundamentals();
+        return fundamentalDataList.size();
+    }
+
     public List<Map> getAllStocks(int from, int to ) {
         List<FundamentalData> fundamentalDataList = fundamentalService.listData(from,to,"","");
         List<FinancialData> financialDataList = financialService.getAllFinancials() ;
