@@ -1,4 +1,5 @@
  url = "https://localhost:20452/";
+ displayPage = 0;
 
  function formRequest(methodType,api)
  {
@@ -28,9 +29,32 @@
     }
  }
 
+function previousPage(recordsPerPage)
+{
+ getStockList(displayPage-1,recordsPerPage);
+}
+
+function nextPage(recordsPerPage)
+{
+ getStockList(displayPage+1,recordsPerPage);
+}
+
  function getStockList(currentPage,recordsPerPage)
  {
  console.log(url);
+ if (currentPage > 0) {
+    $("#btnPrev").attr('class',"page-item ") ;
+ }else
+ {
+   $("#btnPrev").attr('class',"page-item disabled") ;
+ }
+ if (currentPage == totalPages-1) {
+   $("#btnNext").attr('class',"page-item disabled") ;
+  }else
+  {
+   $("#btnNext").attr('class',"page-item") ;
+  }
+  displayPage= currentPage ;
      var from = currentPage * recordsPerPage;
      var to= from  + recordsPerPage;
      let request = formRequest("GET",url+'uiapi/getAllStocks?from=' + from + '&to=' + to);
@@ -70,12 +94,12 @@
                  var newrow = dataTable.insertRow();
                  newrow.innerHTML =  innerContent;
              }
-           // applyColor();
+            applyColor();
 
  }
 
  function applyColor()
  {
     $("tr:odd").css("background-color", "white");
-    $("tr:even").css("background-color", "#f9f9f9");
+    $("tr:even").css("background-color", "aliceblue");
  }

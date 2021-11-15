@@ -59,42 +59,81 @@
 
 <div class="panel-body">
     <!-- Plugin content:powerpoint,txt,pdf,png,word,xl -->
-    <div class="btn-group">
 
-        <button class="btn btn-exp btn-info dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bars"></i> Export Table Data</button>
-        <ul class="dropdown-menu exp-drop" role="menu">
-            <li>
-                <a href="#" onclick="$('#dataTableExample1').tableExport({type:'json',escape:'false'});">
-                    <img src="assets/dist/img/json.png" width="24" alt="logo"> JSON</a>
-            </li>
-            <li class="divider"></li>
-            <li><a href="#" onclick="$('#dataTableExample1').tableExport({type:'xml',escape:'false'});">
-                <img src="assets/dist/img/xml.png" width="24" alt="logo"> XML</a>
-            </li>
-            <li><a href="#" onclick="$('#dataTableExample1').tableExport({type:'sql'});">
-                <img src="assets/dist/img/sql.png" width="24" alt="logo"> SQL</a>
-            </li>
-            <hr/>
-            <li>
-                <a href="#" onclick="$('#dataTableExample1').tableExport({type:'csv',escape:'false'});">
-                    <img src="assets/dist/img/csv.png" width="24" alt="logo"> CSV</a>
-            </li>
-            <li>
-                <a href="#" onclick="$('#dataTableExample1').tableExport({type:'txt',escape:'false'});">
-                    <img src="assets/dist/img/txt.png" width="24" alt="logo"> TXT</a>
-            </li>
-            <hr/>
-            <li>
-                <a href="#" onclick="$('#dataTableExample1').tableExport({type:'excel',escape:'false'});">
-                    <img src="assets/dist/img/xls.png" width="24" alt="logo"> XLS</a>
-            </li>
 
-            <li>
-                <a href="#" onclick="$('#dataTableExample1').tableExport({type:'pdf',pdfFontSize:'7',escape:'false'});">
-                    <img src="assets/dist/img/pdf.png" width="24" alt="logo"> PDF</a>
+        <div class="btn-group">
+            <button class="btn btn-exp btn-info dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bars"></i> Export Table Data</button>
+            <ul class="dropdown-menu exp-drop" role="menu">
+                <li>
+                    <a href="#" onclick="$('#dataTableExample1').tableExport({type:'json',escape:'false'});">
+                        <img src="assets/dist/img/json.png" width="24" alt="logo"> JSON</a>
+                </li>
+                <li class="divider"></li>
+                <li><a href="#" onclick="$('#dataTableExample1').tableExport({type:'xml',escape:'false'});">
+                    <img src="assets/dist/img/xml.png" width="24" alt="logo"> XML</a>
+                </li>
+                <li><a href="#" onclick="$('#dataTableExample1').tableExport({type:'sql'});">
+                    <img src="assets/dist/img/sql.png" width="24" alt="logo"> SQL</a>
+                </li>
+                <hr/>
+                <li>
+                    <a href="#" onclick="$('#dataTableExample1').tableExport({type:'csv',escape:'false'});">
+                        <img src="assets/dist/img/csv.png" width="24" alt="logo"> CSV</a>
+                </li>
+                <li>
+                    <a href="#" onclick="$('#dataTableExample1').tableExport({type:'txt',escape:'false'});">
+                        <img src="assets/dist/img/txt.png" width="24" alt="logo"> TXT</a>
+                </li>
+                <hr/>
+                <li>
+                    <a href="#" onclick="$('#dataTableExample1').tableExport({type:'excel',escape:'false'});">
+                        <img src="assets/dist/img/xls.png" width="24" alt="logo"> XLS</a>
+                </li>
+
+                <li>
+                    <a href="#" onclick="$('#dataTableExample1').tableExport({type:'pdf',pdfFontSize:'7',escape:'false'});">
+                        <img src="assets/dist/img/pdf.png" width="24" alt="logo"> PDF</a>
+                </li>
+            </ul>
+
+
+        </div>
+    <nav aria-label="..." >
+        <ul class="pagination justify-content-end">
+            <li id="btnPrev"  class="page-item disabled">
+                <a class="page-link" onclick = "previousPage(30)"  href="#" tabindex="-1">Previous</a>
+            </li>
+            <!--<li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item active">
+                <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+            <script>
+                totalPages= 80;
+                recordsPerPage = 30;
+                currentPage = 1;
+                if ( totalPages <=10 ) {
+                        for ( i = 1 ; i <= totalPages ; i ++ ) {
+                        document.write('<li class="page-item"><a class="page-link" onclick = "getStockList('+ (i-1) +','+ recordsPerPage +')" href="#">'+ i +'</a></li>');
+                     }
+                }else {
+                     skipIndex = (totalPages/10) + 1
+                     var i = i;
+                    for ( i = 1 ; i <= totalPages ; i+=skipIndex ) {
+                        document.write('<li class="page-item"><a class="page-link" onclick = "getStockList('+ (i-1) +','+ recordsPerPage +')"  href="#">'+ i +'</a></li>');
+                     }
+                     if ( i > totalPages+1) {
+                     document.write('<li class="page-item"><a class="page-link" onclick = "getStockList('+ (totalPages-1) +','+ recordsPerPage +')"  href="#">'+ totalPages +'</a></li>');
+                     }
+
+                }
+
+            </script>
+            <li id="btnNext"  class="page-item">
+                <a class="page-link"  onclick = "nextPage(30)"  href="#">Next</a>
             </li>
         </ul>
-    </div>
+    </nav>
 
 <div class="table-responsive">
     <table id="dataTableExample1" class="table table-bordered table-striped table-hover">
@@ -121,27 +160,16 @@
         </tbody>
     </table>
 </div>
-
+</div>
 
 
 <!--pagination-->
-    <nav aria-label="...">
-        <ul class="pagination">
-            <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1">Previous</a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item active">
-                <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#">Next</a>
-            </li>
-        </ul>
-    </nav>
+
+
 <!--pagination-->
 
+    </div>
+</div>
 
 </body>
 </html>

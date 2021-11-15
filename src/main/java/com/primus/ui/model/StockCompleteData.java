@@ -166,11 +166,14 @@ public class StockCompleteData {
         this.eps = fundamentalData.getEps() ;
         this.bookvalue= fundamentalData.getBookValue();
         this.roe = fundamentalData.getRoe() ;
-        this.revenue = financialData.getRevenue();
-        this.expenditure = financialData.getExpenditure() ;
-        this.profit= financialData.getNetProfit();
-        this.equity = financialData.getEquit() ;
-        this.divident = financialData.getDivident() ;
+        if (financialData != null) {
+
+            this.revenue = financialData.getRevenue();
+            this.expenditure = financialData.getExpenditure();
+            this.profit = financialData.getNetProfit();
+            this.equity = financialData.getEquit();
+            this.divident = financialData.getDivident();
+        }
 
     }
 }
