@@ -31,16 +31,35 @@
                 <div class="row">
                 <div class="col-md-4 col-sm-1 col-lg-3 form-group">
 
-                    <select class="form-control">
+                    <select id="selIndustry" class="form-control">
                         <option value="0" selected>Industry</option>
-                        <option value="1">Ernakulam</option>
-                        <option value="2">Thrissur</option>
-                        <option value="3">Kottayam</option>
-                        <option value="4">Kannur</option>
+                        <script>
+                            allIndustries = getAllIndustries();
+                            var allIndustries = { 'industries': allIndustries } ;
+                            console.log(allIndustries);
+                            for ( var i in allIndustries.industries) {
+                                industry  = allIndustries.industries[i];
+                                document.write('<option value="'+ industry +'">' + industry + '</option>');
+                            }
+
+                        </script>
+
                     </select>
                 </div>
                 <div class=" col-md-4 col-sm-1 col-lg-3 form-group">
-                     <input class="form-control" placeholder="Sector" type="text" />
+                     <select id="selSector" class="form-control">
+                    <option value="0" selected>Sector</option>
+                    <script>
+                            allSectors = getAllSectors();
+                            var sectArray = { 'sectors': allSectors } ;
+                            for ( var i in sectArray.sectors) {
+                            var sector = sectArray.sectors[i];
+                                document.write('<option value="'+ sector +'">' + sector + '</option>');
+                            }
+
+                        </script>
+
+                </select>
                 </div>
                 <div class=" col-md-4 col-sm-1 col-lg-3 form-group">
                    <input class="form-control" placeholder="Security" type="text" />

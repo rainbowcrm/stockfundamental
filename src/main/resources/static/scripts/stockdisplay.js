@@ -67,6 +67,26 @@ function nextPage(recordsPerPage)
 
 
  }
+function getAllIndustries()
+{
+    let request = formRequest("GET",url+'uiapi/getDistinctIndustry');
+     setToken(request);
+     request.send() ;
+     var snapsotresponse  =   JSON.parse(request.responseText)  ;
+     console.log("All Industries =" + request.responseText );
+     return snapsotresponse;
+}
+
+function getAllSectors()
+{
+    let request = formRequest("GET",url+'uiapi/getDistinctSector');
+     setToken(request);
+     request.send() ;
+     var snapsotresponse  =   JSON.parse(request.responseText)  ;
+     console.log("All Sectors =" + request.responseText );
+     return snapsotresponse;
+}
+
 
 function getAllStockCount()
 {
