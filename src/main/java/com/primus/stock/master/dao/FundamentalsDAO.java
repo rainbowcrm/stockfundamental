@@ -49,4 +49,20 @@ public class FundamentalsDAO {
     }
 
 
+    public List<String> getDistinctIndustry()
+    {
+        Query query =  em.createQuery("Select distinct  industry from FundamentalData "  );
+        List<String> ans = query.getResultList();
+        return ans;
+
+    }
+
+    public List<String> getDistinctSector()
+    {
+        Query query =  em.createQuery("Select distinct  sector from FundamentalData "  );
+        List<String> ans = query.getResultList();
+        return ans;
+
+    }
+
 }

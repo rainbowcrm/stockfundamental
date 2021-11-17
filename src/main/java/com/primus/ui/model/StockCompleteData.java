@@ -25,6 +25,9 @@ public class StockCompleteData {
     Double profit;
     Double equity;
     Double divident ;
+    Double pe;
+    Double pb;
+
 
     public String getBseCode() {
         return bseCode;
@@ -146,6 +149,22 @@ public class StockCompleteData {
         this.divident = divident;
     }
 
+    public Double getPe() {
+        return pe;
+    }
+
+    public void setPe(Double pe) {
+        this.pe = pe;
+    }
+
+    public Double getPb() {
+        return pb;
+    }
+
+    public void setPb(Double pb) {
+        this.pb = pb;
+    }
+
     @JsonIgnore
     public Map<String,Object> getMap()
     {
@@ -173,6 +192,12 @@ public class StockCompleteData {
             this.profit = financialData.getNetProfit();
             this.equity = financialData.getEquit();
             this.divident = financialData.getDivident();
+        }
+        if(this.eps != 0 ){
+            this.pe = Math.round((this.currentPrice/this.eps)*100.0)/100.0;
+        }
+        if(this.bookvalue != 0) {
+            this.pb = Math.round((this.currentPrice / this.bookvalue)*100.0)/100.0;
         }
 
     }

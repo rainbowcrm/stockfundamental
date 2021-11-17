@@ -18,6 +18,23 @@ public class UIController {
     @Autowired
     UIService uiService;
 
+
+    @RequestMapping(value = "/getDistinctSector", method = RequestMethod.GET)
+    public ResponseEntity<List<String>> getDistinctSector()
+    {
+        List<String> returnData = uiService.getDistinctSector();
+        ResponseEntity entity =  new ResponseEntity<List<String>>(returnData, HttpStatus.OK);
+        return  entity;
+    }
+
+    @RequestMapping(value = "/getDistinctIndustry", method = RequestMethod.GET)
+    public ResponseEntity<List<String>> getDistinctIndusty()
+    {
+        List<String> returnData = uiService.getDistinctIndustry();
+        ResponseEntity entity =  new ResponseEntity<List<String>>(returnData, HttpStatus.OK);
+        return  entity;
+    }
+
     @RequestMapping(value = "/getAllStocks", method = RequestMethod.GET)
     public ResponseEntity<List<Map>> getAllStocks(@RequestParam int from, @RequestParam int to )
     {

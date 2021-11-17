@@ -222,4 +222,14 @@ public class FundamentalService {
         fundamentalData.setPriceLastUpdated(new java.util.Date());
         return fundamentalData;
     }
+
+    public List<String> getDistinctIndustry()
+    {
+        return fundamentalsDAO.getDistinctIndustry();
+    }
+
+    public List<String> getDistinctSector()
+    {
+        return fundamentalsDAO.getDistinctSector();
+    }
 }

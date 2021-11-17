@@ -101,6 +101,9 @@ function getAllStockCount()
                 innerContent =  innerContent + '<td>' + singleRow['revenue'] + '</td>';
                 innerContent =  innerContent + '<td>' + singleRow['profit'] + '</td>';
                 innerContent =  innerContent + '<td>' + singleRow['divident'] + '</td>';
+                innerContent =  innerContent + '<td>' + singleRow['pe'] + '</td>';
+                innerContent =  innerContent + '<td>' + singleRow['pb'] + '</td>';
+                innerContent =  innerContent + '<td>' + singleRow['roe'] + '</td>';
                 innerContent =  innerContent + '</tr>';
                  var newrow = dataTable.insertRow();
                  newrow.innerHTML =  innerContent;

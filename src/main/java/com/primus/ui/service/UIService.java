@@ -51,4 +51,14 @@ public class UIService {
 
 
     }
+
+    public List<String> getDistinctIndustry()
+    {
+        return fundamentalService.getDistinctIndustry();
+    }
+
+    public List<String> getDistinctSector()
+    {
+        return fundamentalService.getDistinctSector();
+    }
 }

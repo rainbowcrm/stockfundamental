@@ -22,4 +22,5 @@ public class StockMasterService {
         return  stockMasterDAO.getAllStocks() ;
     }
 
+
 }
