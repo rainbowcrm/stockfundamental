@@ -7,10 +7,13 @@ import com.primus.stock.master.service.FinancialService;
 import com.primus.stock.master.service.FundamentalService;
 import com.primus.stock.master.service.StockMasterService;
 import com.primus.ui.model.StockCompleteData;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,14 +29,40 @@ public class UIService {
     @Autowired
     FinancialService financialService;
 
-    public int getAllStockCount()
+    public int getAllStockCount(Map<String,Object> criteriaMap)
     {
-        List<FundamentalData> fundamentalDataList = fundamentalService.getAllFundamentals();
+        StringBuffer ctSet =  new StringBuffer("");
+        if (!CollectionUtils.isEmpty(criteriaMap)) {
+            for (Map.Entry<String, Object> entryD : criteriaMap.entrySet()) {
+                if (StringUtils.isNotEmpty(entryD.getKey())) {
+                    if (ctSet.length() > 1)
+                        ctSet.append(" and ");
+                    else
+                        ctSet.append(" where ");
+                    ctSet.append(entryD.getKey() + " =  '" + entryD.getValue() + "'");
+                }
+            }
+        }
+        List<FundamentalData> fundamentalDataList = fundamentalService.getAllFundamentals(ctSet.toString());
         return fundamentalDataList.size();
     }
 
-    public List<Map> getAllStocks(int from, int to ) {
-        List<FundamentalData> fundamentalDataList = fundamentalService.listData(from,to,"","");
+    public List<Map> applyFilterStocks(int from, int to, Map<String,Object> criteriaMap)
+    {
+
+        StringBuffer ctSet =  new StringBuffer("");
+        if (!CollectionUtils.isEmpty(criteriaMap)) {
+            for (Map.Entry<String, Object> entryD : criteriaMap.entrySet()) {
+                if (StringUtils.isNotEmpty(entryD.getKey())) {
+                    if (ctSet.length() > 1)
+                        ctSet.append(" and ");
+                    else
+                        ctSet.append(" where ");
+                    ctSet.append(entryD.getKey() + " =  '" + entryD.getValue() + "'");
+                }
+            }
+        }
+        List<FundamentalData> fundamentalDataList = fundamentalService.listData(from,to,ctSet.toString(),"");
         List<FinancialData> financialDataList = financialService.getAllFinancials() ;
         List<StocksMaster> stocksMasterList = stockMasterService.getAllStocks();
         List<Map> returnList = new ArrayList<>();
@@ -48,8 +77,11 @@ public class UIService {
         }
         return returnList ;
 
+    }
 
 
+    public List<Map> getAllStocks(int from, int to ) {
+        return applyFilterStocks(from,to,null);
     }
 
     public List<String> getDistinctIndustry()

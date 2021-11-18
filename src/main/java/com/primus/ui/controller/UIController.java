@@ -43,10 +43,31 @@ public class UIController {
         return  entity;
 
     }
+
+    @RequestMapping(value = "/applyFilterStocks", method = RequestMethod.POST)
+    public ResponseEntity<List<Map>> applyFilterStocks(@RequestParam int from, @RequestParam int to,
+                                                       @RequestBody Map<String,Object> filterCriteria )
+    {
+        List<Map> returnData = uiService.applyFilterStocks(from,to,filterCriteria);
+        ResponseEntity entity =  new ResponseEntity<List<Map>>(returnData, HttpStatus.OK);
+        return  entity;
+
+    }
+
+
     @RequestMapping(value = "/getAllStockCount", method = RequestMethod.GET)
     public ResponseEntity<Integer> getAllStockCount()
     {
-        Integer returnData = uiService.getAllStockCount();
+        Integer returnData = uiService.getAllStockCount(null);
+        ResponseEntity entity =  new ResponseEntity<Integer>(returnData, HttpStatus.OK);
+        return  entity;
+
+    }
+
+    @RequestMapping(value = "/filteredStockCount", method = RequestMethod.POST)
+    public ResponseEntity<Integer> filteredStockCount(@RequestBody Map<String,Object> criteriaMap)
+    {
+        Integer returnData = uiService.getAllStockCount(criteriaMap);
         ResponseEntity entity =  new ResponseEntity<Integer>(returnData, HttpStatus.OK);
         return  entity;
 

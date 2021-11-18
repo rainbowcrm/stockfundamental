@@ -38,9 +38,9 @@ public class FundamentalService {
         return fundamentalsDAO.listData(from,to,whereCondition,orderby);
     }
 
-    public List<FundamentalData> getAllFundamentals ( )
+    public List<FundamentalData> getAllFundamentals (String whereCondition )
     {
-        return fundamentalsDAO.getAllFundamentals();
+        return fundamentalsDAO.getAllFundamentals(whereCondition);
     }
 
     private List<ReportData> makeReportDataList(List<FundamentalData> fundamentalDataList)
@@ -95,7 +95,7 @@ public class FundamentalService {
 
     public void exportToXLS() throws Exception
     {
-        List<FundamentalData> fundamentalDataList = fundamentalsDAO.getAllFundamentals();
+        List<FundamentalData> fundamentalDataList = fundamentalsDAO.getAllFundamentals("");
         HSSFWorkbook workbook = new HSSFWorkbook ();
         HSSFSheet spreadsheet
                 = workbook.createSheet(" Stock Fundamentals ");

@@ -30,9 +30,9 @@ public class FundamentalsDAO {
     }
 
 
-    public List<FundamentalData> getAllFundamentals (  )
+    public List<FundamentalData> getAllFundamentals (  String whereCondition)
     {
-        Query query =  em.createQuery("from FundamentalData "  );
+        Query query =  em.createQuery("from FundamentalData " +  ((StringUtils.isEmpty(whereCondition))?"":whereCondition) );
         List<FundamentalData> ans = query.getResultList();
         return ans;
     }

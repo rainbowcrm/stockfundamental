@@ -38,11 +38,9 @@ function nextPage(recordsPerPage)
 {
  getStockList(displayPage+1,recordsPerPage);
 }
-
- function getStockList(currentPage,recordsPerPage)
- {
- console.log(url);
- if (currentPage > 0) {
+function enableDisableNextPrev(currentPage,totalPages)
+{
+if (currentPage > 0) {
     $("#btnPrev").attr('class',"page-item ") ;
  }else
  {
@@ -56,6 +54,11 @@ function nextPage(recordsPerPage)
   }
   displayPage= currentPage ;
   $("#navDetails").html("page " + (displayPage+1) + " of " + totalPages  );
+}
+ function getStockList(currentPage,recordsPerPage)
+ {
+ console.log(url);
+     enableDisableNextPrev(currentPage,totalPages) ;
      var from = currentPage * recordsPerPage;
      var to= from  + recordsPerPage;
      let request = formRequest("GET",url+'uiapi/getAllStocks?from=' + from + '&to=' + to);
@@ -86,7 +89,66 @@ function getAllSectors()
      console.log("All Sectors =" + request.responseText );
      return snapsotresponse;
 }
+function writePaginationButtons()
+{
 
+totalPages= Math.floor(getAllStockCount()/30);
+recordsPerPage = 30;
+currentPage = 1;
+if ( totalPages <=10 ) {
+        for ( i = 1 ; i <= totalPages ; i ++ ) {
+        document.write('<li class="page-item"><a class="page-link" onclick = "getStockList('+ (i-1) +','+ recordsPerPage +')" href="#">'+ i +'</a></li>');
+     }
+}else {
+     skipIndex = Math.floor(totalPages/10) + 1
+     var i = i;
+    for ( i = 1 ; i <= totalPages ; i+=skipIndex ) {
+        document.write('<li class="page-item"><a class="page-link" onclick = "getStockList('+ (i-1) +','+ recordsPerPage +')"  href="#">'+ i +'</a></li>');
+     }
+     if ( i > totalPages+1) {
+     document.write('<li class="page-item"><a class="page-link" onclick = "getStockList('+ (totalPages-1) +','+ recordsPerPage +')"  href="#">'+ totalPages +'</a></li>');
+     }
+
+}
+}
+function applyFilter(currentPage)
+{
+
+ let postContent= { };
+ industry = $("#selIndustry").val() ;
+ sector =   $("#selSector").val();
+  security =   $("#txtSecurty").val() ;
+   bseCode =   $("#txtBSECode").val() ;
+   console.log(industry);
+   console.log(sector);
+   console.log(security);
+   console.log(bseCode);
+
+   if ( industry != '0'){
+   postContent['industry'] = industry
+   }
+   if ( sector != '0'){
+      postContent['sector'] = sector;
+      }
+   if ( security.trim() != ''){
+      postContent['company'] = security;
+      }
+      if ( bseCode.trim() != ''){
+         postContent['bseCode'] = bseCode;
+         }
+
+  enableDisableNextPrev(currentPage,totalPages) ;
+       var from = currentPage * recordsPerPage;
+       var to= from  + recordsPerPage;
+ console.log( postContent) ;
+ let request = formRequest("POST",url+'uiapi/applyFilterStocks?from=' + from + '&to=' + to);
+     setToken(request);
+     request.send(JSON.stringify(postContent),true) ;
+     var snapsotresponse  =   JSON.parse(request.responseText)  ;
+         console.log("Response from reloadListWithContent =" + request.responseText );
+         reRenderTable('dataTableExample1',snapsotresponse);
+
+}
 
 function getAllStockCount()
 {

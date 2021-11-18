@@ -62,14 +62,20 @@
                 </select>
                 </div>
                 <div class=" col-md-4 col-sm-1 col-lg-3 form-group">
-                   <input class="form-control" placeholder="Security" type="text" />
+                   <input class="form-control" placeholder="Security" id="txtSecurty" type="text" />
                 </div>
                     <div class="col-md-4 col-sm-1 col-lg-3 form-group">
-                        <input class="form-control" placeholder="BSE Code" type="text" />
+                        <input class="form-control" placeholder="BSE Code" id="txtBSECode" type="text" />
                     </div>
                     <div class="col-md-4 col-sm-1 col-lg-3 form-group">
-                        <button type="button" class="btn btn-primary">Filter</button>
+                        <button type="button" class="btn btn-primary" onclick="applyFilter(0);"> Apply </button>
+
+                        &nbsp; &nbsp;
+                        <button type="button" class="btn btn-warning"> Clear Filter</button>
                     </div>
+
+
+
 
                 </div>
             </form>
@@ -118,7 +124,7 @@
 
         </div>
     <nav aria-label="..." >
-        <ul class="pagination justify-content-end">
+        <ul  class="pagination justify-content-end">
             <li  class="page-item">
                 <span class="page-link" style="color:black" id="navDetails" ></span>
             </li>
@@ -131,24 +137,7 @@
             </li>
             <li class="page-item"><a class="page-link" href="#">3</a></li>-->
             <script>
-                totalPages= Math.floor(getAllStockCount()/30);
-                recordsPerPage = 30;
-                currentPage = 1;
-                if ( totalPages <=10 ) {
-                        for ( i = 1 ; i <= totalPages ; i ++ ) {
-                        document.write('<li class="page-item"><a class="page-link" onclick = "getStockList('+ (i-1) +','+ recordsPerPage +')" href="#">'+ i +'</a></li>');
-                     }
-                }else {
-                     skipIndex = Math.floor(totalPages/10) + 1
-                     var i = i;
-                    for ( i = 1 ; i <= totalPages ; i+=skipIndex ) {
-                        document.write('<li class="page-item"><a class="page-link" onclick = "getStockList('+ (i-1) +','+ recordsPerPage +')"  href="#">'+ i +'</a></li>');
-                     }
-                     if ( i > totalPages+1) {
-                     document.write('<li class="page-item"><a class="page-link" onclick = "getStockList('+ (totalPages-1) +','+ recordsPerPage +')"  href="#">'+ totalPages +'</a></li>');
-                     }
-
-                }
+                writePaginationButtons();
 
             </script>
             <li id="btnNext"  class="page-item">
