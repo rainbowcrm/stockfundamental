@@ -31,12 +31,12 @@
 
 function previousPage(recordsPerPage)
 {
- getStockList(displayPage-1,recordsPerPage);
+ applyFilter(displayPage-1,recordsPerPage);
 }
 
 function nextPage(recordsPerPage)
 {
- getStockList(displayPage+1,recordsPerPage);
+ applyFilter(displayPage+1,recordsPerPage);
 }
 function enableDisableNextPrev(currentPage,totalPages)
 {
@@ -92,32 +92,43 @@ function getAllSectors()
 function writePaginationButtons()
 {
 
-totalPages= Math.floor(getAllStockCount()/30);
+ var innerHTML = '<li  class="page-item">';
+
+    innerHTML +=  '<span class="page-link" style="color:black" id="navDetails" ></span>';
+    innerHTML +=  '</li>';
+    innerHTML +=  '<li id="btnPrev"  class="page-item disabled">';
+    innerHTML +=  '<a class="page-link" onclick = "previousPage(30)"  href="#" tabindex="-1">Previous</a>';
+    innerHTML +=   '</li>';
+
+totalPages= Math.ceil(getAllStockCount()/30);
 recordsPerPage = 30;
 currentPage = 1;
 if ( totalPages <=10 ) {
         for ( i = 1 ; i <= totalPages ; i ++ ) {
-        document.write('<li class="page-item"><a class="page-link" onclick = "getStockList('+ (i-1) +','+ recordsPerPage +')" href="#">'+ i +'</a></li>');
+        innerHTML += '<li class="page-item"><a class="page-link" onclick = "applyFilter('+ (i-1) +','+ recordsPerPage +')" href="#">'+ (i) +'</a></li>';
      }
 }else {
      skipIndex = Math.floor(totalPages/10) + 1
-     var i = i;
     for ( i = 1 ; i <= totalPages ; i+=skipIndex ) {
-        document.write('<li class="page-item"><a class="page-link" onclick = "getStockList('+ (i-1) +','+ recordsPerPage +')"  href="#">'+ i +'</a></li>');
+        innerHTML += '<li class="page-item"><a class="page-link" onclick = "applyFilter('+ (i-1) +','+ recordsPerPage +')"  href="#">'+ i +'</a></li>';
      }
      if ( i > totalPages+1) {
-     document.write('<li class="page-item"><a class="page-link" onclick = "getStockList('+ (totalPages-1) +','+ recordsPerPage +')"  href="#">'+ totalPages +'</a></li>');
+     innerHTML += '<li class="page-item"><a class="page-link" onclick = "applyFilter('+ (totalPages-1) +','+ recordsPerPage +')"  href="#">'+ totalPages +'</a></li>';
      }
+}
+   innerHTML += '<li id="btnNext"  class="page-item">';
+   innerHTML +=  '<a class="page-link"  onclick = "nextPage(30)"  href="#">Next</a>';
+   innerHTML +=   '</li>';
 
+   $('#idPaginationCtrls').html(innerHTML);
 }
-}
-function applyFilter(currentPage)
+
+function getFilterJSON()
 {
-
- let postContent= { };
- industry = $("#selIndustry").val() ;
- sector =   $("#selSector").val();
-  security =   $("#txtSecurty").val() ;
+    let postContent= { };
+    industry = $("#selIndustry").val() ;
+    sector =   $("#selSector").val();
+    security =   $("#txtSecurty").val() ;
    bseCode =   $("#txtBSECode").val() ;
    console.log(industry);
    console.log(sector);
@@ -136,7 +147,13 @@ function applyFilter(currentPage)
       if ( bseCode.trim() != ''){
          postContent['bseCode'] = bseCode;
          }
+   return postContent ;
+}
 
+function applyFilter(currentPage,recordsPerPage)
+{
+    postContent = getFilterJSON();
+  writePaginationButtons();
   enableDisableNextPrev(currentPage,totalPages) ;
        var from = currentPage * recordsPerPage;
        var to= from  + recordsPerPage;
@@ -152,9 +169,10 @@ function applyFilter(currentPage)
 
 function getAllStockCount()
 {
-    let request = formRequest("GET",url+'uiapi/getAllStockCount');
+     postContent = getFilterJSON();
+    let request = formRequest("POST",url+'uiapi/filteredStockCount');
      setToken(request);
-     request.send() ;
+    request.send(JSON.stringify(postContent),true) ;
      var snapsotresponse  =   JSON.parse(request.responseText)  ;
      console.log("Responsse =" + request.responseText );
      return request.responseText;

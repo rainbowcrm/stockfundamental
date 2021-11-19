@@ -68,7 +68,7 @@
                         <input class="form-control" placeholder="BSE Code" id="txtBSECode" type="text" />
                     </div>
                     <div class="col-md-4 col-sm-1 col-lg-3 form-group">
-                        <button type="button" class="btn btn-primary" onclick="applyFilter(0);"> Apply </button>
+                        <button type="button" class="btn btn-primary" onclick="applyFilter(0,30);"> Apply </button>
 
                         &nbsp; &nbsp;
                         <button type="button" class="btn btn-warning"> Clear Filter</button>
@@ -124,13 +124,8 @@
 
         </div>
     <nav aria-label="..." >
-        <ul  class="pagination justify-content-end">
-            <li  class="page-item">
-                <span class="page-link" style="color:black" id="navDetails" ></span>
-            </li>
-            <li id="btnPrev"  class="page-item disabled">
-                <a class="page-link" onclick = "previousPage(30)"  href="#" tabindex="-1">Previous</a>
-            </li>
+        <ul  id="idPaginationCtrls" class="pagination justify-content-end">
+
             <!--<li class="page-item"><a class="page-link" href="#">1</a></li>
             <li class="page-item active">
                 <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
@@ -140,9 +135,7 @@
                 writePaginationButtons();
 
             </script>
-            <li id="btnNext"  class="page-item">
-                <a class="page-link"  onclick = "nextPage(30)"  href="#">Next</a>
-            </li>
+
         </ul>
     </nav>
 
