@@ -178,7 +178,19 @@ function applyFilter(currentPage,recordsPerPage)
          reRenderTable('dataTableExample1',snapsotresponse);
 
 }
-
+function tableExport(fileType)
+{
+    postContent = getFilterJSON();
+     let request = formRequest("POST",url+'uiapi/downloadFile/'+fileType);
+         setToken(request);
+         request.send(JSON.stringify(postContent),true) ;
+         const data = request.responseText;
+         var myresponse = new Blob([data], {type : 'application/vnd.ms-excel'});
+         var a = document.createElement('a');
+         a.href = window.URL.createObjectURL(myresponse);
+         a.download = 'report.xls';
+         a.click();
+}
 function getAllStockCount()
 {
      postContent = getFilterJSON();

@@ -7,15 +7,14 @@ import com.primus.stock.master.service.FinancialService;
 import com.primus.stock.master.service.FundamentalService;
 import com.primus.stock.master.service.StockMasterService;
 import com.primus.ui.model.StockCompleteData;
+import com.primus.utils.ExportService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class UIService {
@@ -28,6 +27,9 @@ public class UIService {
 
     @Autowired
     FinancialService financialService;
+
+    @Autowired
+    ExportService exportService ;
 
     public int getAllStockCount(Map<String,Object> criteriaMap)
     {
@@ -46,6 +48,19 @@ public class UIService {
         List<FundamentalData> fundamentalDataList = fundamentalService.getAllFundamentals(ctSet.toString());
         return fundamentalDataList.size();
     }
+
+    public Resource exportDataAsFile( Map<String,Object> criteriaMap,String fileType) throws Exception
+    {
+        List<Map> mapList = applyFilterStocks(0,9000,criteriaMap);
+        Map<String,String> titleKeys = new LinkedHashMap<>();
+        mapList.get(0).keySet().forEach( key -> {
+            titleKeys.put((String)key,(String)key) ;
+        });
+
+        return exportService.exportToExcel(mapList,"Fundamentals List",titleKeys);
+
+    }
+
 
     public List<Map> applyFilterStocks(int from, int to, Map<String,Object> criteriaMap)
     {
