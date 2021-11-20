@@ -99,8 +99,9 @@ function writePaginationButtons()
     innerHTML +=  '<li id="btnPrev"  class="page-item disabled">';
     innerHTML +=  '<a class="page-link" onclick = "previousPage(30)"  href="#" tabindex="-1">Previous</a>';
     innerHTML +=   '</li>';
-
-totalPages= Math.ceil(getAllStockCount()/30);
+allStockCount = getAllStockCount();
+totalPages= Math.ceil(allStockCount/30);
+console.log('allStockCount=' +  allStockCount + ":: totalPages=" + totalPages);
 recordsPerPage = 30;
 currentPage = 1;
 if ( totalPages <=10 ) {
@@ -108,11 +109,13 @@ if ( totalPages <=10 ) {
         innerHTML += '<li class="page-item"><a class="page-link" onclick = "applyFilter('+ (i-1) +','+ recordsPerPage +')" href="#">'+ (i) +'</a></li>';
      }
 }else {
-     skipIndex = Math.floor(totalPages/10) + 1
+     skipIndex = Math.floor(totalPages/10) + 1;
+     console.log('skipIndex ='  + skipIndex );
     for ( i = 1 ; i <= totalPages ; i+=skipIndex ) {
         innerHTML += '<li class="page-item"><a class="page-link" onclick = "applyFilter('+ (i-1) +','+ recordsPerPage +')"  href="#">'+ i +'</a></li>';
      }
-     if ( i > totalPages+1) {
+     console.log('i=' + i );
+     if ( i < totalPages+skipIndex) {
      innerHTML += '<li class="page-item"><a class="page-link" onclick = "applyFilter('+ (totalPages-1) +','+ recordsPerPage +')"  href="#">'+ totalPages +'</a></li>';
      }
 }
@@ -150,6 +153,15 @@ function getFilterJSON()
    return postContent ;
 }
 
+function clearFilter(recordsPerPage)
+{
+$("#selIndustry").val("0");
+$("#selSector").val("0");
+$("#txtSecurty").val("");
+ $("#txtBSECode").val("") ;
+ applyFilter(0,recordsPerPage);
+
+}
 function applyFilter(currentPage,recordsPerPage)
 {
     postContent = getFilterJSON();
