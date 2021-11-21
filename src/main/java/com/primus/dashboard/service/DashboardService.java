@@ -1,9 +1,12 @@
 package com.primus.dashboard.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.primus.dashboard.model.Averages;
 import com.primus.dashboard.model.DashboardData;
 import com.primus.dashboard.model.GroupCardData;
+import com.primus.stock.master.model.FundamentalData;
 import com.primus.stock.master.model.StocksMaster;
+import com.primus.stock.master.service.FundamentalService;
 import com.primus.stock.master.service.StockMasterService;
 import com.primus.stocktransaction.dao.StockTransactionDAO;
 import com.primus.stocktransaction.model.StockTransaction;
@@ -26,6 +29,9 @@ public class DashboardService {
     @Autowired
     StockMasterService stockMasterService ;
 
+    @Autowired
+    FundamentalService fundamentalService;
+
     private static final String TOTAL = "Total";
     private static final String GAINERS = "Gainers";
     private static final String AVGGAIN = "AvgGain";
@@ -38,10 +44,58 @@ public class DashboardService {
         Date startDay = new java.util.Date( curDate.getTime() - (oneDayinMillis * prevDays));
         List<StockTransaction> stockTransactionList = stockTransactionDAO.getData(startDay,curDate);
         List<StocksMaster> stocksMasterList = stockMasterService.getAllTrackedStocks();
+        List<FundamentalData> fundamentals = fundamentalService.getAllFundamentals(null);
         DashboardData dashboardData = new DashboardData() ;
         setGroupCardData(stocksMasterList,stockTransactionList,dashboardData);
+        setAverages(fundamentals,  dashboardData);
         ObjectMapper objectMapper =  new ObjectMapper();
         return objectMapper.convertValue(dashboardData,Map.class);
+
+    }
+
+    private void setAverages(List<FundamentalData> fundamentalDataList,DashboardData dashboardData)
+    {
+        Double totalPE= 0.0;
+        Double totalPB =0.0 ;
+        Double totalROE = 0.0;
+        Averages averages = new Averages();
+        int totalPERecs = fundamentalDataList.size() ;
+        int totalPBRecs = fundamentalDataList.size() ;
+        int totalROERecs = fundamentalDataList.size() ;
+        for ( FundamentalData fundamentalData : fundamentalDataList)
+        {
+            if ( fundamentalData.getEps() != null && fundamentalData.getEps() !=0.0  ){
+                totalPE += (fundamentalData.getCurPrice() / fundamentalData.getEps() );
+            }else {
+                totalPERecs --;
+            }
+            if(fundamentalData.getBookValue() !=null  && fundamentalData.getBookValue() != 0.0){
+                totalPB += (fundamentalData.getCurPrice() / fundamentalData.getBookValue() );
+            }else{
+                totalPBRecs -- ;
+            }
+
+            if(fundamentalData.getRoe()!=null  && fundamentalData.getRoe() != 0.0){
+                totalROE += fundamentalData.getRoe() ;
+            }else{
+                totalROERecs -- ;
+            }
+
+        }
+        Double avPE = totalPE/totalPERecs ;
+        Double avPB = totalPB/totalPBRecs ;
+        Double avROE = totalROE /totalROERecs;
+        averages.setPbRatio(Math.round(avPB* 100.0 )/100.0);
+        averages.setPeRatio(Math.round(avPE* 100.0 )/100.0);
+        averages.setRoe((Math.round(avROE* 100.0 )/100.0));
+
+        GroupCardData groupCardData = dashboardData.getGroupCardData();
+        double totalRateofIncr = (groupCardData.getGroupAGainPerc() * groupCardData.getGroupANo())  +
+                (groupCardData.getGroupBGainPerc() * groupCardData.getGroupBNo()) +
+                (groupCardData.getGroupXGainPerc() * groupCardData.getGroupXNo());
+        double avgRateofIncr= totalRateofIncr/groupCardData.getNoOfSecurities();
+        averages.setRateOfIncrease(Math.round(avgRateofIncr * 100.0)/100.0);
+        dashboardData.setFullDataAvg(averages);
 
     }
 

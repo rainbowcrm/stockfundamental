@@ -45,7 +45,8 @@
     let groupCData = dashboardData['groupCardData'];
     console.log('GC' + groupCData);
     console.log(groupCData['gainers']);
-      console.log(groupCData['noOfSecurities']);
+    console.log(groupCData['noOfSecurities']);
+    let avgData = dashboardData['fullDataAvg'];
 </script>
 
 <!--preloader-->
@@ -128,19 +129,28 @@
                                         <tbody>
                                         <tr >
                                             <th scope="row">Rate of Change</th>
-                                            <td>9%</td>
+                                            <script>
+                                                document.write('<td>'+ avgData['rateOfIncrease'] +'%</td>');
+                                            </script>
+
                                         </tr>
                                         <tr>
                                             <th scope="row">PE Ratio</th>
-                                            <td>11%</td>
+                                            <script>
+                                                document.write('<td>'+ avgData['peRatio'] +'</td>');
+                                            </script>
                                         </tr>
                                         <tr>
                                             <th scope="row">PB Ratio</th>
-                                            <td>12%</td>
+                                            <script>
+                                                document.write('<td>'+ avgData['pbRatio'] +'</td>');
+                                            </script>
                                         </tr>
                                         <tr>
                                             <th scope="row">ROE</th>
-                                            <td>17%</td>
+                                            <script>
+                                                document.write('<td>'+ avgData['roe'] +'</td>');
+                                            </script>
                                         </tr>
                                         </tbody>
                                     </table>
