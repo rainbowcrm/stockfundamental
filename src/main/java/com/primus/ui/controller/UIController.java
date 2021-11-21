@@ -1,5 +1,6 @@
 package com.primus.ui.controller;
 
+import com.primus.dashboard.service.DashboardService;
 import com.primus.ui.service.UIService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -22,6 +23,9 @@ public class UIController {
 
     @Autowired
     UIService uiService;
+
+    @Autowired
+    DashboardService dashboardService;
 
 
     @RequestMapping(value = "/getDistinctSector", method = RequestMethod.GET)
@@ -99,6 +103,15 @@ public class UIController {
             }
         ResponseEntity entity =  new ResponseEntity<Resource>(resource, HttpStatus.BAD_REQUEST);
         return  entity;
+    }
+
+    @RequestMapping(value = "/getDashBoardData", method = RequestMethod.GET)
+    public ResponseEntity<Map> getDashBoardData(@RequestParam int days )
+    {
+        Map returnData = dashboardService.getDashboardData(days);
+        ResponseEntity<Map> entity =  new ResponseEntity<Map>(returnData, HttpStatus.OK);
+        return  entity;
+
     }
 
 

@@ -241,3 +241,14 @@ function getAllStockCount()
     $("tr:odd").css("background-color", "white");
     $("tr:even").css("background-color", "aliceblue");
  }
+
+ function getDashBoard()
+ {
+  let request = formRequest("GET",url+'uiapi/getDashBoardData?days=90');
+      setToken(request);
+      request.send() ;
+      var snapsotresponse  =   JSON.parse(request.responseText)  ;
+      console.log("Dashboard Response =" + request.responseText );
+      return snapsotresponse;
+
+ }

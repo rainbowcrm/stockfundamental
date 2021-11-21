@@ -42,6 +42,13 @@ public class StockMasterDAO {
         return ans;
     }
 
+    public List<StocksMaster> getAllTrackedStocks (  )
+    {
+        Query query =  em.createQuery("from StocksMaster  where  useJavaAPI = true"  );
+        List<StocksMaster> ans = query.getResultList();
+        return ans;
+    }
+
 
 
 }
