@@ -27,6 +27,8 @@ public class StockCompleteData {
     Double divident ;
     Double pe;
     Double pb;
+    Double marketCap;
+    String groupCap;
 
 
     public String getBseCode() {
@@ -180,6 +182,8 @@ public class StockCompleteData {
         this.industry= fundamentalData.getIndustry();
         this.sector = fundamentalData.getSector() ;
         this.group= stocksMaster.getGroupC().trim();
+        this.marketCap=fundamentalData.getMarketCap();
+        this.groupCap=fundamentalData.getMarketGroup();
         this.faceValue = stocksMaster.getFaceValue() ;
         this.currentPrice = fundamentalData.getCurPrice() ;
         this.eps = fundamentalData.getEps() ;
@@ -200,5 +204,21 @@ public class StockCompleteData {
             this.pb = Math.round((this.currentPrice / this.bookvalue)*100.0)/100.0;
         }
 
+    }
+
+    public Double getMarketCap() {
+        return marketCap;
+    }
+
+    public void setMarketCap(Double marketCap) {
+        this.marketCap = marketCap;
+    }
+
+    public String getGroupCap() {
+        return groupCap;
+    }
+
+    public void setGroupCap(String groupCap) {
+        this.groupCap = groupCap;
     }
 }

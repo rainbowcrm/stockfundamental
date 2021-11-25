@@ -24,6 +24,11 @@ public class FundamentalData {
     Date priceLastUpdated;
     Date fundaLastUpdated;
 
+    Double marketCap;
+    Double marketCapFF;
+    String marketGroup;
+
+
 
     @Column(name  ="BSE_CODE")
     @Id
@@ -143,5 +148,32 @@ public class FundamentalData {
                 ", company='" + company + '\'' +
                 ", curPrice=" + curPrice +
                 '}';
+    }
+
+    @Column(name  ="MARKET_CAPT")
+    public Double getMarketCap() {
+        return marketCap;
+    }
+
+    public void setMarketCap(Double marketCap) {
+        this.marketCap = marketCap;
+    }
+
+    @Column(name  ="MARKET_CAPT_FF")
+    public Double getMarketCapFF() {
+        return marketCapFF;
+    }
+
+    public void setMarketCapFF(Double marketCapFF) {
+        this.marketCapFF = marketCapFF;
+    }
+
+    @Column(name  ="MARKET_CAP_GROUP")
+    public String getMarketGroup() {
+        return marketGroup;
+    }
+
+    public void setMarketGroup(String marketGroup) {
+        this.marketGroup = marketGroup;
     }
 }

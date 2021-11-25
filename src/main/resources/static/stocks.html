@@ -68,6 +68,14 @@
                         <input class="form-control" placeholder="BSE Code" id="txtBSECode" type="text" />
                     </div>
                     <div class="col-md-4 col-sm-1 col-lg-3 form-group">
+                        <select id="selMCGroup" class="form-control">
+                            <option value="0" selected>Cap Size</option>
+                            <option value="L">Large</option>
+                            <option value="M">Medium</option>
+                            <option value="S">Small</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 col-sm-1 col-lg-3 form-group">
                         <button type="button" class="btn btn-primary" onclick="applyFilter(0,30);"> Apply </button>
 
                         &nbsp; &nbsp;
@@ -148,6 +156,8 @@
             <th>Industry</th>
             <th>Sector</th>
             <th>Group</th>
+            <th>M Cap</th>
+            <th>Cap Size</th>
             <th>Cur Price</th>
             <th>EPS</th>
             <th>Book Value</th>

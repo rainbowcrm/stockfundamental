@@ -124,7 +124,8 @@ public class STAPIController {
     {
 
         try {
-            stockMasterService.updateMarketCap();
+            //stockMasterService.updateMarketCap();
+            fundamentalService.updateMarketCap();
             ResponseEntity entity =  new ResponseEntity<String>("Success", HttpStatus.OK);
             return  entity;
 

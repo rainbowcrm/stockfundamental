@@ -133,6 +133,7 @@ function getFilterJSON()
     sector =   $("#selSector").val();
     security =   $("#txtSecurty").val() ;
    bseCode =   $("#txtBSECode").val() ;
+   capGroup = $("#selMCGroup").val() ;
    console.log(industry);
    console.log(sector);
    console.log(security);
@@ -150,6 +151,9 @@ function getFilterJSON()
       if ( bseCode.trim() != ''){
          postContent['bseCode'] = bseCode;
          }
+     if ( capGroup != '0'){
+     postContent['marketGroup'] = capGroup;
+     }
    return postContent ;
 }
 
@@ -219,6 +223,8 @@ function getAllStockCount()
                 innerContent =  innerContent + '<td>' + singleRow['industry'] + '</td>';
                 innerContent =  innerContent + '<td>' + singleRow['sector'] + '</td>';
                 innerContent =  innerContent + '<td>' + singleRow['group'] + '</td>';
+                innerContent =  innerContent + '<td>' + singleRow['marketCap'] + '</td>';
+                innerContent =  innerContent + '<td>' + singleRow['groupCap'] + '</td>';
                 innerContent =  innerContent + '<td>' + singleRow['currentPrice'] + '</td>';
                 innerContent =  innerContent + '<td>' + singleRow['eps'] + '</td>';
                 innerContent =  innerContent + '<td>' + singleRow['bookvalue'] + '</td>';

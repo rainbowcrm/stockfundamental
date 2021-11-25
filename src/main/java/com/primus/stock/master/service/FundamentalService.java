@@ -43,6 +43,27 @@ public class FundamentalService {
         return fundamentalsDAO.getAllFundamentals(whereCondition);
     }
 
+    public void updateMarketCap()
+    {
+        List<StocksMaster> trackedStocks = stockMasterService.getAllTrackedStocks();
+        List<FundamentalData> fundamentalDataList = fundamentalsDAO.getAllFundamentals(null);
+        for (StocksMaster stocksMaster : trackedStocks) {
+            if( stocksMaster.getMarketCap() != null )
+            {
+                FundamentalData fundamentalData = fundamentalDataList.stream().filter( fundamentalData1 -> {
+                   return (fundamentalData1.getBseCode().equalsIgnoreCase(stocksMaster.getBseCode())?true:false);
+                }).findFirst().orElse(null);
+                if(fundamentalData != null) {
+                    fundamentalData.setMarketCap(stocksMaster.getMarketCap());
+                    fundamentalData.setMarketCapFF(stocksMaster.getMarketCapFF());
+                    fundamentalData.setMarketGroup(stocksMaster.getMarketGroup());
+                    fundamentalsDAO.update(fundamentalData);
+                    System.out.println(stocksMaster.getBseCode() + ":::::" + stocksMaster.getMarketCap());
+                }
+            }
+        }
+    }
+
     private List<ReportData> makeReportDataList(List<FundamentalData> fundamentalDataList)
     {
         Map<String,List<FundamentalData>> map = new HashMap<>() ;
