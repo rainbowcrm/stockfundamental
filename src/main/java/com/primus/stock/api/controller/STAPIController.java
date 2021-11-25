@@ -5,6 +5,7 @@ import com.primus.stock.api.service.APIService;
 import com.primus.stock.master.model.FundamentalData;
 import com.primus.stock.master.service.FinancialService;
 import com.primus.stock.master.service.FundamentalService;
+import com.primus.stock.master.service.StockMasterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,9 @@ public class STAPIController {
 
     @Autowired
     FinancialService financialService ;
+
+    @Autowired
+    StockMasterService stockMasterService;
 
 
 
@@ -103,6 +107,24 @@ public class STAPIController {
 
         try {
             fundamentalService.saveAllFundamentals("X ");
+            ResponseEntity entity =  new ResponseEntity<String>("Success", HttpStatus.OK);
+            return  entity;
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+
+        }
+        ResponseEntity entity =  new ResponseEntity<String>("error", HttpStatus.BAD_REQUEST);
+        return  entity;
+
+    }
+
+    @RequestMapping(value = "/saveAllMarketCap", method = RequestMethod.GET)
+    public ResponseEntity<String> saveAllMarketCap()
+    {
+
+        try {
+            stockMasterService.updateMarketCap();
             ResponseEntity entity =  new ResponseEntity<String>("Success", HttpStatus.OK);
             return  entity;
 

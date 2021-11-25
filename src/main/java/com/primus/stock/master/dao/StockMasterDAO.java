@@ -1,6 +1,5 @@
 package com.primus.stock.master.dao;
 
-import com.primus.stock.master.model.FundamentalData;
 import com.primus.stock.master.model.StocksMaster;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
@@ -18,6 +17,11 @@ public class StockMasterDAO {
     @PersistenceContext
     protected EntityManager em;
 
+
+    @Transactional
+    public void update(StocksMaster model) {
+        em.merge(model);
+    }
 
     public List<StocksMaster> listAllTrackedData(String groupC )
     {

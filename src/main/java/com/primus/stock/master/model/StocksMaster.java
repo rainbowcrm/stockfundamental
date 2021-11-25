@@ -23,6 +23,10 @@ public class StocksMaster {
  Boolean isTracked;
  String bseCode;
  Boolean useJavaAPI ;
+ Double marketCap;
+ Double marketCapFF;
+ String marketGroup;
+
 
     @Column(name  ="ID")
     @Id
@@ -149,5 +153,32 @@ public class StocksMaster {
 
     public void setUseJavaAPI(Boolean useJavaAPI) {
         this.useJavaAPI = useJavaAPI;
+    }
+
+    @Column(name  ="MARKET_CAPT")
+    public Double getMarketCap() {
+        return marketCap;
+    }
+
+    public void setMarketCap(Double marketCap) {
+        this.marketCap = marketCap;
+    }
+
+    @Column(name  ="MARKET_CAPT_FF")
+    public Double getMarketCapFF() {
+        return marketCapFF;
+    }
+
+    public void setMarketCapFF(Double marketCapFF) {
+        this.marketCapFF = marketCapFF;
+    }
+
+    @Column(name  ="MARKET_CAP_GROUP")
+    public String getMarketGroup() {
+        return marketGroup;
+    }
+
+    public void setMarketGroup(String marketGroup) {
+        this.marketGroup = marketGroup;
     }
 }
