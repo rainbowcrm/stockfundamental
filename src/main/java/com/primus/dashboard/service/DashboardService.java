@@ -2,6 +2,7 @@ package com.primus.dashboard.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.primus.dashboard.model.Averages;
+import com.primus.dashboard.model.CapCardData;
 import com.primus.dashboard.model.DashboardData;
 import com.primus.dashboard.model.GroupCardData;
 import com.primus.stock.master.model.FundamentalData;
@@ -47,6 +48,7 @@ public class DashboardService {
         List<FundamentalData> fundamentals = fundamentalService.getAllFundamentals(null);
         DashboardData dashboardData = new DashboardData() ;
         setGroupCardData(stocksMasterList,stockTransactionList,dashboardData);
+        setCapCardData(stocksMasterList,stockTransactionList,dashboardData);
         setAverages(fundamentals,  dashboardData);
         ObjectMapper objectMapper =  new ObjectMapper();
         return objectMapper.convertValue(dashboardData,Map.class);
@@ -127,8 +129,42 @@ public class DashboardService {
         groupCardData.setGroupXGainPerc((Double)groupXResults.get(AVGGAIN));
 
         groupCardData.setNoOfSecurities((Integer) groupBResults.get(TOTAL)  + (Integer) groupAResults.get(TOTAL) + (Integer) groupXResults.get(TOTAL));
-        groupCardData.setGainers((Integer)groupBResults.get(GAINERS) + (Integer)groupXResults.get(GAINERS) + (Integer)groupXResults.get(GAINERS));
+        groupCardData.setGainers((Integer)groupBResults.get(GAINERS) + (Integer)groupXResults.get(GAINERS) + (Integer)groupAResults.get(GAINERS));
         dashboardData.setGroupCardData(groupCardData);
+
+
+    }
+
+    private void setCapCardData(List<StocksMaster> stocksMasterList ,  List<StockTransaction> stockTransactionList,DashboardData dashboardData)
+    {
+        List<StocksMaster> capLStocks = stocksMasterList.stream().filter( sm ->
+        { return sm.getMarketGroup().equalsIgnoreCase("L");
+        }).collect(Collectors.toList());
+        Map<String,Object> capLResults=  getGroupResults(capLStocks,stockTransactionList);
+        CapCardData capData = new CapCardData();
+        capData.setCapLNo((Integer) capLResults.get(TOTAL));
+        capData.setCapLGainer((Integer)capLResults.get(GAINERS));
+        capData.setCapLGainPerc((Double)capLResults.get(AVGGAIN));
+
+        List<StocksMaster> capMStocks = stocksMasterList.stream().filter( sm ->
+        { return sm.getMarketGroup().equalsIgnoreCase("M");
+        }).collect(Collectors.toList());
+        Map<String,Object> capMResults=  getGroupResults(capMStocks,stockTransactionList);
+        capData.setCapMNo((Integer) capMResults.get(TOTAL));
+        capData.setCapMGainer((Integer)capMResults.get(GAINERS));
+        capData.setCapMGainPerc((Double)capMResults.get(AVGGAIN));
+
+        List<StocksMaster> capSStocks = stocksMasterList.stream().filter( sm ->
+        { return sm.getMarketGroup().equalsIgnoreCase("S");
+        }).collect(Collectors.toList());
+        Map<String,Object> capSResults=  getGroupResults(capSStocks,stockTransactionList);
+        capData.setCapSNo((Integer) capSResults.get(TOTAL));
+        capData.setCapSGainer((Integer)capSResults.get(GAINERS));
+        capData.setCapSGainPerc((Double)capSResults.get(AVGGAIN));
+
+        capData.setNoOfSecurities((Integer) capSResults.get(TOTAL)  + (Integer) capLResults.get(TOTAL) + (Integer) capMResults.get(TOTAL));
+        capData.setGainers((Integer)capSResults.get(GAINERS) + (Integer)capLResults.get(GAINERS) + (Integer)capMResults.get(GAINERS));
+        dashboardData.setCapCardData(capData);
 
 
     }

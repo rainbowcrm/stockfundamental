@@ -43,6 +43,7 @@
 <script>
     let dashboardData = getDashBoard();
     let groupCData = dashboardData['groupCardData'];
+     let capSizeData = dashboardData['capCardData'];
     console.log('GC' + groupCData);
     console.log(groupCData['gainers']);
     console.log(groupCData['noOfSecurities']);
@@ -104,14 +105,21 @@
                         <div class="statistic-box">
                             <i class="fa fa-user-secret fa-3x"></i>
                             <div class="counter-number pull-right">
-                                <span class="count-number">1904</span>
-                                <span class="slight"><i class="fa fa-play fa-rotate-270"> </i>
+                                <script>
+                                    document.write('<h3 >'+   capSizeData['gainers']   +'/'+  capSizeData['noOfSecurities'] + '</h3>');
+                                </script>
+
                               </span>
                             </div>
                             <h3> Cap Gains</h3>
-                            <h4> Large Cap : <span class="count-number"> 407</span> </h4>
-                            <h4> Mid Cap : <span class="count-number"> 803 </span> </h4>
-                            <h4> Small Cap :  <span class="count-number"> 532 </span> </h4>
+                            <script>
+                            document.write('<h4> Large Cap : '  + capSizeData['capLGainer'] + '/' + capSizeData['capLNo'] +'&nbsp;&nbsp;&nbsp;&nbsp; ' + capSizeData.capLGainPerc + '% ');
+                            document.write('<span class="slight"><i class="fa fa-play fa-rotate-270"> </i> </h4>');
+                            document.write('<h4> &nbsp;&nbsp; Mid Cap : '  + capSizeData['capMGainer'] + '/' + capSizeData['capMNo'] +'&nbsp;&nbsp;&nbsp;&nbsp; ' + capSizeData.capMGainPerc + '% ');
+                            document.write('<span class="slight"><i class="fa fa-play fa-rotate-270"> </i> </h4>');
+                            document.write('<h4> Small Cap : '  + capSizeData['capSGainer'] + '/' + capSizeData['capSNo'] +'&nbsp;&nbsp;&nbsp; ' + capSizeData.capSGainPerc + '% ');
+                            document.write('<span class="slight"><i class="fa fa-play fa-rotate-270"> </i> </h4>');
+                            </script>
                         </div>
                     </div>
                 </div>

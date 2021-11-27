@@ -250,7 +250,7 @@ function getAllStockCount()
 
  function getDashBoard()
  {
-  let request = formRequest("GET",url+'uiapi/getDashBoardData?days=30');
+  let request = formRequest("GET",url+'uiapi/getDashBoardData?days=45');
       setToken(request);
       request.send() ;
       var snapsotresponse  =   JSON.parse(request.responseText)  ;

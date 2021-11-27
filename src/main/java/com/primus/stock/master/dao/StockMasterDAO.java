@@ -48,7 +48,7 @@ public class StockMasterDAO {
 
     public List<StocksMaster> getAllTrackedStocks (  )
     {
-        Query query =  em.createQuery("from StocksMaster  where  useJavaAPI = true"  );
+        Query query =  em.createQuery("from StocksMaster  where  useJavaAPI = true and marketGroup is not null"  );
         List<StocksMaster> ans = query.getResultList();
         return ans;
     }
