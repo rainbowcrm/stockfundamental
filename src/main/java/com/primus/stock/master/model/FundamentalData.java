@@ -28,6 +28,7 @@ public class FundamentalData {
     Double marketCapFF;
     String marketGroup;
 
+    Boolean flagged;
 
 
     @Column(name  ="BSE_CODE")
@@ -175,5 +176,14 @@ public class FundamentalData {
 
     public void setMarketGroup(String marketGroup) {
         this.marketGroup = marketGroup;
+    }
+
+    @Column(name  ="FLAGGED")
+    public Boolean getFlagged() {
+        return flagged;
+    }
+
+    public void setFlagged(Boolean flagged) {
+        this.flagged = flagged;
     }
 }

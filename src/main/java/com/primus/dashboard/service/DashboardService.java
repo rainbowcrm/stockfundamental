@@ -1,23 +1,24 @@
 package com.primus.dashboard.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.primus.dashboard.model.Averages;
-import com.primus.dashboard.model.CapCardData;
-import com.primus.dashboard.model.DashboardData;
-import com.primus.dashboard.model.GroupCardData;
+import com.primus.dashboard.model.*;
 import com.primus.stock.master.model.FundamentalData;
 import com.primus.stock.master.model.StocksMaster;
 import com.primus.stock.master.service.FundamentalService;
 import com.primus.stock.master.service.StockMasterService;
 import com.primus.stocktransaction.dao.StockTransactionDAO;
 import com.primus.stocktransaction.model.StockTransaction;
+import com.primus.utils.MathUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 
@@ -45,11 +46,12 @@ public class DashboardService {
         Date startDay = new java.util.Date( curDate.getTime() - (oneDayinMillis * prevDays));
         List<StockTransaction> stockTransactionList = stockTransactionDAO.getData(startDay,curDate);
         List<StocksMaster> stocksMasterList = stockMasterService.getAllTrackedStocks();
-        List<FundamentalData> fundamentals = fundamentalService.getAllFundamentals(" where marketGroup is not  null");
+        List<FundamentalData> fundamentals = fundamentalService.getAllFundamentals(" where marketGroup is not  null ");
         DashboardData dashboardData = new DashboardData() ;
         setGroupCardData(stocksMasterList,stockTransactionList,dashboardData);
         setCapCardData(stocksMasterList,stockTransactionList,dashboardData);
         setAverages(fundamentals,  dashboardData);
+        setSectorDetails(fundamentals,dashboardData);
         ObjectMapper objectMapper =  new ObjectMapper();
         return objectMapper.convertValue(dashboardData,Map.class);
 
@@ -87,6 +89,39 @@ public class DashboardService {
         Double avPE = totalPE/totalPERecs ;
         Double avPB = totalPB/totalPBRecs ;
         Double avROE = totalROE /totalROERecs;
+
+
+        averages.setPbRatio(Math.round(avPB* 100.0 )/100.0);
+        averages.setPeRatio(Math.round(avPE* 100.0 )/100.0);
+        averages.setRoe((Math.round(avROE* 100.0 )/100.0));
+        return  averages;
+
+    }
+
+    private Averages getSubMedian(List<FundamentalData> fundamentalDataList)
+    {
+        Averages averages = getSubAverage(fundamentalDataList);
+        List<Double> peValues = new ArrayList<>();
+        List<Double> pbValues = new ArrayList<>();
+        List<Double> roeValues = new ArrayList<>();
+
+        for ( FundamentalData fundamentalData : fundamentalDataList)
+        {
+            if ( fundamentalData.getEps() != null && fundamentalData.getEps() !=0.0  ){
+                peValues.add(fundamentalData.getCurPrice() / fundamentalData.getEps() );
+            }
+            if(fundamentalData.getBookValue() !=null  && fundamentalData.getBookValue() != 0.0) {
+                pbValues.add(fundamentalData.getCurPrice() / fundamentalData.getBookValue());
+            }
+            if(fundamentalData.getRoe()!=null  && fundamentalData.getRoe() != 0.0){
+                roeValues.add(fundamentalData.getRoe()) ;
+            }
+
+        }
+        Double avPE = MathUtil.getMedian(peValues);
+        Double avPB = MathUtil.getMedian(pbValues);
+        Double avROE = MathUtil.getMedian(roeValues);
+
         averages.setPbRatio(Math.round(avPB* 100.0 )/100.0);
         averages.setPeRatio(Math.round(avPE* 100.0 )/100.0);
         averages.setRoe((Math.round(avROE* 100.0 )/100.0));
@@ -95,9 +130,9 @@ public class DashboardService {
     }
 
 
-    private void setAverages(List<FundamentalData> fundamentalDataList,DashboardData dashboardData)
+    private void setAverages(List<FundamentalData> fundamentalDataList, DashboardData dashboardData)
     {
-        Averages averages = getSubAverage(fundamentalDataList);
+        Averages averages = getSubMedian(fundamentalDataList);
 
        // averages.setRateOfIncrease(Math.round(avgRateofIncr * 100.0)/100.0);
         dashboardData.setFullDataAvg(averages);
@@ -105,19 +140,19 @@ public class DashboardService {
         List<FundamentalData> lCFundamentals = fundamentalDataList.stream().filter( fundamentalData -> {
             return fundamentalData.getMarketGroup().equalsIgnoreCase("L");
         }).collect(Collectors.toList());
-        Averages lcAverages = getSubAverage(lCFundamentals);
+        Averages lcAverages = getSubMedian(lCFundamentals);
         dashboardData.setlCDataAvg(lcAverages);
 
         List<FundamentalData> sCFundamentals = fundamentalDataList.stream().filter( fundamentalData -> {
             return fundamentalData.getMarketGroup().equalsIgnoreCase("S");
         }).collect(Collectors.toList());
-        Averages scAverages = getSubAverage(sCFundamentals);
+        Averages scAverages = getSubMedian(sCFundamentals);
         dashboardData.setsCDataAvg(scAverages);
 
         List<FundamentalData> mCFundamentals = fundamentalDataList.stream().filter( fundamentalData -> {
             return fundamentalData.getMarketGroup().equalsIgnoreCase("M");
         }).collect(Collectors.toList());
-        Averages mcAverages = getSubAverage(mCFundamentals);
+        Averages mcAverages = getSubMedian(mCFundamentals);
         dashboardData.setmCDataAvg(mcAverages);
 
 
@@ -125,6 +160,39 @@ public class DashboardService {
 
     }
 
+    private void setSectorDetails( List<FundamentalData> fundamentalDataList,DashboardData dashboardData)
+    {
+        MathContext mathContext = new  MathContext(2, RoundingMode.CEILING);
+        Map<String,List<Double>> indusChange = new HashMap<>();
+        fundamentalDataList.forEach( fundamentalData -> {
+            if ( fundamentalData.getEps() != 0  && StringUtils.isNotEmpty(fundamentalData.getSector())) {
+                if (indusChange.containsKey(fundamentalData.getSector())) {
+
+                    System.out.println(fundamentalData.getCompany() + "::" + fundamentalData.getEps());
+                    BigDecimal pe = new BigDecimal(fundamentalData.getCurPrice() / fundamentalData.getEps());
+                    pe.round(mathContext).floatValue();
+                    System.out.println(fundamentalData.getCompany() + "::" + pe.round(mathContext).doubleValue());
+                    indusChange.get(fundamentalData.getSector()).add(pe.round(mathContext).doubleValue());
+                } else {
+                    List ls = new ArrayList();
+
+                    BigDecimal pe = new BigDecimal(fundamentalData.getCurPrice() / fundamentalData.getEps());
+                    ls.add(pe.round(mathContext).doubleValue());
+                    indusChange.put(fundamentalData.getSector(), ls);
+                }
+            }
+        } );
+        List<SectorDetails> sectorDetailsList = new ArrayList<>() ;
+        for (Map.Entry<String,List<Double>> entry : indusChange.entrySet()) {
+            List<Double> values = entry.getValue();
+           BigDecimal median =  new BigDecimal(MathUtil.getMedian(values));
+           SectorDetails sectorDetails =  new SectorDetails();
+            sectorDetails.setPe(median.round(mathContext).doubleValue());
+            sectorDetails.setSector(entry.getKey());
+            sectorDetailsList.add(sectorDetails);
+        }
+        dashboardData.setSectorDetailsList(sectorDetailsList);
+    }
     private void setGroupCardData(List<StocksMaster> stocksMasterList ,  List<StockTransaction> stockTransactionList,DashboardData dashboardData)
     {
         List<StocksMaster> groupAStocks = stocksMasterList.stream().filter( sm ->

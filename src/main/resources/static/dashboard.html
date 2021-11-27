@@ -39,18 +39,43 @@
 <body class="hold-transition sidebar-mini">
 <script src="scripts/stockdisplay.js" type="text/javascript"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
 
 <script>
     let dashboardData = getDashBoard();
     let groupCData = dashboardData['groupCardData'];
      let capSizeData = dashboardData['capCardData'];
-    console.log('GC' + groupCData);
-    console.log(groupCData['gainers']);
-    console.log(groupCData['noOfSecurities']);
+
     let avgData = dashboardData['fullDataAvg'];
     let lcavgData = dashboardData['lCDataAvg'];
     let mcavgData = dashboardData['mCDataAvg'];
     let scavgData = dashboardData['sCDataAvg'];
+    let sectorData = dashboardData['sectorDetailsList'] ;
+    console.log(sectorData);
+    let title = ['Sector', 'PE'];
+    let sectorRec= [];
+    sectorRec.push(title);
+    for (let i = 0; i < sectorData.length; i++) {
+         let secEntry =[];
+         secEntry.push(sectorData[i].sector);
+         secEntry.push(sectorData[i].pe);
+         sectorRec.push(secEntry);
+
+    }
+    console.log(sectorRec);
+   /* let indusChange = [
+                          ,
+                          ["Tech", 10.5],
+                          ["Finance", 11.6],
+                          ["FMCG", -6.3],
+                          ["Auto", 9.4],
+                          ['Pharma', 13.4],
+                          ["Construction", -9.5],
+                          ["Retail", 11.9],
+                          ["Energy", 14.2],
+                          ['Iron & Steel', -3.4]
+                        ];*/
 
 </script>
 
@@ -264,17 +289,45 @@
                 <div class="row">
                     <!-- Barchart -->
                     <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
-                        <div class="panel panel-bd lobidisable" style="height:250px">
-                            <div class="panel-heading">
-                                <div class="panel-title">
-                                    <h4>This Year Earnings & Expenses(Bar chart)</h4>
-                                </div>
-                            </div>
-                            <div class="panel-body">
-                                <canvas id="barChart" height="200"></canvas>
-                            </div>
-                        </div>
-                    </div>
+                        <!-- <div class="panel panel-bd lobidisable" style="height:250px">
+                             <div class="panel-heading">
+                                 <div class="panel-title">
+                                     <h4>This Year Earnings & Expenses(Bar chart)</h4>
+                                 </div>
+                             </div>
+                             <div class="panel-body">
+                                 <canvas id="barChart" height="200"></canvas>
+                             </div>
+                         </div>-->
+                    <div id="top_x_div" class="panel panel-bd lobidisable" style="height:300px"></div>
+                    <script type="text/javascript">
+                      google.charts.load('current', {'packages':['bar']});
+                      google.charts.setOnLoadCallback(drawStuff);
+
+                      function drawStuff() {
+                        var data = new google.visualization.arrayToDataTable(sectorRec);
+
+                        var options = {
+                          title: 'Industry wise change',
+                          width: 800,
+                          legend: { position: 'none' },
+                          chart: { title: 'Industry wise change',
+                                   subtitle: 'change by percentage' },
+                          bars: 'vertical', // Required for Material Bar Charts.
+                          axes: {
+                            x: {
+                              0: { side: 'top', label: 'Percentage'} // Top x-axis.
+                            }
+                          },
+                          bar: { groupWidth: "90%" }
+                        };
+
+                        var chart = new google.charts.Bar(document.getElementById('top_x_div'));
+                        chart.draw(data, options);
+                      };
+                    </script>
+
+                </div>
                     <!-- bar chart -->
                     <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
                         <div class="panel panel-bd lobidisable" style="height:250px">

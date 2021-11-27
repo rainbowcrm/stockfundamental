@@ -1,5 +1,7 @@
 package com.primus.dashboard.model;
 
+import java.util.List;
+
 public class DashboardData {
 
      CapCardData capCardData ;
@@ -8,6 +10,7 @@ public class DashboardData {
      Averages lCDataAvg;
      Averages sCDataAvg;
      Averages mCDataAvg;
+     List<SectorDetails> sectorDetailsList;
 
 
     public CapCardData getCapCardData() {
@@ -56,5 +59,13 @@ public class DashboardData {
 
     public void setmCDataAvg(Averages mCDataAvg) {
         this.mCDataAvg = mCDataAvg;
+    }
+
+    public List<SectorDetails> getSectorDetailsList() {
+        return sectorDetailsList;
+    }
+
+    public void setSectorDetailsList(List<SectorDetails> sectorDetailsList) {
+        this.sectorDetailsList = sectorDetailsList;
     }
 }
