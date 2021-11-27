@@ -48,6 +48,10 @@
     console.log(groupCData['gainers']);
     console.log(groupCData['noOfSecurities']);
     let avgData = dashboardData['fullDataAvg'];
+    let lcavgData = dashboardData['lCDataAvg'];
+    let mcavgData = dashboardData['mCDataAvg'];
+    let scavgData = dashboardData['sCDataAvg'];
+
 </script>
 
 <!--preloader-->
@@ -78,7 +82,7 @@
         <section class="content">
             <div class="row">
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-                    <div id="cardbox1" style="height:200px">
+                    <div id="cardbox1" style="height:230px">
                         <div class="statistic-box">
                             <i class="fa fa-user-plus fa-3x"></i>
                             <div class="counter-number pull-right">
@@ -96,12 +100,14 @@
         document.write('<span class="slight"><i class="fa fa-play fa-rotate-270"> </i> </h4>');
         document.write('<h4> Group X : '  + groupCData['groupXGainer'] + '/' + groupCData['groupXNo'] +'&nbsp;&nbsp;&nbsp; ' + groupCData.groupXGainPerc + '% ');
         document.write('<span class="slight"><i class="fa fa-play fa-rotate-270"> </i> </h4>');
+        document.write('<h4> Overall : '  + groupCData['gainers'] + '/' + groupCData['noOfSecurities'] +'&nbsp;&nbsp;&nbsp; ' + groupCData.totalGainPerc + '% ');
+        document.write('<span class="slight"><i class="fa fa-play fa-rotate-270"> </i> </h4>');
         </script>
                         </div>
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-                    <div id="cardbox2" style="height:200px">
+                    <div id="cardbox2" style="height:230px">
                         <div class="statistic-box">
                             <i class="fa fa-user-secret fa-3x"></i>
                             <div class="counter-number pull-right">
@@ -119,11 +125,73 @@
                             document.write('<span class="slight"><i class="fa fa-play fa-rotate-270"> </i> </h4>');
                             document.write('<h4> Small Cap : '  + capSizeData['capSGainer'] + '/' + capSizeData['capSNo'] +'&nbsp;&nbsp;&nbsp; ' + capSizeData.capSGainPerc + '% ');
                             document.write('<span class="slight"><i class="fa fa-play fa-rotate-270"> </i> </h4>');
+                            document.write('<h4> Overall : '  + capSizeData['gainers'] + '/' + capSizeData['noOfSecurities'] +'&nbsp;&nbsp;&nbsp; ' + capSizeData.totalGainPerc + '% ');
+                            document.write('<span class="slight"><i class="fa fa-play fa-rotate-270"> </i> </h4>');
                             </script>
                         </div>
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div class="panel panel-bd lobidisable">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                <h4>Averages</h4>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="Workslist">
+                                <div class="worklistdate">
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>Type</th>
+                                            <th>PE</th>
+                                            <th>PB</th>
+                                            <th>ROE</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr class="info">
+                                            <td>L Cap</td>
+                                            <script>
+                                            document.write('<td>'+ lcavgData['peRatio'] +'</td>');
+                                            document.write('<td>'+ lcavgData['pbRatio'] +'</td>');
+                                            document.write('<td>'+ lcavgData['roe'] +'</td>');
+                                            </script>
+                                        </tr>
+                                        <tr>
+                                            <td>M Cap</td>
+                                            <script>
+                                            document.write('<td>'+ mcavgData['peRatio'] +'</td>');
+                                            document.write('<td>'+ mcavgData['pbRatio'] +'</td>');
+                                            document.write('<td>'+ mcavgData['roe'] +'</td>');
+                                            </script>
+                                        </tr>
+                                        <tr>
+                                            <td>S Cap</td>
+                                            <script>
+                                            document.write('<td>'+ scavgData['peRatio'] +'</td>');
+                                            document.write('<td>'+ scavgData['pbRatio'] +'</td>');
+                                            document.write('<td>'+ scavgData['roe'] +'</td>');
+                                            </script>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Overall</b></td>
+                                            <script>
+                                                document.write('<td>'+ avgData['peRatio'] +'</td>');
+                                                document.write('<td>'+ avgData['pbRatio'] +'</td>');
+                                                document.write('<td>'+ avgData['roe'] +'</td>');
+                                            </script>
+                                        </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                     <div class="panel panel-bd lobidisable">
                         <div class="panel-heading">
                             <div class="panel-title">
@@ -165,7 +233,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                <!-- <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
                     <div id="cardbox3">
                         <div class="statistic-box">

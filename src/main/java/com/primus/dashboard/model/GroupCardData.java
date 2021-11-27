@@ -13,6 +13,7 @@ public class GroupCardData {
     Integer groupXNo;
     Integer groupXGainer;
     Double  groupXGainPerc;
+    Double  totalGainPerc;
 
     public Integer getNoOfSecurities() {
         return noOfSecurities;
@@ -115,5 +116,13 @@ public class GroupCardData {
 
     public void setGroupXGainPerc(Double groupXGainPerc) {
         this.groupXGainPerc = groupXGainPerc;
+    }
+
+    public Double getTotalGainPerc() {
+        return totalGainPerc;
+    }
+
+    public void setTotalGainPerc(Double totalGainPerc) {
+        this.totalGainPerc = totalGainPerc;
     }
 }

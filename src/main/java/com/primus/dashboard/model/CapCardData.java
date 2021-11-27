@@ -13,6 +13,7 @@ public class CapCardData {
     Integer capSNo;
     Integer capSGainer;
     Double  capSGainPerc;
+    Double  totalGainPerc;
 
     public Integer getNoOfSecurities() {
         return noOfSecurities;
@@ -114,5 +115,13 @@ public class CapCardData {
 
     public void setCapSGainPerc(Double capSGainPerc) {
         this.capSGainPerc = capSGainPerc;
+    }
+
+    public Double getTotalGainPerc() {
+        return totalGainPerc;
+    }
+
+    public void setTotalGainPerc(Double totalGainPerc) {
+        this.totalGainPerc = totalGainPerc;
     }
 }
