@@ -3,6 +3,8 @@ package com.primus.dashboard.model;
 public class SectorDetails {
     String sector;
     Double pe ;
+    Double pb;
+    Double roe;
 
     public String getSector() {
         return sector;
@@ -18,5 +20,21 @@ public class SectorDetails {
 
     public void setPe(Double pe) {
         this.pe = pe;
+    }
+
+    public Double getPb() {
+        return pb;
+    }
+
+    public void setPb(Double pb) {
+        this.pb = pb;
+    }
+
+    public Double getRoe() {
+        return roe;
+    }
+
+    public void setRoe(Double roe) {
+        this.roe = roe;
     }
 }

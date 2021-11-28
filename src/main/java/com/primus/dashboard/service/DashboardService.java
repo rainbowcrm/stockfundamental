@@ -162,34 +162,76 @@ public class DashboardService {
 
     private void setSectorDetails( List<FundamentalData> fundamentalDataList,DashboardData dashboardData)
     {
-        MathContext mathContext = new  MathContext(2, RoundingMode.CEILING);
+        MathContext mathContext = new  MathContext(3, RoundingMode.CEILING);
         Map<String,List<Double>> indusChange = new HashMap<>();
+        Map<String,List<Double>> indusPBs = new HashMap<>();
+        Map<String,List<Double>> indusROEs = new HashMap<>();
         fundamentalDataList.forEach( fundamentalData -> {
             if ( fundamentalData.getEps() != 0  && StringUtils.isNotEmpty(fundamentalData.getSector())) {
                 if (indusChange.containsKey(fundamentalData.getSector())) {
-
-                    System.out.println(fundamentalData.getCompany() + "::" + fundamentalData.getEps());
                     BigDecimal pe = new BigDecimal(fundamentalData.getCurPrice() / fundamentalData.getEps());
                     pe.round(mathContext).floatValue();
-                    System.out.println(fundamentalData.getCompany() + "::" + pe.round(mathContext).doubleValue());
                     indusChange.get(fundamentalData.getSector()).add(pe.round(mathContext).doubleValue());
                 } else {
                     List ls = new ArrayList();
-
                     BigDecimal pe = new BigDecimal(fundamentalData.getCurPrice() / fundamentalData.getEps());
                     ls.add(pe.round(mathContext).doubleValue());
                     indusChange.put(fundamentalData.getSector(), ls);
                 }
             }
+            if ( fundamentalData.getBookValue() != 0  && StringUtils.isNotEmpty(fundamentalData.getSector())) {
+                if (indusPBs.containsKey(fundamentalData.getSector())) {
+                    BigDecimal pb = new BigDecimal(fundamentalData.getCurPrice() / fundamentalData.getBookValue());
+                    pb.round(mathContext).floatValue();
+                    indusPBs.get(fundamentalData.getSector()).add(pb.round(mathContext).doubleValue());
+                } else {
+                    List ls = new ArrayList();
+                    BigDecimal pb = new BigDecimal(fundamentalData.getCurPrice() / fundamentalData.getBookValue());
+                    ls.add(pb.round(mathContext).doubleValue());
+                    indusPBs.put(fundamentalData.getSector(), ls);
+                }
+            }
+            if ( StringUtils.isNotEmpty(fundamentalData.getSector())) {
+                if (indusROEs.containsKey(fundamentalData.getSector())) {
+                    BigDecimal roe = new BigDecimal(fundamentalData.getRoe());
+                    roe.round(mathContext).floatValue();
+                    indusROEs.get(fundamentalData.getSector()).add(roe.round(mathContext).doubleValue());
+                } else {
+                    List ls = new ArrayList();
+                    BigDecimal roe = new BigDecimal(fundamentalData.getRoe());
+                    ls.add(roe.round(mathContext).doubleValue());
+                    indusROEs.put(fundamentalData.getSector(), ls);
+                }
+            }
+
         } );
         List<SectorDetails> sectorDetailsList = new ArrayList<>() ;
         for (Map.Entry<String,List<Double>> entry : indusChange.entrySet()) {
-            List<Double> values = entry.getValue();
-           BigDecimal median =  new BigDecimal(MathUtil.getMedian(values));
-           SectorDetails sectorDetails =  new SectorDetails();
-            sectorDetails.setPe(median.round(mathContext).doubleValue());
-            sectorDetails.setSector(entry.getKey());
-            sectorDetailsList.add(sectorDetails);
+            String sec= entry.getKey();
+            /*if (sec.startsWith("FMCG") || sec.startsWith("Telecom") || sec.startsWith("Finan") || sec.startsWith("Energy") || sec.startsWith("Healt") ||
+                    sec.startsWith("Info") ) {*/
+                List<Double> values = entry.getValue();
+                BigDecimal medianPE = new BigDecimal(MathUtil.getMedian(values));
+
+                SectorDetails sectorDetails = new SectorDetails();
+                sectorDetails.setPe(medianPE.round(mathContext).doubleValue());
+
+                List<Double> valuesPB = indusPBs.get(entry.getKey());
+                BigDecimal medianPB = new BigDecimal(MathUtil.getMedian(valuesPB));
+
+                List<Double> valuesROE = indusROEs.get(entry.getKey());
+                BigDecimal medianROE = new BigDecimal(MathUtil.getMedian(valuesROE));
+
+                sectorDetails.setPb(medianPB.round(mathContext).doubleValue());
+                sectorDetails.setRoe(medianROE.round(mathContext).doubleValue());
+                if (entry.getKey().startsWith("FMCG"))
+                    sectorDetails.setSector("FMCG");
+                else if (entry.getKey().startsWith("CDGS"))
+                    sectorDetails.setSector("CDGS");
+                else
+                    sectorDetails.setSector(entry.getKey());
+                sectorDetailsList.add(sectorDetails);
+            //}
         }
         dashboardData.setSectorDetailsList(sectorDetailsList);
     }
@@ -280,6 +322,7 @@ public class DashboardService {
         int groupTotalCount = groupStocks.size();
         Integer groupPositives = 0;
         Double groupAggrePerc = 0.0 ;
+        List<Double> gainPerList = new ArrayList<>();
         for (StocksMaster groupStock : groupStocks) {
             List<StockTransaction> indStockRecords=  stockTransactionList.stream().filter( stockTransaction -> {
                 return stockTransaction.getApi_code().equalsIgnoreCase(groupStock.getApiCode());
@@ -292,6 +335,7 @@ public class DashboardService {
                         groupPositives += 1;
                     }
                     groupAggrePerc += percChange;
+                    gainPerList.add(percChange) ;
                 }else
                 {
                     System.out.println("remove "+ groupStock.getBseCode() + "  : " + groupStock.getGroupC());
@@ -302,9 +346,15 @@ public class DashboardService {
         groupResults.put(TOTAL,groupTotalCount);
         groupResults.put(GAINERS,groupPositives);
         Double gainPercent = (groupAggrePerc/(double)groupTotalCount);
-        Double gainPrec = Math.round(gainPercent * 100)/ 100.0;
+       // Double gainPrec = Math.round(gainPercent * 100)/ 100.0;
+
+        Double medGainPer = MathUtil.getMedian(gainPerList);
+        Double gainPrec = Math.round(medGainPer * 100)/ 100.0;
+
         groupResults.put(AVGGAIN,gainPrec);
         return groupResults ;
 
     }
+
+
 }

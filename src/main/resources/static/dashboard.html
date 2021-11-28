@@ -53,13 +53,15 @@
     let scavgData = dashboardData['sCDataAvg'];
     let sectorData = dashboardData['sectorDetailsList'] ;
     console.log(sectorData);
-    let title = ['Sector', 'PE'];
+    let title = ['Sector', 'PE','PB','ROE'];
     let sectorRec= [];
     sectorRec.push(title);
     for (let i = 0; i < sectorData.length; i++) {
          let secEntry =[];
          secEntry.push(sectorData[i].sector);
          secEntry.push(sectorData[i].pe);
+         secEntry.push(sectorData[i].pb);
+         secEntry.push(sectorData[i].roe);
          sectorRec.push(secEntry);
 
     }
@@ -94,7 +96,7 @@
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper" style="margin-left:0px">
         <!-- Content Header (Page header) -->
-        <section class="content-header">
+        <!--<section class="content-header">
             <div class="header-icon">
                 <i class="fa fa-dashboard"></i>
             </div>
@@ -102,7 +104,7 @@
                 <h1>Stock Trade Dashboard</h1>
                 <small>Snapshot of last 90 days </small>
             </div>
-        </section>
+        </section>-->
         <!-- Main content -->
         <section class="content">
             <div class="row">
@@ -117,6 +119,7 @@
 
                               </span>
                             </div>
+
                             <h3> Group Gains </h3>
         <script>
         document.write('<h4> Group A : '  + groupCData['groupAGainer'] + '/' + groupCData['groupANo'] +'&nbsp;&nbsp;&nbsp; ' + groupCData.groupAGainPerc + '% ');
@@ -160,7 +163,7 @@
                     <div class="panel panel-bd lobidisable">
                         <div class="panel-heading">
                             <div class="panel-title">
-                                <h4>Averages</h4>
+                                <h4>Medians</h4>
                             </div>
                         </div>
                         <div class="panel-body">
@@ -288,7 +291,7 @@
             </div>
                 <div class="row">
                     <!-- Barchart -->
-                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <!-- <div class="panel panel-bd lobidisable" style="height:250px">
                              <div class="panel-heading">
                                  <div class="panel-title">
@@ -309,14 +312,14 @@
 
                         var options = {
                           title: 'Industry wise change',
-                          width: 800,
+                          width: 1300,
                           legend: { position: 'none' },
-                          chart: { title: 'Industry wise change',
-                                   subtitle: 'change by percentage' },
+                          chart: { title: 'Fundamentals by Sector',
+                                   subtitle: 'PE/PB/ROE' },
                           bars: 'vertical', // Required for Material Bar Charts.
                           axes: {
                             x: {
-                              0: { side: 'top', label: 'Percentage'} // Top x-axis.
+                              0: { side: 'top', label: ''} // Top x-axis.
                             }
                           },
                           bar: { groupWidth: "90%" }
@@ -328,9 +331,12 @@
                     </script>
 
                 </div>
+                </div>
+                 <div class="row">
                     <!-- bar chart -->
-                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-                        <div class="panel panel-bd lobidisable" style="height:250px">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        <div id="curve_chart" class="panel panel-bd lobidisable" style="height: 300px"></div>
+                        <!--<div class="panel panel-bd lobidisable" style="height:250px">
                             <div class="panel-heading">
                                 <div class="panel-title">
                                     <h4>Weekly Earnings & Expenses</h4>
@@ -339,7 +345,33 @@
                             <div class="panel-body">
                                 <canvas id="singelBarChart" height="350"></canvas>
                             </div>
-                        </div>
+                        </div>-->
+
+                            <script type="text/javascript">
+                      google.charts.load('current', {'packages':['corechart']});
+                      google.charts.setOnLoadCallback(drawLineChart);
+
+                      function drawLineChart() {
+                        var data = google.visualization.arrayToDataTable([
+                          ['Date', 'Information Tech', 'Health Care' ,'Energy','Finance','FMCG','Telecom'],
+                          ['10 Nov',  5,  3, 2.5,-2.0,-1.2,0.6],
+                          ['20 Nov',  7,  6, 5 , 3.0,2.2,2.4],
+                          ['30 Nov',  6, 3.4 ,3 ,1.5,.75,-0.1],
+                          ['05 Dec',  2, 1.2, 2.5,1.9,2.1,1.2 ]
+                        ]);
+
+                        var options = {
+                          title: 'Company Performance',
+
+                          legend: { position: 'bottom' }
+                        };
+
+                        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+                        chart.draw(data, options);
+                      }
+                </script>
+
                     </div>
                 </div>
             <div class="row">
