@@ -8,6 +8,7 @@ import com.primus.stock.master.service.FundamentalService;
 import com.primus.stock.master.service.StockMasterService;
 import com.primus.stocktransaction.dao.StockTransactionDAO;
 import com.primus.stocktransaction.model.StockTransaction;
+import com.primus.utils.GeneralUtils;
 import com.primus.utils.MathUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.util.CollectionUtils;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -276,8 +278,11 @@ public class DashboardService {
                 {
                   //  List<StockTransaction> segmentList = transForSector.subList(i,(i+index)>=size?size-1:i+index);
                     Double currPrice=transForSector.get(i).getClosePrice() ;
-                    if (!datePopulated)datesList.add(transForSector.get(i).getTransDate().getDay() + "-" + transForSector.get(i).getTransDate().getMonth() );
-                    BigDecimal perChange= new BigDecimal(((currPrice-openPrice)/openPrice) * 100).round(mathContext);
+                    if (!datePopulated) {
+                         Date endDate =transForSector.get(i).getTransDate();
+                        datesList.add(GeneralUtils.getDayofMonth(endDate) + "-" + GeneralUtils.getMonth(endDate));
+
+                    }BigDecimal perChange= new BigDecimal(((currPrice-openPrice)/openPrice) * 100).round(mathContext);
                     stockIncrs.add(perChange.doubleValue());
                 }
 
@@ -302,7 +307,6 @@ public class DashboardService {
             }
 
         }
-
             for (String sector : sectors)
             {
                     List<Double> incrValues= sectorValues.get(sector);
