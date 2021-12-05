@@ -11,6 +11,7 @@ public class DashboardData {
      Averages sCDataAvg;
      Averages mCDataAvg;
      List<SectorDetails> sectorDetailsList;
+     SectorPriceHolder sectorPriceHolder ;
 
 
     public CapCardData getCapCardData() {
@@ -67,5 +68,13 @@ public class DashboardData {
 
     public void setSectorDetailsList(List<SectorDetails> sectorDetailsList) {
         this.sectorDetailsList = sectorDetailsList;
+    }
+
+    public SectorPriceHolder getSectorPriceHolder() {
+        return sectorPriceHolder;
+    }
+
+    public void setSectorPriceHolder(SectorPriceHolder sectorPriceHolder) {
+        this.sectorPriceHolder = sectorPriceHolder;
     }
 }

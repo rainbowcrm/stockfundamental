@@ -52,7 +52,6 @@
     let mcavgData = dashboardData['mCDataAvg'];
     let scavgData = dashboardData['sCDataAvg'];
     let sectorData = dashboardData['sectorDetailsList'] ;
-    console.log(sectorData);
     let title = ['Sector', 'PE','PB','ROE'];
     let sectorRec= [];
     sectorRec.push(title);
@@ -65,7 +64,17 @@
          sectorRec.push(secEntry);
 
     }
-    console.log(sectorRec);
+
+   let sectorHolder = dashboardData['sectorPriceHolder'] ;
+   console.log(sectorHolder);
+    let sectorPrcTrend = [
+                          ['Date', 'Information Tech', 'Health Care' ,'Energy','Finance','FMCG','Telecom'],
+                          ['10 Nov',  5,  3, 2.5,-2.0,-1.2,0.6],
+                          ['20 Nov',  7,  6, 5 , 3.0,2.2,2.4],
+                          ['30 Nov',  6, 3.4 ,3 ,1.5,.75,-0.1],
+                          ['05 Dec',  2, 1.2, 2.5,1.9,2.1,1.2 ]
+                        ];
+
    /* let indusChange = [
                           ,
                           ["Tech", 10.5],
@@ -352,16 +361,10 @@
                       google.charts.setOnLoadCallback(drawLineChart);
 
                       function drawLineChart() {
-                        var data = google.visualization.arrayToDataTable([
-                          ['Date', 'Information Tech', 'Health Care' ,'Energy','Finance','FMCG','Telecom'],
-                          ['10 Nov',  5,  3, 2.5,-2.0,-1.2,0.6],
-                          ['20 Nov',  7,  6, 5 , 3.0,2.2,2.4],
-                          ['30 Nov',  6, 3.4 ,3 ,1.5,.75,-0.1],
-                          ['05 Dec',  2, 1.2, 2.5,1.9,2.1,1.2 ]
-                        ]);
+                        var data = google.visualization.arrayToDataTable(sectorPrcTrend);
 
                         var options = {
-                          title: 'Company Performance',
+                          title: 'Sector Price Trends',
 
                           legend: { position: 'bottom' }
                         };

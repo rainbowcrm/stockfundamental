@@ -52,6 +52,7 @@ public class DashboardService {
         setCapCardData(stocksMasterList,stockTransactionList,dashboardData);
         setAverages(fundamentals,  dashboardData);
         setSectorDetails(fundamentals,dashboardData);
+        setSectorTrend(stocksMasterList,stockTransactionList,dashboardData);
         ObjectMapper objectMapper =  new ObjectMapper();
         return objectMapper.convertValue(dashboardData,Map.class);
 
@@ -235,6 +236,91 @@ public class DashboardService {
         }
         dashboardData.setSectorDetailsList(sectorDetailsList);
     }
+
+
+    private void setSectorTrend(List<StocksMaster> stockMasterList ,  List<StockTransaction> stockTransactionList,DashboardData dashboardData)
+    {
+        MathContext mathContext = new MathContext(3,RoundingMode.CEILING);
+        Set<String> sectors = new HashSet<>();
+        stockMasterList.forEach( stocksMaster ->  {
+            if (StringUtils.isNotEmpty(stocksMaster.getSector() ))
+                sectors.add(stocksMaster.getSector());
+        });
+        Map<String,List<Double>> sectorValues = new HashMap<>();
+        Map<String,List< Double>> sectorPrices= new HashMap<>();
+        List<String> sectorList = new ArrayList<>();
+        List<String> datesList = new ArrayList<>() ;
+        SectorPriceHolder sectorPriceHolder = new SectorPriceHolder();
+        boolean datePopulated=false;
+
+        for (String sector : sectors) {
+            sectorList.add(sector);
+            List<StocksMaster> sectorMasters = stockMasterList.stream().filter( stocksMaster ->  {
+                return stocksMaster.getSector().equalsIgnoreCase(sector);
+            }).collect(Collectors.toList());
+
+            Map<StocksMaster,List<Double>> stockriseList = new HashMap<>();
+            for (StocksMaster sectMaster : sectorMasters) {
+                List<StockTransaction> transForSector = stockTransactionList.stream().filter(stockTransaction -> {
+                    return stockTransaction.getStocksMaster().getSecurityCode().equalsIgnoreCase(sectMaster.getSecurityCode());
+                }).collect(Collectors.toList());
+                if (transForSector.size() < 5)
+                    continue;
+                int size = transForSector.size();
+                int index = size/5;
+                Double openPrice = transForSector.get(0).getOpenPrice();
+                List<Double> stockIncrs = new ArrayList<>();
+                stockIncrs.add(0.0d);
+
+                for (int i= 0 ;i <size-3 ; i += index)
+                {
+                  //  List<StockTransaction> segmentList = transForSector.subList(i,(i+index)>=size?size-1:i+index);
+                    Double currPrice=transForSector.get(i).getClosePrice() ;
+                    if (!datePopulated)datesList.add(transForSector.get(i).getTransDate().getDay() + "-" + transForSector.get(i).getTransDate().getMonth() );
+                    BigDecimal perChange= new BigDecimal(((currPrice-openPrice)/openPrice) * 100).round(mathContext);
+                    stockIncrs.add(perChange.doubleValue());
+                }
+
+                Double currPrice=transForSector.get(size-1).getClosePrice() ;
+                BigDecimal perChange= new BigDecimal(((currPrice-openPrice)/openPrice) * 100).round(mathContext);
+                stockIncrs.add(perChange.doubleValue());
+
+                stockriseList.put(sectMaster,stockIncrs);
+                datePopulated = true ;
+            }
+
+            sectorValues.put(sector,new ArrayList<>());
+            for (int i = 0 ; i < 6 ;i ++) {
+                List<Double> allIndexedVals = new ArrayList<>();
+                for (Map.Entry<StocksMaster,List<Double>> entry :stockriseList.entrySet() ){
+                    if(entry.getValue().size() > i)
+                        allIndexedVals.add(entry.getValue().get(i));
+                    else
+                        allIndexedVals.add(0d);
+                }
+                sectorValues.get(sector).add( new BigDecimal(MathUtil.getMedian(allIndexedVals)).round(mathContext).doubleValue());
+            }
+
+        }
+
+            for (String sector : sectors)
+            {
+                    List<Double> incrValues= sectorValues.get(sector);
+                    for( int i =0; i < 5; i++) {
+                        List<Double> sets = sectorPrices.get(datesList.get(i));
+                        if (sets == null)
+                            sets = new ArrayList<>();
+                        sets.add(incrValues.get(i));
+                        sectorPrices.put(datesList.get(i),sets);
+                    }
+
+            }
+        sectorPriceHolder.setDateValues(sectorPrices);
+        sectorPriceHolder.setSectors(sectorList);
+        dashboardData.setSectorPriceHolder(sectorPriceHolder);
+    }
+
+
     private void setGroupCardData(List<StocksMaster> stocksMasterList ,  List<StockTransaction> stockTransactionList,DashboardData dashboardData)
     {
         List<StocksMaster> groupAStocks = stocksMasterList.stream().filter( sm ->

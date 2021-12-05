@@ -26,6 +26,7 @@ public class StocksMaster {
  Double marketCap;
  Double marketCapFF;
  String marketGroup;
+ String sector;
 
 
     @Column(name  ="ID")
@@ -180,5 +181,14 @@ public class StocksMaster {
 
     public void setMarketGroup(String marketGroup) {
         this.marketGroup = marketGroup;
+    }
+
+    @Column(name  ="SECTOR")
+    public String getSector() {
+        return sector;
+    }
+
+    public void setSector(String sector) {
+        this.sector = sector;
     }
 }
