@@ -2,12 +2,22 @@ package com.primus.utils;
 
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class MathUtil {
 
+    public static Double round(Double dblValue)
+    {
+        MathContext mc = new MathContext(3, RoundingMode.CEILING);
+        BigDecimal bigDecimal = new BigDecimal(dblValue).round(mc);
+        return  bigDecimal.doubleValue();
+
+    }
     public static Double getMedian(List<Double> valueList)
     {
         if (!CollectionUtils.isEmpty(valueList)) {
@@ -25,4 +35,6 @@ public class MathUtil {
         }else
             return 0d;
     }
+
+
 }

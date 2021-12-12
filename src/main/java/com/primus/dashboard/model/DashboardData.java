@@ -2,6 +2,7 @@ package com.primus.dashboard.model;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 public class DashboardData  implements  Serializable{
 
@@ -13,6 +14,7 @@ public class DashboardData  implements  Serializable{
      Averages mCDataAvg;
      List<SectorDetails> sectorDetailsList;
      SectorPriceHolder sectorPriceHolder ;
+     Map<String,Double > hikeStocks;
 
 
     public CapCardData getCapCardData() {
@@ -78,4 +80,14 @@ public class DashboardData  implements  Serializable{
     public void setSectorPriceHolder(SectorPriceHolder sectorPriceHolder) {
         this.sectorPriceHolder = sectorPriceHolder;
     }
+
+    public Map<String, Double> getHikeStocks() {
+        return hikeStocks;
+    }
+
+    public void setHikeStocks(Map<String, Double> hikeStocks) {
+        this.hikeStocks = hikeStocks;
+    }
 }
+
+

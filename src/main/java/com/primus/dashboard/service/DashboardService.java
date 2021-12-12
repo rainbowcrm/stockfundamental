@@ -87,8 +87,41 @@ public class DashboardService {
         setAverages(fundamentals,  dashboardData);
         setSectorDetails(fundamentals,dashboardData);
         setSectorTrend(stocksMasterList,stockTransactionList,dashboardData);
+        setHotStocks(stockTransactionList,stocksMasterList,dashboardData);
         return dashboardData ;
 
+    }
+
+    private void setHotStocks(List<StockTransaction> stockTransactionList,List<StocksMaster> stocksMasterList,DashboardData dashboardData)
+    {
+        Map<String,Double> hotStocks = new HashMap<>();
+        for(StocksMaster stocksMaster : stocksMasterList) {
+            String bseCode = stocksMaster.getBseCode();
+            List<StockTransaction> indTransaction = stockTransactionList.stream().filter( stockTransaction ->  {
+                return stockTransaction.getStocksMaster().getSecurityCode().equalsIgnoreCase(bseCode) ; } ).collect(Collectors.toList());
+            if (!CollectionUtils.isEmpty(indTransaction)) {
+                StockTransaction firstTrans = indTransaction.get(0);
+                StockTransaction endTrans = indTransaction.get(indTransaction.size() - 1);
+                Double openPrice = firstTrans.getOpenPrice();
+                Double closePrice = firstTrans.getClosePrice() ;
+                Double percChange =MathUtil.round (((closePrice-openPrice)/openPrice ) * 100);
+                hotStocks.put(stocksMaster.getSecurityName(),percChange);
+            }
+        }
+
+        Map<String,Double> reverseSortedMap = new LinkedHashMap<>();
+        hotStocks.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).forEachOrdered(x -> reverseSortedMap.put(x.getKey(), x.getValue()));
+
+        Map<String,Double> priorSortedMap = new LinkedHashMap<>();
+        int j =0 ;
+        for (Map.Entry<String,Double> entry: reverseSortedMap.entrySet()) {
+            if ( j < 5 )
+                priorSortedMap.put(entry.getKey(),entry.getValue());
+            else
+                break;
+            j++;
+        }
+        dashboardData.setHikeStocks(priorSortedMap);
     }
 
     private Averages getSubAverage(List<FundamentalData> fundamentalDataList)
@@ -297,10 +330,10 @@ public class DashboardService {
                 List<StockTransaction> transForSector = stockTransactionList.stream().filter(stockTransaction -> {
                     return stockTransaction.getStocksMaster().getSecurityCode().equalsIgnoreCase(sectMaster.getSecurityCode());
                 }).collect(Collectors.toList());
-                if (transForSector.size() < 5)
+                if (transForSector.size() < 8)
                     continue;
                 int size = transForSector.size();
-                int index = size/5;
+                int index = size/8;
                 Double openPrice = transForSector.get(0).getOpenPrice();
                 List<Double> stockIncrs = new ArrayList<>();
                 stockIncrs.add(0.0d);
@@ -326,7 +359,7 @@ public class DashboardService {
             }
 
             sectorValues.put(sector,new ArrayList<>());
-            for (int i = 0 ; i < 6 ;i ++) {
+            for (int i = 0 ; i < 9 ;i ++) {
                 List<Double> allIndexedVals = new ArrayList<>();
                 for (Map.Entry<StocksMaster,List<Double>> entry :stockriseList.entrySet() ){
                     if(entry.getValue().size() > i)
@@ -341,7 +374,7 @@ public class DashboardService {
             for (String sector : sectors)
             {
                     List<Double> incrValues= sectorValues.get(sector);
-                    for( int i =0; i < 5; i++) {
+                    for( int i =0; i < 8; i++) {
                         List<Double> sets = sectorPrices.get(datesList.get(i));
                         if (sets == null)
                             sets = new ArrayList<>();
