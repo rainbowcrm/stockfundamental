@@ -1,6 +1,8 @@
 package com.primus.dashboard.model;
 
-public class GroupCardData {
+import java.io.Serializable;
+
+public class GroupCardData implements Serializable {
 
     Integer noOfSecurities ;
     Integer gainers;

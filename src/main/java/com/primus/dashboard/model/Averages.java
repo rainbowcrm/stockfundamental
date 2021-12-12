@@ -1,6 +1,8 @@
 package com.primus.dashboard.model;
 
-public class Averages {
+import java.io.Serializable;
+
+public class Averages implements Serializable {
     Double rateOfIncrease;
     Double peRatio;
     Double pbRatio ;

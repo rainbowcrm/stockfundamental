@@ -1,9 +1,10 @@
 package com.primus.dashboard.model;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class SectorPriceHolder {
+public class SectorPriceHolder  implements Serializable {
     List<String> sectors;
     Map<String,List<Double>> dateValues;
 

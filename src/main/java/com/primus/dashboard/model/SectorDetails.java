@@ -1,6 +1,8 @@
 package com.primus.dashboard.model;
 
-public class SectorDetails {
+import java.io.Serializable;
+
+public class SectorDetails implements Serializable {
     String sector;
     Double pe ;
     Double pb;

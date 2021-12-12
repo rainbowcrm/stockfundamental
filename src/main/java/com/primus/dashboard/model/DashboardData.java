@@ -1,8 +1,9 @@
 package com.primus.dashboard.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class DashboardData {
+public class DashboardData  implements  Serializable{
 
      CapCardData capCardData ;
      GroupCardData groupCardData ;

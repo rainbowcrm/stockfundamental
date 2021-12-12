@@ -1,6 +1,8 @@
 package com.primus.dashboard.model;
 
-public class CapCardData {
+import java.io.Serializable;
+
+public class CapCardData implements Serializable {
 
     Integer noOfSecurities ;
     Integer gainers;

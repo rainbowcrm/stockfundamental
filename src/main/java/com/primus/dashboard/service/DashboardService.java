@@ -1,6 +1,7 @@
 package com.primus.dashboard.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.primus.dashboard.dao.DashboardDAO;
 import com.primus.dashboard.model.*;
 import com.primus.stock.master.model.FundamentalData;
 import com.primus.stock.master.model.StocksMaster;
@@ -31,17 +32,48 @@ public class DashboardService {
     StockTransactionDAO stockTransactionDAO;
 
     @Autowired
-    StockMasterService stockMasterService ;
+    StockMasterService stockMasterService;
 
     @Autowired
     FundamentalService fundamentalService;
+
+    @Autowired
+    DashboardDAO dashboardDAO ;
 
     private static final String TOTAL = "Total";
     private static final String GAINERS = "Gainers";
     private static final String AVGGAIN = "AvgGain";
 
 
-    public Map<String,Object> getDashboardData(long prevDays)
+    public Map<String, Object> getPersistedDashboardData(long prevDays)
+    {
+        DashBoardClobData dashBoardClobData =  dashboardDAO.getDashboardData(prevDays);
+        DashboardData dashboardData ;
+        ObjectMapper objectMapper =  new ObjectMapper();
+        try {
+            if (dashBoardClobData == null) {
+                dashboardData = getDashboardData(prevDays);
+                dashBoardClobData = new DashBoardClobData();
+                dashBoardClobData.setDays((int) prevDays);
+                dashBoardClobData.setDashboardData(objectMapper.writeValueAsString(dashboardData));
+                dashboardDAO.update(dashBoardClobData);
+                return objectMapper.convertValue(dashboardData,Map.class) ;
+
+            } else {
+                String dashboardJson = dashBoardClobData.getDashboardData();
+                return objectMapper.readValue(dashboardJson, Map.class);
+            }
+        }catch (Exception ex) {
+            ex.printStackTrace();
+
+        }
+            return new HashMap<>();
+
+
+
+    }
+
+    private DashboardData getDashboardData(long prevDays)
     {
         long oneDayinMillis =  24l * 3600l * 1000l ;
         Date curDate = new java.util.Date();
@@ -55,8 +87,7 @@ public class DashboardService {
         setAverages(fundamentals,  dashboardData);
         setSectorDetails(fundamentals,dashboardData);
         setSectorTrend(stocksMasterList,stockTransactionList,dashboardData);
-        ObjectMapper objectMapper =  new ObjectMapper();
-        return objectMapper.convertValue(dashboardData,Map.class);
+        return dashboardData ;
 
     }
 

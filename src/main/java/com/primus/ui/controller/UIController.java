@@ -108,7 +108,7 @@ public class UIController {
     @RequestMapping(value = "/getDashBoardData", method = RequestMethod.GET)
     public ResponseEntity<Map> getDashBoardData(@RequestParam int days )
     {
-        Map returnData = dashboardService.getDashboardData(days);
+        Map returnData = dashboardService.getPersistedDashboardData(days);
         ResponseEntity<Map> entity =  new ResponseEntity<Map>(returnData, HttpStatus.OK);
         return  entity;
 
