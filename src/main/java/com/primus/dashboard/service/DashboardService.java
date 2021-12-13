@@ -9,8 +9,11 @@ import com.primus.stock.master.service.FundamentalService;
 import com.primus.stock.master.service.StockMasterService;
 import com.primus.stocktransaction.dao.StockTransactionDAO;
 import com.primus.stocktransaction.model.StockTransaction;
+import com.primus.ui.model.StockCompleteData;
 import com.primus.utils.GeneralUtils;
 import com.primus.utils.MathUtil;
+import com.primus.valuation.data.StockValuationData;
+import com.primus.valuation.service.ValuationService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +43,9 @@ public class DashboardService {
     @Autowired
     DashboardDAO dashboardDAO ;
 
+    @Autowired
+    ValuationService valuationService;
+
     private static final String TOTAL = "Total";
     private static final String GAINERS = "Gainers";
     private static final String AVGGAIN = "AvgGain";
@@ -51,6 +57,10 @@ public class DashboardService {
         DashboardData dashboardData ;
         ObjectMapper objectMapper =  new ObjectMapper();
         try {
+            List<StockValuationData>  uvShares = valuationService.getUShares();
+            for (StockCompleteData stockCompleteData :uvShares) {
+                System.out.println(stockCompleteData);
+            }
             if (dashBoardClobData == null) {
                 dashboardData = getDashboardData(prevDays);
                 dashBoardClobData = new DashBoardClobData();

@@ -204,6 +204,7 @@ public class StockCompleteData {
             this.pb = Math.round((this.currentPrice / this.bookvalue)*100.0)/100.0;
         }
 
+
     }
 
     public Double getMarketCap() {
@@ -220,5 +221,20 @@ public class StockCompleteData {
 
     public void setGroupCap(String groupCap) {
         this.groupCap = groupCap;
+    }
+
+    @Override
+    public String toString() {
+        return "StockCompleteData{" +
+                "bseCode='" + bseCode + '\'' +
+                ", stock='" + stock + '\'' +
+                ", industry='" + industry + '\'' +
+                ", sector='" + sector + '\'' +
+                ", currentPrice=" + currentPrice +
+                ", pe=" + pe +
+                ", pb=" + pb +
+                ", marketCap=" + marketCap +
+                ", groupCap='" + groupCap + '\'' +
+                '}';
     }
 }

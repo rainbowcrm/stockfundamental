@@ -18,6 +18,17 @@ public class MathUtil {
         return  bigDecimal.doubleValue();
 
     }
+
+    public static double perChange(Double value1, Double value2)
+    {
+       return round (((value2-value1)/value1)*100);
+    }
+    public static double getDoubleValue(Double doub)
+    {
+        return  doub==null?0.0:doub.doubleValue();
+    }
+
+
     public static Double getMedian(List<Double> valueList)
     {
         if (!CollectionUtils.isEmpty(valueList)) {
