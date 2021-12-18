@@ -57,10 +57,8 @@ public class DashboardService {
         DashboardData dashboardData ;
         ObjectMapper objectMapper =  new ObjectMapper();
         try {
-            List<StockValuationData>  uvShares = valuationService.getUShares();
-            for (StockCompleteData stockCompleteData :uvShares) {
-                System.out.println(stockCompleteData);
-            }
+
+
             if (dashBoardClobData == null) {
                 dashboardData = getDashboardData(prevDays);
                 dashBoardClobData = new DashBoardClobData();
@@ -98,7 +96,29 @@ public class DashboardService {
         setSectorDetails(fundamentals,dashboardData);
         setSectorTrend(stocksMasterList,stockTransactionList,dashboardData);
         setHotStocks(stockTransactionList,stocksMasterList,dashboardData);
+        setValuedShares(dashboardData);
+
         return dashboardData ;
+
+    }
+
+    private void setValuedShares(DashboardData dashboardData)
+    {
+        Map<String,List<StockValuationData> > varianceShares = valuationService.getUOVShares(6,6);
+        List<StockValuationData>  uvShares = varianceShares.get("UV");
+        List<StockValuationData>  ovShares = varianceShares.get("OV");
+        Map<String,Float> uvMap = new HashMap<>();
+        Map<String,Float> ovMap = new HashMap<>();
+        uvShares.forEach( uvShare -> {
+            uvMap.put(uvShare.getStock(),Math.abs(uvShare.getOverValuedBy()));
+        });
+
+        ovShares.forEach( ovShare -> {
+            ovMap.put(ovShare.getStock(),Math.abs(ovShare.getOverValuedBy()));
+        });
+        dashboardData.setUvShares(uvMap);
+        dashboardData.setOvShares(ovMap);
+
 
     }
 

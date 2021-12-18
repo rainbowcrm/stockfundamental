@@ -34,7 +34,7 @@ public class ValuationService {
     @Autowired
     StockMasterService stockMasterService;
 
-    public List<StockValuationData> getUShares()
+    public Map<String,List<StockValuationData>> getUOVShares( int noOV,int noUV)
     {
         List<FundamentalData> fundamentalDataList = fundamentalService.listData(0,900,"","");
         List<FinancialData> financialDataList = financialService.getAllFinancials() ;
@@ -67,9 +67,49 @@ public class ValuationService {
             List<StockValuationData> uvSShares = identifyUndervaluedShares(sector,"S",stockCompleteDataList);
             uvShares.addAll(uvSShares);
 
+        }
+
+        Collections.sort(
+                uvShares,
+                (i1,
+                 i2) ->    i1.getOverValuedBy() > i2.getOverValuedBy()?1:-1);
+        if (noUV > 0 ) {
+            while ( uvShares.size() > noUV){
+                uvShares.remove( uvShares.size() -1 );
+            }
+        }
+
+        List<StockValuationData> ovShares = new ArrayList<>();
+        for (String sector : sectors) {
+            List<StockValuationData> ovLShares = identifyOvervaluedShares(sector,"L",stockCompleteDataList);
+            ovShares.addAll(ovLShares);
+
+            List<StockValuationData> ovMShares = identifyOvervaluedShares(sector,"M",stockCompleteDataList);
+            ovShares.addAll(ovMShares);
+
+            List<StockValuationData> ovSShares = identifyOvervaluedShares(sector,"S",stockCompleteDataList);
+            ovShares.addAll(ovSShares);
+
 
         }
-        return uvShares;
+
+        Collections.sort(
+                ovShares,
+                (i1,
+                 i2) ->    i1.getOverValuedBy() < i2.getOverValuedBy()?1:-1);
+
+        if (noOV > 0 ) {
+            while ( ovShares.size() > noOV){
+                ovShares.remove( ovShares.size() -1 );
+            }
+        }
+
+
+        Map<String,List<StockValuationData>> highVariantShares = new HashMap<>();
+        highVariantShares.put("OV",ovShares);
+        highVariantShares.put("UV",uvShares);
+
+        return highVariantShares;
 
     }
 
@@ -90,7 +130,31 @@ public class ValuationService {
                 Double peDecr =  MathUtil.perChange(stockCompleteData.getPe(),intrinsicData.getPe());
                 Double pbDecr =  MathUtil.perChange(stockCompleteData.getPb(),intrinsicData.getPb());
                 Double roeIncr =  MathUtil.perChange(stockCompleteData.getRoe(),intrinsicData.getRoe());
-                stockCompleteData.setOverValuedBy((float)MathUtil.getDoubleValue(Math.abs(peDecr)+ Math.abs(pbDecr) + Math.abs(roeIncr))/3);
+                stockCompleteData.setOverValuedBy(-1 *  ((float)MathUtil.getDoubleValue(Math.abs(peDecr)+ Math.abs(pbDecr) + Math.abs(roeIncr))/3));
+                underValuedShares.add(stockCompleteData);
+            }
+        }
+        return underValuedShares;
+    }
+
+    private List<StockValuationData> identifyOvervaluedShares(String sector, String marketCap,List<StockValuationData> stockCompleteDataList)
+    {
+        List<StockValuationData> underValuedShares= new ArrayList<>();
+        List<StockValuationData> filteredDataList = stockCompleteDataList.stream().filter(stockCompleteData ->  {
+            return  stockCompleteData.getSector().equalsIgnoreCase(sector) && stockCompleteData.getGroupCap().equalsIgnoreCase(marketCap);
+        }).collect(Collectors.toList());
+        IntrinsicData intrinsicData = makeIntrinsicData(sector,marketCap,filteredDataList);
+        for (StockValuationData stockCompleteData : filteredDataList)
+        {
+            if(intrinsicData.getPe()< MathUtil.getDoubleValue(stockCompleteData.getPe())
+                    && intrinsicData.getPb() < MathUtil.getDoubleValue(stockCompleteData.getPb())
+                    && intrinsicData.getRoe() > stockCompleteData.getRoe() && intrinsicData.getDivident() > stockCompleteData.getDivident()
+                    && MathUtil.getDoubleValue(stockCompleteData.getPe()) >0 && MathUtil.getDoubleValue(intrinsicData.getPb()) > 0)
+            {
+                Double peDecr =  MathUtil.perChange(stockCompleteData.getPe(),intrinsicData.getPe());
+                Double pbDecr =  MathUtil.perChange(stockCompleteData.getPb(),intrinsicData.getPb());
+                Double roeIncr =  MathUtil.perChange(stockCompleteData.getRoe(),intrinsicData.getRoe());
+                stockCompleteData.setOverValuedBy(( (float)MathUtil.getDoubleValue(Math.abs(peDecr)+ Math.abs(pbDecr) + Math.abs(roeIncr))/3));
                 underValuedShares.add(stockCompleteData);
             }
         }
