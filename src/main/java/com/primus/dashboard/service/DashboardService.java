@@ -107,19 +107,29 @@ public class DashboardService {
         Map<String,List<StockValuationData> > varianceShares = valuationService.getUOVShares(6,6);
         List<StockValuationData>  uvShares = varianceShares.get("UV");
         List<StockValuationData>  ovShares = varianceShares.get("OV");
-        Map<String,Float> uvMap = new HashMap<>();
-        Map<String,Float> ovMap = new HashMap<>();
-        uvShares.forEach( uvShare -> {
-            uvMap.put(uvShare.getStock(),Math.abs(uvShare.getOverValuedBy()));
+        Map<String,Integer> uvMap = new HashMap<>();
+        Map<String,Integer> ovMap = new HashMap<>();
+
+        Collection<Float> uVals = new ArrayList<>();
+        uvShares.forEach(uvShare -> {
+            uVals.add(uvShare.getOverValuedBy());
         });
 
+        Map<Float,Integer> scaledDownUValues = MathUtil.rateToPerc(uVals);
+        uvShares.forEach( uvShare -> {
+            uvMap.put(uvShare.getStock(),Math.abs(scaledDownUValues.get(uvShare.getOverValuedBy())));
+        });
+
+        Collection<Float> oVals = new ArrayList<>();
+        ovShares.forEach(ovShare -> {
+            oVals.add(ovShare.getOverValuedBy());
+        });
+        Map<Float,Integer> scaledDownOValues = MathUtil.rateToPerc(oVals);
         ovShares.forEach( ovShare -> {
-            ovMap.put(ovShare.getStock(),Math.abs(ovShare.getOverValuedBy()));
+            ovMap.put(ovShare.getStock(),Math.abs(scaledDownOValues.get(ovShare.getOverValuedBy())));
         });
         dashboardData.setUvShares(uvMap);
         dashboardData.setOvShares(ovMap);
-
-
     }
 
     private void setHotStocks(List<StockTransaction> stockTransactionList,List<StocksMaster> stocksMasterList,DashboardData dashboardData)
@@ -405,11 +415,15 @@ public class DashboardService {
             {
                     List<Double> incrValues= sectorValues.get(sector);
                     for( int i =0; i < 8; i++) {
-                        List<Double> sets = sectorPrices.get(datesList.get(i));
-                        if (sets == null)
-                            sets = new ArrayList<>();
-                        sets.add(incrValues.get(i));
-                        sectorPrices.put(datesList.get(i),sets);
+                        List<Double> sets = null;
+                        if(datesList.size()>i) {
+                            sets = sectorPrices.get(datesList.get(i));
+                            if (sets == null)
+                                sets = new ArrayList<>();
+                            sets.add(incrValues.get(i));
+                            sectorPrices.put(datesList.get(i), sets);
+                        }
+
                     }
 
             }

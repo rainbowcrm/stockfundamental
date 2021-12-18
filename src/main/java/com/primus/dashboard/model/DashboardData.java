@@ -15,8 +15,8 @@ public class DashboardData  implements  Serializable{
      List<SectorDetails> sectorDetailsList;
      SectorPriceHolder sectorPriceHolder ;
      Map<String,Double > hikeStocks;
-     Map<String,Float> uvShares;
-     Map<String,Float> ovShares;
+     Map<String,Integer> uvShares;
+     Map<String,Integer> ovShares;
 
 
 
@@ -92,19 +92,19 @@ public class DashboardData  implements  Serializable{
         this.hikeStocks = hikeStocks;
     }
 
-    public Map<String, Float> getUvShares() {
+    public Map<String, Integer> getUvShares() {
         return uvShares;
     }
 
-    public void setUvShares(Map<String, Float> uvShares) {
+    public void setUvShares(Map<String, Integer> uvShares) {
         this.uvShares = uvShares;
     }
 
-    public Map<String, Float> getOvShares() {
+    public Map<String, Integer> getOvShares() {
         return ovShares;
     }
 
-    public void setOvShares(Map<String, Float> ovShares) {
+    public void setOvShares(Map<String, Integer> ovShares) {
         this.ovShares = ovShares;
     }
 }

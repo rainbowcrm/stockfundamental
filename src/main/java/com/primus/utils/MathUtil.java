@@ -1,12 +1,12 @@
 package com.primus.utils;
 
+import org.springframework.security.access.method.P;
 import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class MathUtil {
@@ -48,4 +48,19 @@ public class MathUtil {
     }
 
 
+    public static Map<Float,Integer> rateToPerc(Collection<Float> floats)
+    {
+        float max = 0;
+        for ( Float fl : floats ) {
+            if (Math.abs(fl) > max)
+                max = Math.abs(fl);
+        }
+        float scaleDown = max/100;
+        Map<Float,Integer> scaledDownValues= new HashMap<>();
+        for (Float fl : floats) {
+            scaledDownValues.put(fl, Math.round(fl/scaleDown) ) ;
+        }
+        return  scaledDownValues ;
+
+    }
 }
