@@ -14,6 +14,37 @@ sessionUser = new SessionUser('','','')
  url = "https://localhost:20452/"
 //--disable-web-security --disable-gpu --user-data-dir=~/chromeTem
 
+function sendOTP()
+{
+
+  let phone = $("#txtPhone").val();
+  let email = $("#txtEmail").val();
+  let fName = $("#txtFName").val();
+  let lName = $("#txtLName").val();
+  let pass = $("#txtPass").val();
+  let confirmPass = $("#txtConfPass").val();
+  if (phone.trim() =='' || email.trim() == '' || fName.trim() == '' || lName.trim() =='' || pass.trim() == '' || confirmPass.trim() == '' )
+  {
+  console.log('error') ;
+   $("#errorText").html('<br>Please enter all fields');
+   return ;
+   }
+   if( pass != confirmPass) {
+     $("#errorText").html('<br> Password does not match');
+      return ;
+   }
+  $("#errorText").html('');
+}
+
+function openNewUserpopup()
+{
+
+console.log('open dialog');
+ $("#newUserMode").removeClass('modal fade');
+ $("#newUserMode").addClass('modal show');
+ $("#newUserMode").css("display","block");
+
+}
 function formRequest(methodType,api)
 {
       let request = new XMLHttpRequest () ;

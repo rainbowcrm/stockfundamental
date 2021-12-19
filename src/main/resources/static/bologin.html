@@ -1,4 +1,5 @@
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"
+      xmlns="http://www.w3.org/1999/html">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!------ Include the above in your HEAD tag ---------->
@@ -89,7 +90,7 @@
             <br>
             <button class="btn btn-lg btn-primary btn-block" style="border-radius:12px" type="button" onclick="login()" >Let Me In!</button>
             <br>
-            <h6 class="form-signin-heading" style="text-align:center" > <span> Forgot </span> <a href="#">Username/Password?</a> </h6>
+            <h6 class="form-signin-heading" style="text-align:center" > <span onclick="openNewUserpopup();" class="btn btn-link" data-toggle="modal"> Forgot Username/Password?</span> </h6>
 
             <h6 class="form-signin-heading" style="text-align:center" >  <a href="#">Create your account</a> <i class="userplus"></i></h6>
 
@@ -99,9 +100,46 @@
 </div>
 
     <div id="newUserMode" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                 New user details
+        <div class="modal-dialog" style="height:450px;">
+            <div class="modal-content" style="height:450px; margin-top:75px">
+                <form id="frmgenericAdd">
+                    <div class="container-fluid">
+                        <span id ="errorText" style="color:red"></span>
+                        <br><br>
+                    <div class="row">
+                    <div class="col-md-6 col-sm-12 col-lg-6">
+                        <input type="email" id ="txtEmail"  class="form-control"  placeholder="Email"/>
+                    </div>
+                        <div class="col-md-6 col-sm-12 col-lg-6">
+                            <input type="tel" id ="txtPhone" class="form-control"  placeholder="Phone"/>
+                        </div>
+                    </div>
+                        <br><br>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 col-lg-6">
+                            <input type="text" id ="txtFName" class="form-control"  placeholder="First Name"/>
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-lg-6">
+                            <input type="text" id ="txtLName" class="form-control"  placeholder="Last Name"/>
+                        </div>
+                    </div>
+                        <br><br>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 col-lg-6">
+                            <input type="password" id ="txtPass" class="form-control"  placeholder="Password"/>
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-lg-6">
+                            <input type="password" id ="txtConfPass" class="form-control" placeholder="Confirm Password"/>
+                        </div>
+                    </div>
+                        <br><br>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 col-lg-6">
+                            <input type="button" class="btn-primary"  onclick="sendOTP();" value="Send OTP"> </input>
+                        </div>
+                    </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
