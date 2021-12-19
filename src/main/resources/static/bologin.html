@@ -101,7 +101,27 @@
 
     <div id="newUserMode" class="modal fade">
         <div class="modal-dialog" style="height:450px;">
-            <div class="modal-content" style="height:450px; margin-top:75px">
+            <div class="modal-content" id="otpEntryDiv" style="height:450px; margin-top:75px;display:none">
+                <form id="frmOTPEnty">
+                    <div class="container-fluid">
+                        <br><br> <br><br>
+                        <span id ="errorSecText" style="color:red"></span>
+                        <br><br>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-12 col-lg-6">
+                                <input type="text" id ="txpOTP"  class="form-control"  placeholder="OTP"/>
+                            </div>
+                        </div>
+                        <br><br>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-12 col-lg-6">
+                                <input type="button" class="btn-primary"  onclick="submitOTP();" value="Submit OTP"> </input>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-content" id="userFieldsDiv" style="height:450px; margin-top:75px">
                 <form id="frmgenericAdd">
                     <div class="container-fluid">
                         <span id ="errorText" style="color:red"></span>

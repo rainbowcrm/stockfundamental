@@ -5,7 +5,9 @@ import com.primus.common.AES;
 import com.primus.common.CommonErrorCodes;
 import com.primus.common.PrimusError;
 import com.primus.user.dao.UserDAO;
+import com.primus.user.dao.UserOTPDAO;
 import com.primus.user.model.User;
+import com.primus.user.model.UserOTP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +20,12 @@ public class UserService {
     @Autowired
     UserDAO userDAO;
 
+    @Autowired
+    UserOTPDAO userOTPDAO ;
+
     final String secretKey= "Dubai";
 
-    public  void createUser(Map<String,Object> userData) throws PrimusError
+    public  void createUser(Map<String,Object> userData,String otp) throws PrimusError
     {
         ObjectMapper objectMapper = new ObjectMapper();
         User newUser = objectMapper.convertValue(userData, User.class);
@@ -29,6 +34,11 @@ public class UserService {
             throw new PrimusError(CommonErrorCodes.USER_ALREADY_EXISTS,"Email already in use. Please check your password and relogin");
         }else
         {
+            UserOTP userOTP = userOTPDAO.getByMobile(newUser.getPhoneNumber());
+            if (!userOTP.getOtp().equalsIgnoreCase(otp)) {
+                throw new PrimusError(CommonErrorCodes.OTP_WRONG,"OTP not matching, please retry!!");
+            }
+            newUser.setVerified(true);
             String encryptedPWD = AES.encrypt(newUser.getPassword(),secretKey);
             newUser.setPassword(encryptedPWD);
             userDAO.update(newUser);
@@ -43,6 +53,16 @@ public class UserService {
         return existUser;
 
     }
+
+    public void sendOTP(String phone)
+    {
+        UserOTP userOTP = new UserOTP();
+        userOTP.setOtp("9091");
+        userOTP.setPhoneNumber(phone);
+        userOTPDAO.update(userOTP);
+    }
+
+
 
 
 

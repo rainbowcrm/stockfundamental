@@ -21,11 +21,13 @@ public class UserController {
 
 
     @RequestMapping(value = "/createUser", method = RequestMethod.POST)
-    public ResponseEntity<Map> createUser(@RequestBody Map<String,Object> userData)
+    public ResponseEntity<Map> createUser(@RequestBody Map<String,Object> userData,
+                                          @RequestParam String otp)
     {
         Map<String,Object> map = new HashMap<>() ;
         try {
-            userService.createUser(userData);
+            userService.createUser(userData,otp);
+            map.put("Result","Success");
         }catch (PrimusError error)
         {
             map.put("Result","Failure");
@@ -34,5 +36,16 @@ public class UserController {
         ResponseEntity entity =  new ResponseEntity<Map>(map, HttpStatus.OK);
         return  entity;
     }
+
+    @RequestMapping(value = "/saveOTP", method = RequestMethod.GET)
+    public ResponseEntity<Map> saveOTP(@RequestParam String phoneNumber)
+    {
+        userService.sendOTP(phoneNumber);
+        Map<String,Object> map = new HashMap<>() ;
+        map.put("Result","Success");
+        ResponseEntity entity =  new ResponseEntity<Map>(map, HttpStatus.OK);
+        return  entity;
+    }
+
 
 }

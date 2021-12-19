@@ -34,6 +34,28 @@ function sendOTP()
       return ;
    }
   $("#errorText").html('');
+
+  let request = new XMLHttpRequest () ;
+  request.open("GET",url+'user/saveOTP?phoneNumber=' + phone,true);
+  request.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+           $("#userFieldsDiv").css("display","none");
+           $("#otpEntryDiv").css("display","block");
+
+      }else
+      {
+       $("#errorText")[0].innerHTML ="Could not send OTP!";
+      }
+  };
+
+  try {
+     request.send() ;
+     console.log('otp req sent');
+  }catch(err)
+  {
+   $("#errorText")[0].innerHTML ="Could not send OTP";
+  }
+
 }
 
 function openNewUserpopup()
