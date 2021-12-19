@@ -1,6 +1,8 @@
 package com.primus.security;
 
 
+import com.primus.user.model.User;
+import com.primus.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,12 +15,15 @@ import java.util.ArrayList;
 @Component
 public class DefaultAuthenticationProvider implements AuthenticationProvider {
 
+    @Autowired
+    UserService userService;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String name = authentication.getName();
         String password = authentication.getCredentials().toString();
-        if ("thomas".equals(password) && "thomas".equalsIgnoreCase(name))
+        User loggedInUser = userService.getLogin(name,password);
+        if (loggedInUser != null)
             return new UsernamePasswordAuthenticationToken(
                 name, password, new ArrayList<>());
         else
