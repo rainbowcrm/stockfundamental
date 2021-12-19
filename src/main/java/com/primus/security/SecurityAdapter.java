@@ -30,10 +30,12 @@ public class SecurityAdapter extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-          http.authorizeRequests().antMatchers("/scripts/support.js").permitAll()
-                  .anyRequest().authenticated().and().formLogin().and().httpBasic().and().headers().frameOptions().sameOrigin().and().csrf()
+          http.authorizeRequests().antMatchers("/scripts/support.js").permitAll().antMatchers("/assets/background.jpg").permitAll()
+                  .anyRequest().authenticated().and().formLogin().and().httpBasic().authenticationEntryPoint(new NoPopupBasicAuthenticationEntryPoint()).and().headers().frameOptions().sameOrigin().and().csrf()
                  .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and().formLogin().loginPage("/bologin.html").failureUrl("/bologin.html?error=true")
-                  .loginProcessingUrl("/bologin.html").permitAll().failureHandler(new AuthenticationFailureHandler() {
+                  .loginProcessingUrl("/bologin.html").permitAll();
+          /*
+          .failureHandler(new AuthenticationFailureHandler() {
               @Override
               public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
                   UrlPathHelper urlPathHelper =new UrlPathHelper();
@@ -41,6 +43,7 @@ public class SecurityAdapter extends WebSecurityConfigurerAdapter {
                   response.sendRedirect(contextPath + "/bologin.html?error=true");
               }
           });
+           */
 
 
     }
