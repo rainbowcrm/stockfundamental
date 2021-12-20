@@ -1,6 +1,7 @@
 package com.primus.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -31,8 +32,9 @@ public class SecurityAdapter extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
           http.authorizeRequests().antMatchers("/scripts/support.js").permitAll().antMatchers("/assets/background.jpg").permitAll()
-                  .antMatchers(("/user/createUser")).permitAll().antMatchers(("/user/saveOTP")).permitAll()
-                  .anyRequest().authenticated().and().formLogin().and().httpBasic().authenticationEntryPoint(new NoPopupBasicAuthenticationEntryPoint()).and().headers().frameOptions().sameOrigin().and().csrf()
+                  .antMatchers(("/user/setOTP")).permitAll().antMatchers(("/user/saveOTP")).permitAll()
+                  .anyRequest().authenticated().and().formLogin().and().httpBasic().authenticationEntryPoint(new NoPopupBasicAuthenticationEntryPoint()).and().headers().
+                  frameOptions().sameOrigin().and().csrf()
                  .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and().formLogin().loginPage("/bologin.html").failureUrl("/bologin.html?error=true")
                   .loginProcessingUrl("/bologin.html").permitAll();
           /*

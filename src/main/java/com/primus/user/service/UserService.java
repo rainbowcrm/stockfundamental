@@ -8,6 +8,7 @@ import com.primus.user.dao.UserDAO;
 import com.primus.user.dao.UserOTPDAO;
 import com.primus.user.model.User;
 import com.primus.user.model.UserOTP;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,15 @@ public class UserService {
     UserOTPDAO userOTPDAO ;
 
     final String secretKey= "Dubai";
+
+    public  void extractUserInfo(String encodedStr) throws PrimusError
+    {
+        byte[] byteArray = Base64.decodeBase64(encodedStr);
+        String origValue = new String(byteArray);
+        System.out.println(origValue);
+
+
+    }
 
     public  void createUser(Map<String,Object> userData,String otp) throws PrimusError
     {

@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = "http://localhost:20452", maxAge = 3600)
+@CrossOrigin(origins = "https://localhost:20452", maxAge = 3600)
 @RequestMapping("/user")
 @RestController
 public class UserController {
@@ -20,13 +20,12 @@ public class UserController {
     UserService userService;
 
 
-    @RequestMapping(value = "/createUser", method = RequestMethod.POST)
-    public ResponseEntity<Map> createUser(@RequestBody Map<String,Object> userData,
-                                          @RequestParam String otp)
+    @RequestMapping(value = "/setOTP", method = RequestMethod.GET)
+    public ResponseEntity<Map> createUser(@RequestParam String inputData)
     {
         Map<String,Object> map = new HashMap<>() ;
         try {
-            userService.createUser(userData,otp);
+            userService.extractUserInfo(inputData);
             map.put("Result","Success");
         }catch (PrimusError error)
         {

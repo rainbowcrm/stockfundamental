@@ -14,6 +14,54 @@ sessionUser = new SessionUser('','','')
  url = "https://localhost:20452/"
 //--disable-web-security --disable-gpu --user-data-dir=~/chromeTem
 
+function submitOTP()
+{
+  let phone = $("#txtPhone").val();
+  let email = $("#txtEmail").val();
+  let fName = $("#txtFName").val();
+  let lName = $("#txtLName").val();
+  let pass = $("#txtPass").val();
+  let otp = $("#txpOTP").val();
+  var data = {
+          "emailId" : email,
+          "firstName" : fName,
+          "lastName": lName,
+          "password":pass,
+          "phoneNumber": phone,
+          "otp":otp
+      };
+      let request = new XMLHttpRequest () ;
+      console.log(url+'user/setOTP');
+      let inp = JSON.stringify(data);
+      console.log(inp);
+      let inpBtoA= btoa(inp);
+      console.log(inpBtoA);
+      request.open("GET",url+'user/setOTP?inputData='+inpBtoA,true);
+      request.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                 console.log("send and received");
+                 $("#userFieldsDiv").css("display","flex");
+                 $("#otpEntryDiv").css("display","none");
+                  $("#newUserMode").removeClass('modal show');
+                 $("#newUserMode").addClass('modal fade');
+                  $("#newUserMode").css("display","none");
+            }else
+            {
+             $("#errorSecText").html("OTP is not matching");
+            }
+        };
+
+        try {
+          request.send(true) ;
+           console.log('user creation with OTP=' + JSON.stringify(data) );
+        }catch(err)
+        {
+         $("#errorSecText").html("OTP is not matching");
+        }
+
+
+}
+
 function sendOTP()
 {
 
@@ -37,6 +85,7 @@ function sendOTP()
 
   let request = new XMLHttpRequest () ;
   request.open("GET",url+'user/saveOTP?phoneNumber=' + phone,true);
+  console.log(url+'user/saveOTP?phoneNumber=' + phone);
   request.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
            $("#userFieldsDiv").css("display","none");
@@ -44,19 +93,21 @@ function sendOTP()
 
       }else
       {
-       $("#errorText")[0].innerHTML ="Could not send OTP!";
+       $("#errorText").html("Could not send OTP!");
       }
   };
 
   try {
-     request.send() ;
+     request.send(JSON.st) ;
      console.log('otp req sent');
   }catch(err)
   {
-   $("#errorText")[0].innerHTML ="Could not send OTP";
+   $("#errorText").html("Could not send OTP");
   }
 
 }
+
+
 
 function openNewUserpopup()
 {
