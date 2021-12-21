@@ -12,6 +12,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Map;
 
 @Service
@@ -28,14 +29,21 @@ public class UserService {
 
     public  void extractUserInfo(String encodedStr) throws PrimusError
     {
-        byte[] byteArray = Base64.decodeBase64(encodedStr);
-        String origValue = new String(byteArray);
-        System.out.println(origValue);
-
-
+        try {
+            byte[] byteArray = Base64.decodeBase64(encodedStr);
+            String origValue = new String(byteArray);
+            System.out.println(origValue);
+            ObjectMapper objectMapper = new ObjectMapper();
+            Map<String, String> userIP = objectMapper.readValue(origValue, Map.class);
+            String otp = userIP.get("otp");
+            userIP.remove("otp");
+            createUser(userIP, otp);
+        }catch (IOException ex){
+            throw new PrimusError(CommonErrorCodes.INTERNAL_ERROR,"Input error");
+        }
     }
 
-    public  void createUser(Map<String,Object> userData,String otp) throws PrimusError
+    public  void createUser(Map<String,String> userData,String otp) throws PrimusError
     {
         ObjectMapper objectMapper = new ObjectMapper();
         User newUser = objectMapper.convertValue(userData, User.class);
