@@ -13,7 +13,43 @@ class SessionUser {
 sessionUser = new SessionUser('','','')
  url = "https://localhost:20452/"
 //--disable-web-security --disable-gpu --user-data-dir=~/chromeTem
+function closePopup()
+{
+             $("#userFieldsDiv").css("display","flex");
+             $("#otpEntryDiv").css("display","none");
+             $("#newUserMode").removeClass('modal show');
+             $("#newUserMode").addClass('modal fade');
+             $("#newUserMode").css("display","none");
+             $("#forgotPWD").removeClass('modal show');
+             $("#forgotPWD").addClass('modal fade');
+             $("#forgotPWD").css("display","none");
 
+}
+
+function resendPassword()
+{
+  let email = $("#txtForgottenEmail").val();
+let request = new XMLHttpRequest () ;
+   request.open("GET",url+'user/sendPassword?userEmail='+email,true);
+        request.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                   console.log("send and received");
+                   $("#erromessage").html("Password Emailed!");
+                   closePopup();
+              }else
+              {
+               $("#errorEmailEntryText").html("Could not send email");
+              }
+          };
+
+          try {
+            request.send(true) ;
+          }catch(err)
+          {
+           $("#errorEmailEntryText").html("email not send");
+          }
+
+}
 function submitOTP()
 {
   let phone = $("#txtPhone").val();
@@ -104,6 +140,16 @@ function sendOTP()
   {
    $("#errorText").html("Could not send OTP");
   }
+
+}
+
+function forgotPasswordPopup()
+{
+
+console.log('open forgot pwd dialog');
+ $("#forgotPWD").removeClass('modal fade');
+ $("#forgotPWD").addClass('modal show');
+ $("#forgotPWD").css("display","block");
 
 }
 

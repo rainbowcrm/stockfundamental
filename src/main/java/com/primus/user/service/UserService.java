@@ -8,7 +8,9 @@ import com.primus.user.dao.UserDAO;
 import com.primus.user.dao.UserOTPDAO;
 import com.primus.user.model.User;
 import com.primus.user.model.UserOTP;
+import com.primus.utils.EmailService;
 import org.apache.commons.codec.binary.Base64;
+import org.hibernate.validator.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,9 @@ public class UserService {
 
     final String secretKey= "Dubai";
 
+    @Autowired
+    EmailService emailService ;
+
     public  void extractUserInfo(String encodedStr) throws PrimusError
     {
         try {
@@ -41,6 +46,20 @@ public class UserService {
         }catch (IOException ex){
             throw new PrimusError(CommonErrorCodes.INTERNAL_ERROR,"Input error");
         }
+    }
+
+    public  void sendPasswordReminder(String userEmail) throws PrimusError
+    {
+
+        User existUser =  userDAO.getByEmail(userEmail);
+        if(existUser == null) {
+            throw new PrimusError(CommonErrorCodes.USER_NOT_EXIST,"Email not exist");
+        }else
+        {
+            String basePassword = AES.decrypt(existUser.getPassword(),secretKey);
+            emailService.sendPasswordEmail(existUser.getEmailId(),basePassword);
+        }
+
     }
 
     public  void createUser(Map<String,String> userData,String otp) throws PrimusError

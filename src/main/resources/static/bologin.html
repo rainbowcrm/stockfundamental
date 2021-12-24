@@ -84,21 +84,49 @@
             <h6 class="form-signin-heading" style="text-align:center" > <span id ="erromessage" style="color:red"></span> </h6>
             <br>
 
-            <input type="text" class="form-control" id="txtname" placeholder="Name" required=""/>
+            <input type="email" class="form-control" id="txtname" placeholder="Email" required=""/>
             <br>
             <input type="password" class="form-control" id="txtpwd" placeholder="Password" required="" autofocus="" />
             <br>
             <button class="btn btn-lg btn-primary btn-block" style="border-radius:12px" type="button" onclick="login()" >Let Me In!</button>
             <br>
-            <h6 class="form-signin-heading" style="text-align:center" > <span onclick="openNewUserpopup();" class="btn btn-link" data-toggle="modal"> Forgot Username/Password?</span> </h6>
+            <h6 class="form-signin-heading" style="text-align:center" > <span onclick="forgotPasswordPopup();" class="btn btn-link" data-toggle="modal"> Forgot Username/Password?</span> </h6>
 
-            <h6 class="form-signin-heading" style="text-align:center" >  <a href="#">Create your account</a> <i class="userplus"></i></h6>
+            <h6 class="form-signin-heading" style="text-align:center" >   <span onclick="openNewUserpopup();" class="btn btn-link" data-toggle="modal"> New User?</span> </h6>
 
         </form>
     </div>
 
 </div>
 
+    <div id="forgotPWD" class="modal fade">
+        <div class="modal-dialog" style="height:450px;">
+            <div class="modal-content" id="emailEntryDiv" style="height:450px; margin-top:75px;">
+                <form id="frmemailEntry">
+                    <div class="container-fluid">
+                        <br><br> <br><br>
+                        <br><br> <br><br>
+                        <span id ="errorEmailEntryText" style="color:red"></span>
+                        <br><br>
+                        <div class="row">
+                        <div class="col-md-12 col-sm-12 col-lg-12">
+                            <input type="email" id ="txtForgottenEmail"  class="form-control"  placeholder="Email"/>
+                        </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-lg-12">
+                                <input type="button" class="btn-primary"  onclick="resendPassword();" value="Send Password"> </input>
+                                   &nbsp;
+                                <input type="button" class="btn-secondary"  onclick="closePopup();" value="Close Popup"> </input>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <div id="newUserMode" class="modal fade">
         <div class="modal-dialog" style="height:450px;">
             <div class="modal-content" id="otpEntryDiv" style="height:450px; margin-top:75px;display:none">
@@ -111,13 +139,14 @@
                             <div class="col-md-6 col-sm-12 col-lg-6">
                                 <input type="text" id ="txpOTP"  class="form-control"  placeholder="OTP"/>
                             </div>
-                        </div>
-                        <br><br>
-                        <div class="row">
                             <div class="col-md-6 col-sm-12 col-lg-6">
                                 <input type="button" class="btn-primary"  onclick="submitOTP();" value="Submit OTP"> </input>
+                                &nbsp;
+                                <input type="button" class="btn-secondary"  onclick="closePopup();" value="Close Popup"> </input>
                             </div>
+
                         </div>
+                        <br><br>
                     </div>
                 </form>
             </div>
@@ -151,12 +180,18 @@
                         <div class="col-md-6 col-sm-12 col-lg-6">
                             <input type="password" id ="txtConfPass" class="form-control" placeholder="Confirm Password"/>
                         </div>
+
                     </div>
                         <br><br>
                     <div class="row">
-                        <div class="col-md-6 col-sm-12 col-lg-6">
+                        <div class="col-md-6 col-sm-12 col-lg-3">
                             <input type="button" class="btn-primary"  onclick="sendOTP();" value="Send OTP"> </input>
+                            &nbsp;
+                            <input type="button" class="btn-secondary"  onclick="closePopup();" value="Close Popup"> </input>
                         </div>
+
+
+
                     </div>
                     </div>
                 </form>

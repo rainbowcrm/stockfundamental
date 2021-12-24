@@ -20,6 +20,22 @@ public class UserController {
     UserService userService;
 
 
+    @RequestMapping(value = "/sendPassword", method = RequestMethod.GET)
+    public ResponseEntity<Map> sendPassword(@RequestParam String userEmail)
+    {
+        Map<String,Object> map = new HashMap<>() ;
+        try {
+            userService.sendPasswordReminder(userEmail);
+            map.put("Result","Success");
+        }catch (PrimusError error)
+        {
+            map.put("Result","Failure");
+            map.put("Error",error.getMessage());
+        }
+        ResponseEntity entity =  new ResponseEntity<Map>(map, HttpStatus.OK);
+        return  entity;
+    }
+
     @RequestMapping(value = "/setOTP", method = RequestMethod.GET)
     public ResponseEntity<Map> createUser(@RequestParam String inputData)
     {
