@@ -1,6 +1,7 @@
 package com.primus.utils;
 
 import com.primus.stock.master.model.ReportData;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -11,7 +12,10 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -71,6 +75,17 @@ public class ExportService {
         workbook.write(fileOut);
         fileOut.close();
         Resource resource = new ClassPathResource(unqValue);
+        /*InputStream tempIpStream = resource.getInputStream();
+        File targetFile = new File(rootFolder + "/reports/newFile.xls");
+        OutputStream outStream = new FileOutputStream(targetFile);
+
+        byte[] buffer = new byte[8 * 1024];
+        int bytesRead;
+        while ((bytesRead = tempIpStream.read(buffer)) != -1) {
+            outStream.write(buffer, 0, bytesRead);
+        }
+        IOUtils.closeQuietly(tempIpStream);
+        IOUtils.closeQuietly(outStream);*/
         return  resource ;
 
     }

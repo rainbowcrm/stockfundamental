@@ -2,6 +2,7 @@ package com.primus.ui.controller;
 
 import com.primus.dashboard.service.DashboardService;
 import com.primus.ui.service.UIService;
+import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -12,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -83,7 +85,7 @@ public class UIController {
     }
 
     @RequestMapping( value = "/downloadFile/{fileType}", method = RequestMethod.POST)
-    public ResponseEntity<Resource> getHttpResponse(@PathVariable String fileType, HttpServletRequest request,
+    public void getHttpResponse(@PathVariable String fileType, HttpServletRequest request, HttpServletResponse response,
                                         @RequestBody Map<String,Object> criteriaMap      ) {
         String contentType = null;
         Resource resource = null;
@@ -94,15 +96,30 @@ public class UIController {
             if(contentType == null) {
                 contentType = "application/vnd.ms-excel";
             }
-            return ResponseEntity.ok()
-                    .contentType(MediaType.parseMediaType(contentType))
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-                    .body(resource);
+            response.setContentType("application/octet-stream");
+            response.setHeader("Content-Disposition", "attachment; filename=repNew.xlsx");
+            byte[] bytes = resource.getInputStream().readAllBytes();
+            System.out.println(resource.getFile().length());
+
+            for (int i = 0; i < bytes.length ; i ++ )
+            {
+                Byte byt = new Byte(bytes[i]);
+                System.out.println(i + "=" + byt.toString()+  "::" +  byt.shortValue()) ;
+
+            }
+            response.getOutputStream().write(bytes,0,(int)resource.getFile().length());
+
+                          /*  byte[] bytes=  ResponseEntity<byte[]>.ok()
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .contentLength(resource.getFile().length())
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename='" + resource.getFilename() + "'")
+                    .body(IOUtils.toByteArray(resource.getInputStream())); */
+
             } catch (Exception ex) {
             ex.printStackTrace();
             }
-        ResponseEntity entity =  new ResponseEntity<Resource>(resource, HttpStatus.BAD_REQUEST);
-        return  entity;
+     //   ResponseEntity entity =  new ResponseEntity<b>(resource, HttpStatus.BAD_REQUEST);
+        return  ;
     }
 
     @RequestMapping(value = "/getDashBoardData", method = RequestMethod.GET)

@@ -166,6 +166,18 @@ $("#txtSecurty").val("");
  applyFilter(0,recordsPerPage);
 
 }
+
+function submitReport()
+{
+  let fromDate = $("#dtFrom").val();
+  let toDate = $("#dtTo").val();
+  console.log('fromDate='+ fromDate);
+  console.log('toDate='+ toDate);
+  let request = formRequest("GET",url+'reports/getTransSummary?fromDate='+fromDate+"&toDate="+ toDate+"&groupBy=Sector");
+      setToken(request);
+      request.send() ;
+
+}
 function applyFilter(currentPage,recordsPerPage)
 {
     postContent = getFilterJSON();
@@ -189,10 +201,15 @@ function tableExport(fileType)
          setToken(request);
          request.send(JSON.stringify(postContent),true) ;
          const data = request.responseText;
-         var myresponse = new Blob([data], {type : 'application/vnd.ms-excel'});
+         console.log(data);
+         console.log(data.length);
+         for ( var i = 0 ; i < data.length ; i ++) {
+            console.log(i +"::"+ data.charAt(i).toString(8)) ;
+         }
+         var myresponse = new Blob([data], {type : 'application/octet-stream'});
          var a = document.createElement('a');
          a.href = window.URL.createObjectURL(myresponse);
-         a.download = 'report.xls';
+         a.download = 'report_new.xls';
          a.click();
 }
 function getAllStockCount()
@@ -250,7 +267,7 @@ function getAllStockCount()
 
  function getDashBoard()
  {
-  let request = formRequest("GET",url+'uiapi/getDashBoardData?days=45');
+  let request = formRequest("GET",url+'uiapi/getDashBoardData?days=30');
       setToken(request);
       request.send() ;
       var snapsotresponse  =   JSON.parse(request.responseText)  ;

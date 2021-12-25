@@ -30,6 +30,12 @@ public class StockMasterDAO {
         return ans;
     }
 
+    public List<StocksMaster> listAllTrackedData( )
+    {
+        Query query =  em.createQuery("from StocksMaster where  useJavaAPI = true  and id > 0 "  );
+        List<StocksMaster> ans = query.getResultList();
+        return ans;
+    }
     public List<StocksMaster> listData(int from , int to , String whereCondition, String orderby ) {
         Query query =  em.createQuery("from StocksMaster "    +  ((StringUtils.isEmpty(whereCondition))?"":whereCondition) +
                 " " + ((StringUtils.isEmpty((orderby))?"": (" order by " + orderby) ))) ;

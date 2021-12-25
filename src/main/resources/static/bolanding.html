@@ -38,32 +38,47 @@ var loadPage = function(pageId) {
  return false;
 };
 </script>
-<nav class="navbar navbar-expand-sm   navbar-dark bg-info">
+<nav class="navbar navbar-expand-sm   navbar-dark bg-info" style="background-color:#212529!important">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0" >
             <li class="nav-item">
-                <a class="nav-link" onclick="loadPage('dashboard.html');" href="#">Home<span class="sr-only">(current)</span></a>
+                <a class="nav-link" style="color:#f8f9fa" onclick="loadPage('dashboard.html');" href="#">Home<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link"  onclick="loadPage('stocks.html');"  href="#">Stocks</a>
+                <a class="nav-link"  style="color:#f8f9fa" onclick="loadPage('stocks.html');"  href="#">Stocks</a>
             </li>
             <li class="nav-item dropdown dmenu">
-                <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                    My Workbench
+                <a class="nav-link dropdown-toggle"  style="color:#f8f9fa" href="#" id="navbarVal" data-toggle="dropdown">
+                    Valuations
                 </a>
-                <div class="dropdown-menu sm-menu">
-                    <a class="dropdown-item" href="#">Valuations</a>
-                    <a class="dropdown-item" href="#">Swings</a>
-
+                <div class="dropdown-menu sm-menu" style="background-color:#212529!important">
+                    <a class="dropdown-item" style="color:#ffc107" onclick="loadPage('./valuation/underValued.html');" href="#">Undervalued Stocks</a>
+                    <a class="dropdown-item" style="color:#ffc107" onclick="loadPage('./valuation/overValued.html');" href="#">Overvalued Stocks</a>
                 </div>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link" onclick="loadPage('portfolio.html');" href="#">My Portfolio</a>
+            <li class="nav-item dropdown dmenu">
+                <a class="nav-link dropdown-toggle"  style="color:#f8f9fa" href="#" id="navbardrop" data-toggle="dropdown">
+                    Reports
+                </a>
+                <div class="dropdown-menu sm-menu" style="background-color:#212529!important">
+                    <a class="dropdown-item" style="color:#ffc107" onclick="loadPage('./reports/basicReports.html');" href="#">Transactions Summary</a>
+                    <a class="dropdown-item" style="color:#ffc107" onclick="loadPage('./reports/advanceReports.html');" href="#">Transactions Details</a>
+                </div>
+            </li>
+
+            <li class="nav-item dropdown dmenu">
+                <a class="nav-link dropdown-toggle"  style="color:#f8f9fa" href="#" id="navbarQry" data-toggle="dropdown">
+                    Queries
+                </a>
+                <div class="dropdown-menu sm-menu"  style="background-color:#212529!important" >
+                    <a class="dropdown-item"  style="color:#ffc107"  href="#">Basic</a>
+                    <a class="dropdown-item"  style="color:#ffc107"  href="#">Advanced</a>
+                </div>
             </li>
 
         </ul>

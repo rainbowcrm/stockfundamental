@@ -34,7 +34,7 @@ let request = new XMLHttpRequest () ;
         request.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
                    console.log("send and received");
-                   $("#erromessage").html("Password Emailed!");
+                   $("#infomessage").html("Password Emailed!");
                    closePopup();
               }else
               {
@@ -81,6 +81,7 @@ function submitOTP()
                   $("#newUserMode").removeClass('modal show');
                  $("#newUserMode").addClass('modal fade');
                   $("#newUserMode").css("display","none");
+                   $("#infomessage").html("User Created!");
             }else
             {
              $("#errorSecText").html("OTP is not matching");
