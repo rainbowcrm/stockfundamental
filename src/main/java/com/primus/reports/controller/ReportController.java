@@ -19,6 +19,10 @@ public class ReportController {
     @RequestMapping(value = "/getTransSummary", method = RequestMethod.GET)
     public void getTransSummary(@RequestParam String fromDate, @RequestParam String toDate,@RequestParam String groupBy)
     {
-        reportService.generateReport(fromDate,toDate,groupBy,null);
+        try {
+            reportService.generateReport(fromDate, toDate, groupBy, null);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 }

@@ -31,7 +31,7 @@ public class ReportService {
     StockMasterDAO stockMasterDAO ;
 
 
-    public static void sort(ArrayList<TransReportData> list)
+    public static void sort(List<TransReportData> list)
     {
 
         list.sort((o1, o2)
@@ -42,7 +42,7 @@ public class ReportService {
     public void generateReport(String fromDateS, String toDateS,String groupBy,BusinessContext context) throws PrimusError
     {
         try {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date fromDate = simpleDateFormat.parse(fromDateS);
             Date toDate = simpleDateFormat.parse(toDateS);
             List<TransReportData> transReportDataList = generateReport(fromDate, toDate);
