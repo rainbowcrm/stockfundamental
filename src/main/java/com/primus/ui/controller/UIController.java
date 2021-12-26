@@ -96,17 +96,10 @@ public class UIController {
             if(contentType == null) {
                 contentType = "application/vnd.ms-excel";
             }
-            response.setContentType("application/octet-stream");
+            response.setContentType("application/vnd.ms-excel");
             response.setHeader("Content-Disposition", "attachment; filename=repNew.xlsx");
             byte[] bytes = resource.getInputStream().readAllBytes();
-            System.out.println(resource.getFile().length());
-
-            for (int i = 0; i < bytes.length ; i ++ )
-            {
-                Byte byt = new Byte(bytes[i]);
-                System.out.println(i + "=" + byt.toString()+  "::" +  byt.shortValue()) ;
-
-            }
+       
             response.getOutputStream().write(bytes,0,(int)resource.getFile().length());
 
                           /*  byte[] bytes=  ResponseEntity<byte[]>.ok()

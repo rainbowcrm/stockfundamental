@@ -166,28 +166,32 @@ $("#txtSecurty").val("");
  applyFilter(0,recordsPerPage);
 
 }
-
-function submitReport()
+function downloadReport(api,typeResp)
 {
-  let fromDate = $("#dtFrom").val();
-  let toDate = $("#dtTo").val();
-  console.log('fromDate='+ fromDate);
-  console.log('toDate='+ toDate);
+
  let request = new XMLHttpRequest () ;
-        request.open("GET",url+'reports/getTransSummary?fromDate='+fromDate+"&toDate="+ toDate+"&groupBy=Sector");
+        request.open("GET",api);
         request.setRequestHeader("Content-type", "application/json");
         request.setRequestHeader("Access-Control-Allow-Origin", url);
       setToken(request);
       request.responseType = "arraybuffer";
       request.onload = function ()  {
            if (this.status === 200) {
-               var blob = new Blob([request.response], {type: "application/pdf"});
+               var blob = new Blob([request.response], {type: typeResp});
                var objectUrl = URL.createObjectURL(blob);
                window.open(objectUrl);
            }
        };
        request.send() ;
+}
+function submitReport()
+{
+  let fromDate = $("#dtFrom").val();
+  let toDate = $("#dtTo").val();
+  console.log('fromDate='+ fromDate);
+  console.log('toDate='+ toDate);
 
+  downloadReport (url+'reports/getTransSummary?fromDate='+fromDate+"&toDate="+ toDate+"&groupBy=Sector",'application/pdf');
        /*var myresponse = new Blob([request.response], {type : 'application/pdf'});
        var a = document.createElement('a');
        a.href = window.URL.createObjectURL(myresponse);
@@ -215,20 +219,27 @@ function applyFilter(currentPage,recordsPerPage)
 function tableExport(fileType)
 {
     postContent = getFilterJSON();
-     let request = formRequest("POST",url+'uiapi/downloadFile/'+fileType);
+     let request = new XMLHttpRequest () ;
+            request.open("POST",url+'uiapi/downloadFile/'+fileType);
+            request.setRequestHeader("Content-type", "application/json");
+            request.setRequestHeader("Access-Control-Allow-Origin", url);
          setToken(request);
-         request.send(JSON.stringify(postContent),true) ;
-         const data = request.responseText;
-         console.log(data);
-         console.log(data.length);
-         for ( var i = 0 ; i < data.length ; i ++) {
-            console.log(i +"::"+ data.charAt(i).toString(8)) ;
-         }
-         var myresponse = new Blob([data], {type : 'application/octet-stream'});
+         request.responseType = "arraybuffer";
+               request.onload = function ()  {
+                    if (this.status === 200) {
+                        var blob = new Blob([request.response], {type: "application/vnd.ms-excel"});
+                        var objectUrl = URL.createObjectURL(blob);
+                        window.open(objectUrl);
+                    }
+                };
+
+         request.send(JSON.stringify(postContent)) ;
+
+         /*var myresponse = new Blob([data], {type : 'application/octet-stream'});
          var a = document.createElement('a');
          a.href = window.URL.createObjectURL(myresponse);
          a.download = 'report_new.xls';
-         a.click();
+         a.click(); */
 }
 function getAllStockCount()
 {

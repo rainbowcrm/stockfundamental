@@ -82,7 +82,12 @@ public class ReportService {
             if (!currSector.equalsIgnoreCase(transReportData.getSector()))
             {
                 stringBuffer.append("<TR>");
-                stringBuffer.append("<TD colspan='7'> <h3> Sector : " +  transReportData.getSector() + " </h3></TD>");
+                stringBuffer.append("<TD colspan='4'> <h3> Sector : " +  transReportData.getSector() + " </h3></TD>");
+                List<TransReportData> subList = transReportDataList.stream().filter( entry -> {
+                   return entry.getSector().equalsIgnoreCase(transReportData.getSector() )?true:false;
+                }).collect(Collectors.toList());
+                stringBuffer.append("<TD colspan='3'> <h3> No Shares : " + subList.size()  + " </h3></TD>");
+
                 stringBuffer.append("</TR>");
                 currSector=transReportData.getSector();
 
