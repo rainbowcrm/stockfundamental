@@ -8,11 +8,20 @@ import com.primus.stock.master.dao.StockMasterDAO;
 import com.primus.stock.master.model.StocksMaster;
 import com.primus.stocktransaction.dao.StockTransactionDAO;
 import com.primus.stocktransaction.model.StockTransaction;
+import com.primus.utils.ExportService;
 import com.primus.utils.MathUtil;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.ResourceUtils;
+import org.xhtmlrenderer.layout.SharedContext;
+import org.xhtmlrenderer.pdf.ITextRenderer;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
@@ -31,7 +40,62 @@ public class ReportService {
     StockMasterDAO stockMasterDAO ;
 
 
-    public static void sort(List<TransReportData> list)
+    private void savePDF(String xhtml,String pdfNAME) throws PrimusError
+    {
+        try (OutputStream outputStream = new FileOutputStream(pdfNAME)) {
+            ITextRenderer renderer = new ITextRenderer();
+            SharedContext sharedContext = renderer.getSharedContext();
+            sharedContext.setPrint(true);
+            sharedContext.setInteractive(false);
+            renderer.setDocumentFromString(xhtml);
+            renderer.layout();
+            renderer.createPDF(outputStream);
+        }catch (Exception ex) {
+            ex.printStackTrace();
+            throw new PrimusError(CommonErrorCodes.PDF_COULDNOTBE_GEN, "Pdf could not be generated");
+        }
+    }
+
+    private String  createHTML(List<TransReportData> transReportDataList)
+    {
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append("<HTML><HEAD><TITLE>Trade Details</TITLE></HEAD>");
+        stringBuffer.append("<BODY>");
+        stringBuffer.append("<TABLE WIDTH='90%'>");
+        stringBuffer.append("<TR>");
+        stringBuffer.append("<TH>Sector</TH>"  );
+        stringBuffer.append("<TH>Security</TH>"  );
+        stringBuffer.append("<TH>Industry</TH>"  );
+        stringBuffer.append("<TH>Group</TH>"  );
+        stringBuffer.append("<TH>Cap Size</TH>" );
+        stringBuffer.append("<TH>Open Price</TH>");
+        stringBuffer.append("<TH>Close Price</TH>");
+        stringBuffer.append("<TH>Change%</TH>");
+        stringBuffer.append("</TR>");
+
+        for (TransReportData transReportData : transReportDataList )
+        {
+            stringBuffer.append("<TR>");
+            stringBuffer.append("<TD>" +  transReportData.getSector() + "</TD>");
+            stringBuffer.append("<TD>" +  transReportData.getSecurity() + "</TD>");
+            stringBuffer.append("<TD>" +  transReportData.getIndustry() + "</TD>");
+            stringBuffer.append("<TD>" +  transReportData.getGroup() + "</TD>");
+            stringBuffer.append("<TD>" +  transReportData.getMarketCapGroup() + "</TD>");
+            stringBuffer.append("<TD>" +  transReportData.getOpeningPrice() + "</TD>");
+            stringBuffer.append("<TD>" +  transReportData.getFinalPricde() + "</TD>");
+            stringBuffer.append("<TD><B>" +  transReportData.getChange() + "</B></TD>");
+            stringBuffer.append("</TR>");
+
+        }
+
+        stringBuffer.append("</TABLE>");
+        stringBuffer.append("</HTML>");
+        return stringBuffer.toString();
+
+    }
+
+
+    private static void sort(List<TransReportData> list)
     {
 
         list.sort((o1, o2)
@@ -47,10 +111,17 @@ public class ReportService {
             Date toDate = simpleDateFormat.parse(toDateS);
             List<TransReportData> transReportDataList = generateReport(fromDate, toDate);
             sort(transReportDataList);
-            for (TransReportData transReportData : transReportDataList) {
-                System.out.println(transReportData);
+            String xhtml = createHTML(transReportDataList);
+            String unqValue = "reports/" + ExportService.randomStr()   +".pdf";
+            String absPath = ResourceUtils.getFile("classpath:application.properties").getAbsolutePath();
+            String rootFolder = absPath.substring(0,absPath.length()-22);
+            /*FileOutputStream op = new FileOutputStream(rootFolder + "/" + unqValue);
+            op.write(xhtml.getBytes());
+            op.close();*/
+            Document document = Jsoup.parse(xhtml, "UTF-8");
+            document.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
+            savePDF(document.html(),rootFolder + "/" + unqValue);
 
-            }
         }catch (Exception ex){
             ex.printStackTrace();
             throw new PrimusError(CommonErrorCodes.FROM_DATE_WRONG, "Start Date cannot be post 01-06-2021");

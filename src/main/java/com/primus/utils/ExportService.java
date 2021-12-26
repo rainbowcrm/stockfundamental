@@ -24,7 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Service
 public class ExportService {
 
-    private String randomStr()
+    public static String randomStr()
     {
         int leftLimit = 97; // letter 'a'
         int rightLimit = 122; // letter 'z'

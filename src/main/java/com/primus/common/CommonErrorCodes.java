@@ -10,6 +10,8 @@ public class CommonErrorCodes {
     public static final int EMAIL_NOT_SEND = 10007;
     public static final int FROM_DATE_WRONG = 10008;
     public static final int TO_DATE_WRONG = 10009;
+    public static final int TO_AFTER_FROM = 10010;
+    public static final int PDF_COULDNOTBE_GEN = 10011;
 
 }
 
