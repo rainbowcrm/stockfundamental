@@ -13,6 +13,8 @@ import com.primus.utils.MathUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ResourceUtils;
@@ -63,7 +65,7 @@ public class ReportService {
         stringBuffer.append("<BODY>");
         stringBuffer.append("<TABLE WIDTH='90%'>");
         stringBuffer.append("<TR>");
-        stringBuffer.append("<TH>Sector</TH>"  );
+      //  stringBuffer.append("<TH>Sector</TH>"  );
         stringBuffer.append("<TH>Security</TH>"  );
         stringBuffer.append("<TH>Industry</TH>"  );
         stringBuffer.append("<TH>Group</TH>"  );
@@ -73,10 +75,19 @@ public class ReportService {
         stringBuffer.append("<TH>Change%</TH>");
         stringBuffer.append("</TR>");
 
+        String currSector = "";
         for (TransReportData transReportData : transReportDataList )
         {
+
+            if (!currSector.equalsIgnoreCase(transReportData.getSector()))
+            {
+                stringBuffer.append("<TR>");
+                stringBuffer.append("<TD colspan='7'> <h3> Sector : " +  transReportData.getSector() + " </h3></TD>");
+                stringBuffer.append("</TR>");
+                currSector=transReportData.getSector();
+
+            }
             stringBuffer.append("<TR>");
-            stringBuffer.append("<TD>" +  transReportData.getSector() + "</TD>");
             stringBuffer.append("<TD>" +  transReportData.getSecurity() + "</TD>");
             stringBuffer.append("<TD>" +  transReportData.getIndustry() + "</TD>");
             stringBuffer.append("<TD>" +  transReportData.getGroup() + "</TD>");
@@ -103,7 +114,7 @@ public class ReportService {
                 o2.getSector()));
     }
 
-    public void generateReport(String fromDateS, String toDateS,String groupBy,BusinessContext context) throws PrimusError
+    public Resource generateReport(String fromDateS, String toDateS,String groupBy,BusinessContext context) throws PrimusError
     {
         try {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -121,6 +132,8 @@ public class ReportService {
             Document document = Jsoup.parse(xhtml, "UTF-8");
             document.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
             savePDF(document.html(),rootFolder + "/" + unqValue);
+            Resource resource = new ClassPathResource(unqValue);
+            return  resource ;
 
         }catch (Exception ex){
             ex.printStackTrace();

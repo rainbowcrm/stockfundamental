@@ -173,9 +173,27 @@ function submitReport()
   let toDate = $("#dtTo").val();
   console.log('fromDate='+ fromDate);
   console.log('toDate='+ toDate);
-  let request = formRequest("GET",url+'reports/getTransSummary?fromDate='+fromDate+"&toDate="+ toDate+"&groupBy=Sector");
+ let request = new XMLHttpRequest () ;
+        request.open("GET",url+'reports/getTransSummary?fromDate='+fromDate+"&toDate="+ toDate+"&groupBy=Sector");
+        request.setRequestHeader("Content-type", "application/json");
+        request.setRequestHeader("Access-Control-Allow-Origin", url);
       setToken(request);
-      request.send() ;
+      request.responseType = "arraybuffer";
+      request.onload = function ()  {
+           if (this.status === 200) {
+               var blob = new Blob([request.response], {type: "application/pdf"});
+               var objectUrl = URL.createObjectURL(blob);
+               window.open(objectUrl);
+           }
+       };
+       request.send() ;
+
+       /*var myresponse = new Blob([request.response], {type : 'application/pdf'});
+       var a = document.createElement('a');
+       a.href = window.URL.createObjectURL(myresponse);
+       a.download = 'repSum.pdf';
+       a.click();*/
+
 
 }
 function applyFilter(currentPage,recordsPerPage)
