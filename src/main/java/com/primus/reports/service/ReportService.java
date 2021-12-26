@@ -1,5 +1,6 @@
 package com.primus.reports.service;
 
+import com.opencsv.CSVWriter;
 import com.primus.common.BusinessContext;
 import com.primus.common.CommonErrorCodes;
 import com.primus.common.PrimusError;
@@ -23,6 +24,7 @@ import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
@@ -58,52 +60,112 @@ public class ReportService {
         }
     }
 
-    private String  createHTML(List<TransReportData> transReportDataList)
+    private double findMedian(List<TransReportData> transReportDataList)
+    {
+        List<Double> doubleList = new ArrayList<Double>();
+        for (TransReportData transReportData : transReportDataList) {
+            doubleList.add(transReportData.getChange());
+        }
+
+        return MathUtil.getMedian(doubleList);
+    }
+
+    private void createCSV(List<TransReportData> transReportDataList,String csvFileName) throws PrimusError
+    {
+
+        try {
+            File file = new File(csvFileName);
+            FileWriter outputfile = new FileWriter(file);
+            CSVWriter writer = new CSVWriter(outputfile);
+            String[] header = { "Sector", "Industry", "Security" , "Group","Cap Size" ,"Open" ,"Close","Incr"  };
+            writer.writeNext(header);
+            for (TransReportData transReportData : transReportDataList) {
+                String[] row= {transReportData.getSector(),transReportData.getIndustry(),transReportData.getSecurity(),transReportData.getGroup(),
+                        transReportData.getMarketCapGroup(),
+                        String.valueOf(transReportData.getOpeningPrice()),String.valueOf(transReportData.getFinalPricde()),
+                        String.valueOf(transReportData.getChange()) };
+                writer.writeNext(row);
+                }
+            writer.close();
+        }catch (Exception ex){
+            ex.printStackTrace();
+            throw new PrimusError(CommonErrorCodes.CSV_COULDNOTBE_GEN,"CSV file could not be generated");
+
+        }
+    }
+
+    private List<TransReportData> getSubList(List<TransReportData> transReportDataList , TransReportData transReportData, String groupbBy)
+    {
+        List<TransReportData> subList = transReportDataList.stream().filter( entry -> {
+            return entry.getSector().equalsIgnoreCase(transReportData.getSector() )?true:false;
+        }).collect(Collectors.toList());
+        return subList;
+    }
+
+    private boolean hasGroupFCChanged(String currGroupValue,TransReportData transReportData,String groupBy)
+    {
+        if("Sector".equalsIgnoreCase(groupBy) && !currGroupValue.equalsIgnoreCase(transReportData.getSector())) return true;
+        if("Industry".equalsIgnoreCase(groupBy) && !currGroupValue.equalsIgnoreCase(transReportData.getIndustry())) return true;
+        if("Group".equalsIgnoreCase(groupBy) && !currGroupValue.equalsIgnoreCase(transReportData.getGroup())) return true;
+        if("marketCap".equalsIgnoreCase(groupBy) && !currGroupValue.equalsIgnoreCase(transReportData.getMarketCapGroup())) return true;
+        return false;
+    }
+
+    private String getGroupHeader(TransReportData transReportData,String groupBy)
+    {
+        if("Sector".equalsIgnoreCase(groupBy) ) return "Sector : " + transReportData.getSector();
+        if("Industry".equalsIgnoreCase(groupBy) )return "Industry : " +  transReportData.getIndustry();
+        if("Group".equalsIgnoreCase(groupBy) ) return "Group : " + transReportData.getGroup();
+        if("marketCap".equalsIgnoreCase(groupBy) )  return " MCap Size : " + transReportData.getMarketCapGroup();
+        return "";
+    }
+
+    private String  createHTML(List<TransReportData> transReportDataList,String groupBy)
     {
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append("<HTML><HEAD><TITLE>Trade Details</TITLE></HEAD>");
         stringBuffer.append("<BODY>");
         stringBuffer.append("<TABLE WIDTH='90%'>");
         stringBuffer.append("<TR>");
-      //  stringBuffer.append("<TH>Sector</TH>"  );
+        if (!"Sector".equalsIgnoreCase(groupBy)) stringBuffer.append("<TH>Sector</TH>"  );
         stringBuffer.append("<TH>Security</TH>"  );
-        stringBuffer.append("<TH>Industry</TH>"  );
-        stringBuffer.append("<TH>Group</TH>"  );
-        stringBuffer.append("<TH>Cap Size</TH>" );
+        if (!"Industry".equalsIgnoreCase(groupBy)) stringBuffer.append("<TH>Industry</TH>"  );
+        if (!"Group".equalsIgnoreCase(groupBy)) stringBuffer.append("<TH>Group</TH>"  );
+        if (!"marketCap".equalsIgnoreCase(groupBy)) stringBuffer.append("<TH>Cap Size</TH>" );
         stringBuffer.append("<TH>Open Price</TH>");
         stringBuffer.append("<TH>Close Price</TH>");
         stringBuffer.append("<TH>Change%</TH>");
         stringBuffer.append("</TR>");
 
-        String currSector = "";
+        String currGroup = "";
         for (TransReportData transReportData : transReportDataList )
         {
 
-            if (!currSector.equalsIgnoreCase(transReportData.getSector()))
+            if (hasGroupFCChanged(currGroup,transReportData,groupBy))
             {
                 stringBuffer.append("<TR>");
-                stringBuffer.append("<TD colspan='4'> <h3> Sector : " +  transReportData.getSector() + " </h3></TD>");
-                List<TransReportData> subList = transReportDataList.stream().filter( entry -> {
-                   return entry.getSector().equalsIgnoreCase(transReportData.getSector() )?true:false;
-                }).collect(Collectors.toList());
-                stringBuffer.append("<TD colspan='3'> <h3> No Shares : " + subList.size()  + " </h3></TD>");
-
+                stringBuffer.append("<TD border= '1px solid' colspan='4'> <h3>   " +  getGroupHeader(transReportData,groupBy) + " </h3></TD>");
+                List<TransReportData> subList = getSubList(transReportDataList,transReportData,groupBy);
+                double medianChange = findMedian(subList);
+                stringBuffer.append("<TD border= '1px solid' colspan='3'> <h4> No Shares : " + subList.size()  + " </h4>");
+                stringBuffer.append("<h4> Median Change : " + medianChange  + " </h4></TD>");
                 stringBuffer.append("</TR>");
-                currSector=transReportData.getSector();
-
+                if("Sector".equalsIgnoreCase(groupBy) ) currGroup= transReportData.getSector();
+                if("Industry".equalsIgnoreCase(groupBy) ) currGroup= transReportData.getIndustry();
+                if("Group".equalsIgnoreCase(groupBy) ) currGroup = transReportData.getGroup();
+                if("marketCap".equalsIgnoreCase(groupBy) )  currGroup = transReportData.getMarketCapGroup();
             }
             stringBuffer.append("<TR>");
+            if (!"Sector".equalsIgnoreCase(groupBy))  stringBuffer.append("<TD>" +  transReportData.getSector() + "</TD>");
             stringBuffer.append("<TD>" +  transReportData.getSecurity() + "</TD>");
-            stringBuffer.append("<TD>" +  transReportData.getIndustry() + "</TD>");
-            stringBuffer.append("<TD>" +  transReportData.getGroup() + "</TD>");
-            stringBuffer.append("<TD>" +  transReportData.getMarketCapGroup() + "</TD>");
+            if (!"Industry".equalsIgnoreCase(groupBy))  stringBuffer.append("<TD>" +  transReportData.getIndustry() + "</TD>");
+            if (!"Group".equalsIgnoreCase(groupBy)) stringBuffer.append("<TD>" +  transReportData.getGroup() + "</TD>");
+            if (!"marketCap".equalsIgnoreCase(groupBy)) stringBuffer.append("<TD>" +  transReportData.getMarketCapGroup() + "</TD>");
             stringBuffer.append("<TD>" +  transReportData.getOpeningPrice() + "</TD>");
             stringBuffer.append("<TD>" +  transReportData.getFinalPricde() + "</TD>");
             stringBuffer.append("<TD><B>" +  transReportData.getChange() + "</B></TD>");
             stringBuffer.append("</TR>");
-
         }
-
         stringBuffer.append("</TABLE>");
         stringBuffer.append("</HTML>");
         return stringBuffer.toString();
@@ -111,32 +173,51 @@ public class ReportService {
     }
 
 
-    private static void sort(List<TransReportData> list)
+    private static void sort(List<TransReportData> list,String groupField)
     {
-
-        list.sort((o1, o2)
-                -> o1.getSector().compareTo(
-                o2.getSector()));
+        if("Sector".equalsIgnoreCase(groupField)) {
+            list.sort((o1, o2)
+                    -> o1.getSector().compareTo(
+                    o2.getSector()));
+        }else if("Industry".equalsIgnoreCase(groupField)) {
+            list.sort((o1, o2)
+                    -> o1.getIndustry().compareTo(
+                    o2.getIndustry()));
+        }else if("Group".equalsIgnoreCase(groupField)) {
+            list.sort((o1, o2)
+                    -> o1.getGroup().compareTo(
+                    o2.getGroup()));
+        }else if("marketCap".equalsIgnoreCase(groupField)) {
+            list.sort((o1, o2)
+                    ->  o1.getMarketCapGroup().compareTo(
+                    o2.getMarketCapGroup()));
+        }
     }
 
-    public Resource generateReport(String fromDateS, String toDateS,String groupBy,BusinessContext context) throws PrimusError
+    public Resource generateReport(String fromDateS, String toDateS,String groupBy, String repFormat,BusinessContext context) throws PrimusError
     {
         try {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date fromDate = simpleDateFormat.parse(fromDateS);
             Date toDate = simpleDateFormat.parse(toDateS);
             List<TransReportData> transReportDataList = generateReport(fromDate, toDate);
-            sort(transReportDataList);
-            String xhtml = createHTML(transReportDataList);
-            String unqValue = "reports/" + ExportService.randomStr()   +".pdf";
-            String absPath = ResourceUtils.getFile("classpath:application.properties").getAbsolutePath();
-            String rootFolder = absPath.substring(0,absPath.length()-22);
-            /*FileOutputStream op = new FileOutputStream(rootFolder + "/" + unqValue);
-            op.write(xhtml.getBytes());
-            op.close();*/
-            Document document = Jsoup.parse(xhtml, "UTF-8");
-            document.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
-            savePDF(document.html(),rootFolder + "/" + unqValue);
+            sort(transReportDataList,groupBy);
+            String unqValue ="";
+            if("PDF".equalsIgnoreCase(repFormat)) {
+                String xhtml = createHTML(transReportDataList,groupBy);
+                unqValue = "reports/" + ExportService.randomStr()   +".pdf";
+                String absPath = ResourceUtils.getFile("classpath:application.properties").getAbsolutePath();
+                String rootFolder = absPath.substring(0,absPath.length()-22);
+                Document document = Jsoup.parse(xhtml, "UTF-8");
+                document.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
+                savePDF(document.html(), rootFolder + "/" + unqValue);
+            }else  if("CSV".equalsIgnoreCase(repFormat)){
+                unqValue = "reports/" + ExportService.randomStr()   +".csv";
+                String absPath = ResourceUtils.getFile("classpath:application.properties").getAbsolutePath();
+                String rootFolder = absPath.substring(0,absPath.length()-22);
+                createCSV(transReportDataList,rootFolder + "/" + unqValue);
+
+            }
             Resource resource = new ClassPathResource(unqValue);
             return  resource ;
 

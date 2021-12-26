@@ -99,7 +99,7 @@ public class UIController {
             response.setContentType("application/vnd.ms-excel");
             response.setHeader("Content-Disposition", "attachment; filename=repNew.xlsx");
             byte[] bytes = resource.getInputStream().readAllBytes();
-       
+
             response.getOutputStream().write(bytes,0,(int)resource.getFile().length());
 
                           /*  byte[] bytes=  ResponseEntity<byte[]>.ok()

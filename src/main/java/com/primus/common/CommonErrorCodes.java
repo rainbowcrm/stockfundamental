@@ -12,6 +12,7 @@ public class CommonErrorCodes {
     public static final int TO_DATE_WRONG = 10009;
     public static final int TO_AFTER_FROM = 10010;
     public static final int PDF_COULDNOTBE_GEN = 10011;
+    public static final int CSV_COULDNOTBE_GEN = 10012;
 
 }
 

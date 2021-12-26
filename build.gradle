@@ -42,6 +42,7 @@ dependencies {
     implementation group: 'javax.mail', name: 'mail', version: '1.4.1'
     implementation group: 'org.xhtmlrenderer', name: 'flying-saucer-core', version: '9.0.1'
     implementation group: 'org.xhtmlrenderer', name: 'flying-saucer-pdf-itext5', version: '9.0.1'
+    implementation group: 'com.opencsv', name: 'opencsv', version: '4.3'
 
 
 

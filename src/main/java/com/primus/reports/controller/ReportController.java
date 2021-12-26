@@ -21,12 +21,18 @@ public class ReportController {
 
     @RequestMapping(value = "/getTransSummary", method = RequestMethod.GET)
     public void getTransSummary(@RequestParam String fromDate, @RequestParam String toDate, @RequestParam String groupBy,
+                                @RequestParam String repFormat,
                                 HttpServletRequest request, HttpServletResponse response)
     {
         try {
-           Resource resource = reportService.generateReport(fromDate, toDate, groupBy, null);
-            response.setContentType("application/pdf");
-            response.setHeader("Content-Disposition", "attachment; filename=repNew.pdf");
+           Resource resource = reportService.generateReport(fromDate, toDate, groupBy, repFormat,null);
+           if("PDF".equalsIgnoreCase(repFormat)) {
+               response.setContentType("application/pdf");
+               response.setHeader("Content-Disposition", "attachment; filename=repNew.pdf");
+           }else if ("CSV".equalsIgnoreCase(repFormat)){
+               response.setContentType("application/CSV");
+               response.setHeader("Content-Disposition", "attachment; filename=repNew.csv");
+           }
             byte[] bytes = resource.getInputStream().readAllBytes();
             response.getOutputStream().write(bytes,0,(int)resource.getFile().length());
         }catch (Exception ex){

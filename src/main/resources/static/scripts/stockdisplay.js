@@ -174,12 +174,27 @@ function downloadReport(api,typeResp)
         request.setRequestHeader("Content-type", "application/json");
         request.setRequestHeader("Access-Control-Allow-Origin", url);
       setToken(request);
+      $("#btnRepIcon").removeClass('fa fa-file');
+      $("#btnRepIcon").addClass('fa fa-spinner fa-spin');
+      $("#btnRepIcon").prop('disabled', true);
       request.responseType = "arraybuffer";
+      //"fa fa-spinner fa-spin"
       request.onload = function ()  {
            if (this.status === 200) {
                var blob = new Blob([request.response], {type: typeResp});
                var objectUrl = URL.createObjectURL(blob);
+               $("#btnRepIcon").removeClass('fa fa-spinner fa-spin');
+               $("#btnRepIcon").addClass('fa fa-file');
+               $("#btnRepIcon").prop('disabled', false);
+               if ('application/csv' == typeResp)
+               {
+                  var a = document.createElement('a');
+                         a.href = objectUrl;
+                         a.download = 'repSum.csv';
+                         a.click();
+               }else {
                window.open(objectUrl);
+               }
            }
        };
        request.send() ;
@@ -188,10 +203,16 @@ function submitReport()
 {
   let fromDate = $("#dtFrom").val();
   let toDate = $("#dtTo").val();
+  let format = $("#selFormat").val();
+  let grp = $("#selIndustry").val();
+
   console.log('fromDate='+ fromDate);
   console.log('toDate='+ toDate);
 
-  downloadReport (url+'reports/getTransSummary?fromDate='+fromDate+"&toDate="+ toDate+"&groupBy=Sector",'application/pdf');
+ if ("PDF" == format)
+  downloadReport (url+'reports/getTransSummary?fromDate='+fromDate+"&toDate="+ toDate+"&groupBy="+ grp + "&repFormat="+ format,'application/pdf');
+  else
+  downloadReport (url+'reports/getTransSummary?fromDate='+fromDate+"&toDate="+ toDate+"&groupBy="+ grp + "&repFormat="+ format,'application/csv');
        /*var myresponse = new Blob([request.response], {type : 'application/pdf'});
        var a = document.createElement('a');
        a.href = window.URL.createObjectURL(myresponse);
