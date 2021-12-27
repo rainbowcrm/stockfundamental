@@ -91,6 +91,11 @@ public class UserService {
 
     }
 
+    public User getUserByEmail(String email)
+    {
+        return userDAO.getByEmail(email);
+    }
+
     public void sendOTP(String phone)
     {
         UserOTP userOTP = new UserOTP();
@@ -98,6 +103,8 @@ public class UserService {
         userOTP.setPhoneNumber(phone);
         userOTPDAO.update(userOTP);
     }
+
+
 
 
 

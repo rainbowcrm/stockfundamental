@@ -1,5 +1,6 @@
 package com.primus.reports.controller;
 
+import com.primus.common.BusinessContext;
 import com.primus.reports.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,8 @@ public class ReportController {
                                 HttpServletRequest request, HttpServletResponse response)
     {
         try {
-           Resource resource = reportService.generateReport(fromDate, toDate, groupBy, repFormat,null);
+            BusinessContext businessContext = BusinessContext.getBusinessContent();
+           Resource resource = reportService.generateReport(fromDate, toDate, groupBy, repFormat,businessContext);
            if("PDF".equalsIgnoreCase(repFormat)) {
                response.setContentType("application/pdf");
                response.setHeader("Content-Disposition", "attachment; filename=repNew.pdf");

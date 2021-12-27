@@ -120,11 +120,22 @@ public class ReportService {
         return "";
     }
 
-    private String  createHTML(List<TransReportData> transReportDataList,String groupBy)
+    private String getHeader(BusinessContext businessContext,String fromDate, String toDate)
+    {
+        StringBuffer header = new StringBuffer("<H2>");
+        header.append("Trade From:  " + fromDate + " To: " + toDate + "</H2>");
+        header.append("<H3>Report run by " + businessContext.getUser().getFirstName() + " "+ businessContext.getUser().getLastName() +"</H3>" );
+        return header.toString();
+
+    }
+
+    private String  createHTML(List<TransReportData> transReportDataList,String groupBy,BusinessContext businessContext,
+                               String fromDate, String toDate)
     {
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append("<HTML><HEAD><TITLE>Trade Details</TITLE></HEAD>");
         stringBuffer.append("<BODY>");
+        stringBuffer.append(getHeader(businessContext,fromDate,toDate));
         stringBuffer.append("<TABLE WIDTH='90%'>");
         stringBuffer.append("<TR>");
         if (!"Sector".equalsIgnoreCase(groupBy)) stringBuffer.append("<TH>Sector</TH>"  );
@@ -204,7 +215,7 @@ public class ReportService {
             sort(transReportDataList,groupBy);
             String unqValue ="";
             if("PDF".equalsIgnoreCase(repFormat)) {
-                String xhtml = createHTML(transReportDataList,groupBy);
+                String xhtml = createHTML(transReportDataList,groupBy,context,fromDateS,toDateS);
                 unqValue = "reports/" + ExportService.randomStr()   +".pdf";
                 String absPath = ResourceUtils.getFile("classpath:application.properties").getAbsolutePath();
                 String rootFolder = absPath.substring(0,absPath.length()-22);
