@@ -199,28 +199,32 @@ function downloadReport(api,typeResp)
        };
        request.send() ;
 }
-function submitReport()
+
+
+
+function runReport(reportAPI, reportIp)
 {
-  let fromDate = $("#dtFrom").val();
+ let fromDate = $("#dtFrom").val();
   let toDate = $("#dtTo").val();
   let format = $("#selFormat").val();
-  let grp = $("#selIndustry").val();
-
-  console.log('fromDate='+ fromDate);
-  console.log('toDate='+ toDate);
-
- if ("PDF" == format)
-  downloadReport (url+'reports/getTransSummary?fromDate='+fromDate+"&toDate="+ toDate+"&groupBy="+ grp + "&repFormat="+ format,'application/pdf');
+  if ("PDF" == format)
+    downloadReport (url+reportAPI +'?fromDate='+fromDate+"&toDate="+ toDate+"&"+ reportIp + "&repFormat="+ format,'application/pdf');
   else
-  downloadReport (url+'reports/getTransSummary?fromDate='+fromDate+"&toDate="+ toDate+"&groupBy="+ grp + "&repFormat="+ format,'application/csv');
-       /*var myresponse = new Blob([request.response], {type : 'application/pdf'});
-       var a = document.createElement('a');
-       a.href = window.URL.createObjectURL(myresponse);
-       a.download = 'repSum.pdf';
-       a.click();*/
-
+    downloadReport (url+reportAPI + '?fromDate='+fromDate+"&toDate="+ toDate+"&"+ reportIp + "&repFormat="+ format,'application/csv');
 
 }
+function submitReport()
+{
+  let grp = $("#selIndustry").val();
+  runReport('reports/getTransSummary',"groupBy="+grp)
+}
+
+function submitDetailedReport()
+{
+  let secur = $("#txtSecurity").val();
+  runReport('reports/getTransDetails',"stock="+secur)
+}
+
 function applyFilter(currentPage,recordsPerPage)
 {
     postContent = getFilterJSON();

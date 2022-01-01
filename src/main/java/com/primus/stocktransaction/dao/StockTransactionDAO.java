@@ -27,4 +27,14 @@ public class StockTransactionDAO {
         List<StockTransaction> ans = query.getResultList();
         return ans;
     }
+
+    public List<StockTransaction> getDataForStock(Date from , Date to , String stock  ) {
+        Query query =  em.createQuery("from StockTransaction  where transDate>=? and transDate <= ? and security_name =? order by  transDate")  ;
+        query.setParameter(1,from);
+        query.setParameter(2,to);
+        query.setParameter(3,stock);
+
+        List<StockTransaction> ans = query.getResultList();
+        return ans;
+    }
 }

@@ -11,6 +11,9 @@ public class TransReportData {
     Double finalPricde;
     Double change;
 
+    public TransReportData() {
+    }
+
     public String getSecurity() {
         return security;
     }

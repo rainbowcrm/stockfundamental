@@ -44,7 +44,7 @@ public class ReportService {
     StockMasterDAO stockMasterDAO ;
 
 
-    private void savePDF(String xhtml,String pdfNAME) throws PrimusError
+    protected void savePDF(String xhtml,String pdfNAME) throws PrimusError
     {
         try (OutputStream outputStream = new FileOutputStream(pdfNAME)) {
             ITextRenderer renderer = new ITextRenderer();
@@ -120,7 +120,7 @@ public class ReportService {
         return "";
     }
 
-    private String getHeader(BusinessContext businessContext,String fromDate, String toDate)
+    protected String getHeader(BusinessContext businessContext,String fromDate, String toDate)
     {
         StringBuffer header = new StringBuffer("<H2>");
         header.append("Trade From:  " + fromDate + " To: " + toDate + "</H2>");
