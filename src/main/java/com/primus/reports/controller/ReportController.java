@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.core.io.Resource;
+import org.springframework.web.client.HttpServerErrorException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -43,6 +44,7 @@ public class ReportController {
             response.getOutputStream().write(bytes,0,(int)resource.getFile().length());
         }catch (Exception ex){
             ex.printStackTrace();
+            throw new HttpServerErrorException(HttpStatus.BAD_REQUEST,ex.getMessage(),ex.getMessage().getBytes(),null);
         }
     }
 
@@ -65,6 +67,7 @@ public class ReportController {
             response.getOutputStream().write(bytes,0,(int)resource.getFile().length());
         }catch (Exception ex){
             ex.printStackTrace();
+            throw new HttpServerErrorException(HttpStatus.BAD_REQUEST,ex.getMessage(),ex.getMessage().getBytes(),null);
         }
     }
 }

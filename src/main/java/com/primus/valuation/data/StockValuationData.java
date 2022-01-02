@@ -13,6 +13,10 @@ public class StockValuationData extends StockCompleteData {
         return overValuedBy;
     }
 
+    private IntrinsicData intrinsicData;
+
+    private Double fairPrice;
+
     public void setOverValuedBy(float overValuedBy) {
         this.overValuedBy = overValuedBy;
     }
@@ -37,5 +41,21 @@ public class StockValuationData extends StockCompleteData {
                 ", groupCap='" + getGroupCap() + '\'' +
                 ", overValuedBy='" + overValuedBy + '\'' +
                 '}';
+    }
+
+    public IntrinsicData getIntrinsicData() {
+        return intrinsicData;
+    }
+
+    public void setIntrinsicData(IntrinsicData intrinsicData) {
+        this.intrinsicData = intrinsicData;
+    }
+
+    public Double getFairPrice() {
+        return fairPrice;
+    }
+
+    public void setFairPrice(Double fairPrice) {
+        this.fairPrice = fairPrice;
     }
 }

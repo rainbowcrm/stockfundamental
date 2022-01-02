@@ -34,27 +34,50 @@ public class ValuationService {
     @Autowired
     StockMasterService stockMasterService;
 
-    public Map<String,List<StockValuationData>> getUOVShares( int noOV,int noUV)
+    public List<StockValuationData> getOverValuedShares()
     {
-        List<FundamentalData> fundamentalDataList = fundamentalService.listData(0,900,"","");
-        List<FinancialData> financialDataList = financialService.getAllFinancials() ;
         List<StocksMaster> stocksMasterList = stockMasterService.getAllStocks();
-        List<StockValuationData> stockCompleteDataList = new ArrayList<>();
+        List<StockValuationData> stockCompleteDataList= getStockCompleteDataList(stocksMasterList);
+        Set<String> sectors = getSectors(stocksMasterList);
+        List<StockValuationData> ovShares = getOVShares(sectors,stocksMasterList,stockCompleteDataList);
+        return ovShares;
+    }
 
-        for (FundamentalData fundamentalData : fundamentalDataList) {
-            FinancialData financialDataSel = financialDataList.stream().filter( financialData ->
-            {  return financialData.getBseCode().equalsIgnoreCase(fundamentalData.getBseCode())?true:false; }).findFirst().orElse(null) ;
-            StocksMaster stocksMasterSel = stocksMasterList.stream().filter(stocksMaster ->
-            { return  stocksMaster.getBseCode().equalsIgnoreCase(fundamentalData.getBseCode())?true:false; }).findFirst().orElse(null);
-            StockValuationData stockCompleteData = new StockValuationData(fundamentalData,financialDataSel,stocksMasterSel);
-            stockCompleteDataList.add(stockCompleteData);
+    public List<StockValuationData> getUnderValuedShares()
+    {
+        List<StocksMaster> stocksMasterList = stockMasterService.getAllStocks();
+        List<StockValuationData> stockCompleteDataList= getStockCompleteDataList(stocksMasterList);
+        Set<String> sectors = getSectors(stocksMasterList);
+        List<StockValuationData> uvShares = getUVShares(sectors,stocksMasterList,stockCompleteDataList);
+        return uvShares;
+    }
+
+    private List<StockValuationData> getOVShares(Set<String> sectors,List<StocksMaster> stocksMasterList,List<StockValuationData> stockCompleteDataList)
+    {
+        List<StockValuationData> ovShares = new ArrayList<>();
+        for (String sector : sectors) {
+            List<StockValuationData> ovLShares = identifyOvervaluedShares(sector,"L",stockCompleteDataList);
+            ovShares.addAll(ovLShares);
+
+            List<StockValuationData> ovMShares = identifyOvervaluedShares(sector,"M",stockCompleteDataList);
+            ovShares.addAll(ovMShares);
+
+            List<StockValuationData> ovSShares = identifyOvervaluedShares(sector,"S",stockCompleteDataList);
+            ovShares.addAll(ovSShares);
+
         }
 
-        Set<String> sectors = new HashSet<>();
-        stocksMasterList.forEach( stocksMaster ->  {
-            if (StringUtils.isNotEmpty(stocksMaster.getSector() ))
-                sectors.add(stocksMaster.getSector());
-        });
+        Collections.sort(
+                ovShares,
+                (i1,
+                 i2) ->    i1.getOverValuedBy() < i2.getOverValuedBy()?1:-1);
+        return ovShares;
+
+    }
+
+
+        private List<StockValuationData> getUVShares(Set<String> sectors,List<StocksMaster> stocksMasterList,List<StockValuationData> stockCompleteDataList)
+    {
 
         List<StockValuationData> uvShares = new ArrayList<>();
         for (String sector : sectors) {
@@ -68,50 +91,64 @@ public class ValuationService {
             uvShares.addAll(uvSShares);
 
         }
-
         Collections.sort(
                 uvShares,
                 (i1,
                  i2) ->    i1.getOverValuedBy() > i2.getOverValuedBy()?1:-1);
+        return uvShares;
+    }
+
+
+    private  List<StockValuationData> getStockCompleteDataList(List<StocksMaster> stocksMasterList)
+    {
+        List<FundamentalData> fundamentalDataList = fundamentalService.listData(0,900,"","");
+        List<FinancialData> financialDataList = financialService.getAllFinancials() ;
+
+        List<StockValuationData> stockCompleteDataList = new ArrayList<>();
+        for (FundamentalData fundamentalData : fundamentalDataList) {
+            FinancialData financialDataSel = financialDataList.stream().filter( financialData ->
+            {  return financialData.getBseCode().equalsIgnoreCase(fundamentalData.getBseCode())?true:false; }).findFirst().orElse(null) ;
+            StocksMaster stocksMasterSel = stocksMasterList.stream().filter(stocksMaster ->
+            { return  stocksMaster.getBseCode().equalsIgnoreCase(fundamentalData.getBseCode())?true:false; }).findFirst().orElse(null);
+            StockValuationData stockCompleteData = new StockValuationData(fundamentalData,financialDataSel,stocksMasterSel);
+            stockCompleteDataList.add(stockCompleteData);
+        }
+        return stockCompleteDataList;
+    }
+
+    private Set<String> getSectors(List<StocksMaster> stocksMasterList)
+    {
+        Set<String> sectors = new HashSet<>();
+        stocksMasterList.forEach( stocksMaster ->  {
+            if (StringUtils.isNotEmpty(stocksMaster.getSector() ))
+                sectors.add(stocksMaster.getSector());
+        });
+        return sectors;
+    }
+    public Map<String,List<StockValuationData>> getUOVShares( int noOV,int noUV)
+    {
+        List<StocksMaster> stocksMasterList = stockMasterService.getAllStocks();
+        List<StockValuationData> stockCompleteDataList= getStockCompleteDataList(stocksMasterList);
+        Set<String> sectors = getSectors(stocksMasterList);
+        List<StockValuationData> uvShares = getUVShares(sectors,stocksMasterList,stockCompleteDataList);
         if (noUV > 0 ) {
             while ( uvShares.size() > noUV){
                 uvShares.remove( uvShares.size() -1 );
             }
         }
-
-        List<StockValuationData> ovShares = new ArrayList<>();
-        for (String sector : sectors) {
-            List<StockValuationData> ovLShares = identifyOvervaluedShares(sector,"L",stockCompleteDataList);
-            ovShares.addAll(ovLShares);
-
-            List<StockValuationData> ovMShares = identifyOvervaluedShares(sector,"M",stockCompleteDataList);
-            ovShares.addAll(ovMShares);
-
-            List<StockValuationData> ovSShares = identifyOvervaluedShares(sector,"S",stockCompleteDataList);
-            ovShares.addAll(ovSShares);
-
-
-        }
-
-        Collections.sort(
-                ovShares,
-                (i1,
-                 i2) ->    i1.getOverValuedBy() < i2.getOverValuedBy()?1:-1);
-
+        List<StockValuationData> ovShares = getOVShares(sectors,stocksMasterList,stockCompleteDataList);
         if (noOV > 0 ) {
             while ( ovShares.size() > noOV){
                 ovShares.remove( ovShares.size() -1 );
             }
         }
-
-
         Map<String,List<StockValuationData>> highVariantShares = new HashMap<>();
         highVariantShares.put("OV",ovShares);
         highVariantShares.put("UV",uvShares);
-
         return highVariantShares;
-
     }
+
+
 
     private List<StockValuationData> identifyUndervaluedShares(String sector, String marketCap,List<StockValuationData> stockCompleteDataList)
     {
@@ -131,6 +168,12 @@ public class ValuationService {
                 Double pbDecr =  MathUtil.perChange(stockCompleteData.getPb(),intrinsicData.getPb());
                 Double roeIncr =  MathUtil.perChange(stockCompleteData.getRoe(),intrinsicData.getRoe());
                 stockCompleteData.setOverValuedBy(-1 *  ((float)MathUtil.getDoubleValue(Math.abs(peDecr)+ Math.abs(pbDecr) + Math.abs(roeIncr))/3));
+                stockCompleteData.setIntrinsicData(intrinsicData);
+                Double closestFactor = (Math.abs(peDecr)<Math.abs(pbDecr) && Math.abs(peDecr)<Math.abs(roeIncr))?Math.abs(peDecr)
+                        :((Math.abs(pbDecr)<Math.abs(roeIncr))?Math.abs(pbDecr):Math.abs(roeIncr));
+
+                Double intrinsicValue = stockCompleteData.getCurrentPrice() + MathUtil.round( ((closestFactor * stockCompleteData.getCurrentPrice())/100) );
+                stockCompleteData.setFairPrice(intrinsicValue);
                 underValuedShares.add(stockCompleteData);
             }
         }
@@ -139,7 +182,7 @@ public class ValuationService {
 
     private List<StockValuationData> identifyOvervaluedShares(String sector, String marketCap,List<StockValuationData> stockCompleteDataList)
     {
-        List<StockValuationData> underValuedShares= new ArrayList<>();
+        List<StockValuationData> overValuedShares= new ArrayList<>();
         List<StockValuationData> filteredDataList = stockCompleteDataList.stream().filter(stockCompleteData ->  {
             return  stockCompleteData.getSector().equalsIgnoreCase(sector) && stockCompleteData.getGroupCap().equalsIgnoreCase(marketCap);
         }).collect(Collectors.toList());
@@ -155,10 +198,16 @@ public class ValuationService {
                 Double pbDecr =  MathUtil.perChange(stockCompleteData.getPb(),intrinsicData.getPb());
                 Double roeIncr =  MathUtil.perChange(stockCompleteData.getRoe(),intrinsicData.getRoe());
                 stockCompleteData.setOverValuedBy(( (float)MathUtil.getDoubleValue(Math.abs(peDecr)+ Math.abs(pbDecr) + Math.abs(roeIncr))/3));
-                underValuedShares.add(stockCompleteData);
+                stockCompleteData.setIntrinsicData(intrinsicData);
+                Double closestFactor = (Math.abs(peDecr)<Math.abs(pbDecr) && Math.abs(peDecr)<Math.abs(roeIncr))?Math.abs(peDecr)
+                        :((Math.abs(pbDecr)<Math.abs(roeIncr))?Math.abs(pbDecr):Math.abs(roeIncr));
+
+                Double intrinsicValue = stockCompleteData.getCurrentPrice() - MathUtil.round( ((closestFactor * stockCompleteData.getCurrentPrice())/100) );
+                stockCompleteData.setFairPrice(MathUtil.round(intrinsicValue));
+                overValuedShares.add(stockCompleteData);
             }
         }
-        return underValuedShares;
+        return overValuedShares;
     }
 
 
@@ -190,10 +239,10 @@ public class ValuationService {
         });
         try {
             IntrinsicData intrinsicData = new IntrinsicData();
-            intrinsicData.setPb(MathUtil.getMedian(pbList));
-            intrinsicData.setPe(MathUtil.getMedian(peList));
-            intrinsicData.setRoe(MathUtil.getMedian(roeList));
-            intrinsicData.setDivident(MathUtil.getMedian(dividentList));
+            intrinsicData.setPb(MathUtil.round(MathUtil.getMedian(pbList)));
+            intrinsicData.setPe(MathUtil.round(MathUtil.getMedian(peList)));
+            intrinsicData.setRoe(MathUtil.round(MathUtil.getMedian(roeList)));
+            intrinsicData.setDivident(MathUtil.round(MathUtil.getMedian(dividentList)));
 
             return intrinsicData;
         }catch (Exception ex)

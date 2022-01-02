@@ -68,8 +68,24 @@ if (currentPage > 0) {
      console.log("Responss   e =" + request.responseText );
      reRenderTable('dataTableExample1',snapsotresponse);
 
-
  }
+
+ function getOVUVshares(api)
+  {
+      console.log(url);
+      let fullURL = url+'valuation/getUnderValued';
+      if(api == 'Over')
+            fullURL = url+'valuation/getOverValued';
+      let request = formRequest("GET",fullURL);
+      setToken(request);
+      request.send() ;
+      var snapsotresponse  =   JSON.parse(request.responseText)  ;
+      console.log("Responss   e =" + request.responseText );
+      reRenderTableForOVUV('tableValuation',snapsotresponse);
+  }
+
+
+
 function getAllIndustries()
 {
     let request = formRequest("GET",url+'uiapi/getDistinctIndustry');
@@ -181,6 +197,7 @@ function downloadReport(api,typeResp)
       //"fa fa-spinner fa-spin"
       request.onload = function ()  {
            if (this.status === 200) {
+                $("#errorMSG").html('');
                var blob = new Blob([request.response], {type: typeResp});
                var objectUrl = URL.createObjectURL(blob);
                $("#btnRepIcon").removeClass('fa fa-spinner fa-spin');
@@ -195,6 +212,10 @@ function downloadReport(api,typeResp)
                }else {
                window.open(objectUrl);
                }
+           }else{
+           $("#errorMSG").html('Please select a shorter Range of Date!');
+           console.log(this.response);
+
            }
        };
        request.send() ;
@@ -312,6 +333,45 @@ function getAllStockCount()
             applyColor();
 
  }
+
+ function reRenderTableForOVUV(tableId,data)
+  {
+          var dataTable = document.getElementById(tableId);
+          while (dataTable.rows.length > 1) {
+                  dataTable.deleteRow(dataTable.rows.length -1 );
+          }
+
+          for ( var i in data) {
+                 singleRow=  data[i];
+                 console.log(singleRow);
+                 console.log(singleRow.intrinsicData);
+
+                 //innerContent = "<tr>";
+                 var bgColor = i%2==0?'beige':'white';
+                 innerContent = '<tr data-row="' + bgColor +  '">';
+                 innerContent =  innerContent + '<td>' + singleRow['bseCode'] + '</td>';
+                 innerContent =  innerContent + '<td>' + singleRow['stock'] + '</td>';
+                 innerContent =  innerContent + '<td>' + singleRow['sector'] + '</td>';
+                 innerContent =  innerContent + '<td>' + singleRow['groupCap'] + '</td>';
+                 innerContent =  innerContent + '<td>' + singleRow['currentPrice'] + '</td>';
+                 innerContent =  innerContent + '<td>' + singleRow['fairPrice'] + '</td>';
+                 innerContent =  innerContent + '<td>' + singleRow['eps'] + '</td>';
+                 innerContent =  innerContent + '<td>' + singleRow['bookvalue'] + '</td>';
+                 innerContent =  innerContent + '<td>' + singleRow['divident'] + '</td>';
+                 innerContent =  innerContent + '<td>' + singleRow['pe'] + '</td>';
+                 innerContent =  innerContent + '<td>' + singleRow.intrinsicData['pe'] + '</td>';
+                 innerContent =  innerContent + '<td>' + singleRow['pb'] + '</td>';
+                 innerContent =  innerContent + '<td>' + singleRow.intrinsicData['pb'] + '</td>';
+                 innerContent =  innerContent + '<td>' + singleRow['roe'] + '</td>';
+                 innerContent =  innerContent + '<td>' + singleRow.intrinsicData['roe'] + '</td>';
+                 innerContent =  innerContent + '</tr>';
+                  var newrow = dataTable.insertRow();
+                  newrow.innerHTML =  innerContent;
+              }
+             applyColor();
+
+  }
+
 
  function applyColor()
  {
