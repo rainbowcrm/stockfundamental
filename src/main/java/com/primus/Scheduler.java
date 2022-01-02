@@ -13,7 +13,7 @@ public class Scheduler {
     @Autowired
     GeneralService generalService;
 
-    Boolean run = false;
+    Boolean run = true;
 
     @Scheduled(cron = "*/60 * * * * *")
     void someExecution()
@@ -21,7 +21,7 @@ public class Scheduler {
         if (!run) {
             run = true;
             System.out.println("Hello " + new java.util.Date());
-            generalService.readDailyTransactionData();
+          //  generalService.readDailyTransactionData();
         }
 
     }

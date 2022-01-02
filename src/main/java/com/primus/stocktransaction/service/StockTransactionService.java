@@ -37,7 +37,7 @@ public class StockTransactionService {
                 Double lowPrice =   Double.parseDouble(headerMap.get("Low"));
                 Double closePrice=  Double.parseDouble(headerMap.get("LTP"));
                 String transDateStr = headerMap.get("Ason");
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("DD-MMM-yy | hh:mm");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMM yy | hh:mm");
                 Date transDate = simpleDateFormat.parse(transDateStr);
 
                 StockTransaction stockTransaction = new StockTransaction();
