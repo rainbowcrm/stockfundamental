@@ -166,25 +166,31 @@ public class FundamentalService {
         fundamentalsDAO.update(fundamentalData);
     }
 
-    public void saveAllFundamentals(String groupC) throws Exception
+
+
+    public void saveAllFundamentals(String groupC)
     {
         List<StocksMaster> stocksMasterList =  stockMasterService.getAllTrackedStocks(groupC);
         for (StocksMaster stocksMaster : stocksMasterList) {
-            Map<String, Object> comHeaderData = apiService.getCompanyHeader(stocksMaster.getBseCode());
-            Map<String, Object> scripHeaderData = apiService.getScripHeaderData(stocksMaster.getBseCode());
-            Map<String, Object> fdMAP = new HashMap<>();
-            fdMAP.put("CompHeaderData", comHeaderData);
-            fdMAP.put("ScripHeaderData", scripHeaderData);
-            FundamentalData fundamentalData = createFullFDFromMap(fdMAP);
-            System.out.println("id=" + stocksMaster.getId() + ":" + fundamentalData);
-            if( fundamentalData.getCurPrice() >0.0) {
-                createFundamentals(fundamentalData);
-            }else {
-                System.out.println("Skipping =  " + fundamentalData );
+            try {
+                Map<String, Object> comHeaderData = apiService.getCompanyHeader(stocksMaster.getBseCode());
+                Map<String, Object> scripHeaderData = apiService.getScripHeaderData(stocksMaster.getBseCode());
+                Map<String, Object> fdMAP = new HashMap<>();
+                fdMAP.put("CompHeaderData", comHeaderData);
+                fdMAP.put("ScripHeaderData", scripHeaderData);
+                FundamentalData fundamentalData = createFullFDFromMap(fdMAP);
+                System.out.println("id=" + stocksMaster.getId() + ":" + fundamentalData);
+                if (fundamentalData.getCurPrice() > 0.0) {
+                    createFundamentals(fundamentalData);
+                } else {
+                    System.out.println("Skipping =  " + fundamentalData);
+                }
+                Thread.sleep(500);
+            }catch (Exception ex)
+            {
+                ex.printStackTrace();
+
             }
-
-            Thread.sleep(500);
-
         }
 
 

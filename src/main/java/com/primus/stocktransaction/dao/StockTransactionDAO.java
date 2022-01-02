@@ -1,8 +1,6 @@
 package com.primus.stocktransaction.dao;
 
-import com.primus.stock.master.model.StocksMaster;
 import com.primus.stocktransaction.model.StockTransaction;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
@@ -36,5 +34,10 @@ public class StockTransactionDAO {
 
         List<StockTransaction> ans = query.getResultList();
         return ans;
+    }
+
+    @Transactional
+    public void update(StockTransaction model) {
+        em.merge(model);
     }
 }
