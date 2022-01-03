@@ -1,0 +1,88 @@
+<html lang="en">
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,500,500i,700,800i" rel="stylesheet">
+</head>
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="./../scripts/query.js" ></script>
+<div class="panel-body" style="padding-left: 10px;padding-right: 10px;">
+    <br>
+    <h3 style="color:blue;"> Queries </h3>
+    <span style="color:red" id="errorMSG"></span>
+    <br>
+    <div class="table-responsive">
+        <table id="dataTableExample1" class="table table-bordered table-striped table-hover">
+            <thead>
+            <tr class="table-primary">
+                <th width="5%"></th>
+                <th width="20%">Field</th>
+                <th width="15%" >Operator</th>
+                <th width="25%">Value</th>
+                <th width="5%"></th>
+                <th width="20%">And/Or</th>
+            </tr>
+            <tr>
+                <td width="5%">
+                    <input type="text" class="form-control"  placeholder="(" id="txtOpenBracket"/>
+                </td>
+                <td width="20%">
+                    <select id="qryField" class="form-control">
+                        <option value="INDS">Industry</option>
+                        <option value="SCT">Sector</option>
+                        <option value="CRPRC">Curr Price</option>
+                        <option value="EPS" >EPS</option>
+                        <option value="BV" >Book Value</option>
+                        <option value="PE" >PE</option>
+                        <option value="PB" >PB</option>
+                        <option value="ROE">ROE</option>
+                        <option value="DIV">Divident</option>
+                        <option value="CPSZ">Cap Size</option>
+                        <option value="RVN">Revenue</option>
+                    </select>
+                </td>
+                <td width="15%">
+                    <select id="qryOP" class="form-control">
+                        <option value="EQ">==</option>
+                        <option value="NEW">!=</option>
+                        <option value="GT"> > </option>
+                        <option value="GTE"> >= </option>
+                        <option value="LT"> < </option>
+                        <option value="LTE"> <= </option>
+                    </select>
+                </td>
+                <td width="25%">
+                    <input type="text" class="form-control" id ="txtValue"/>
+                </td>
+                <td width="5%">
+                    <input type="text"  class="form-control"  placeholder=")" id="txtCloseBracket"/>
+                </td>
+                <td width="20%">
+                    <input type="Hidden" id="hdnOperator" />
+                    <button  id ="btnANDButton" onclick="addAnd();" class="btn-info" style="width:40%;">
+                         AND
+                    </button>
+
+                    <button  id ="btnORButton" onclick="addOr();" class="btn-info" style="width:40%;">
+                        OR
+                    </button>
+                </td>
+            </tr>
+            </thead>
+        </table>
+    </div>
+    <div class="row">
+        <div class="col-md-2 col-sm-4 col-lg-2">
+            <button  id ="btnRepButton" onclick="submitRunQry();" class="form-control btn-primary">
+                <i class="fa fa-file" id ="btnRepIcon"></i> Run Query
+            </button>
+        </div>
+    </div>
+</div>
+</body>
