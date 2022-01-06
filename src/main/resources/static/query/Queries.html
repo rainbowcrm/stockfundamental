@@ -18,19 +18,18 @@
     <span style="color:red" id="errorMSG"></span>
     <br>
     <div class="table-responsive">
-        <table id="dataTableExample1" class="table table-bordered table-striped table-hover">
+        <table id="qryTable" class="table table-bordered table-striped table-hover">
             <thead>
             <tr class="table-primary">
-                <th width="5%"></th>
+                <th width="10%"></th>
                 <th width="20%">Field</th>
                 <th width="15%" >Operator</th>
                 <th width="25%">Value</th>
-                <th width="5%"></th>
                 <th width="20%">And/Or</th>
             </tr>
             <tr>
-                <td width="5%">
-                    <input type="text" class="form-control"  placeholder="(" id="txtOpenBracket"/>
+                <td width="10%">
+                    <span id="spnOper" name = "spnOper" style="color:green"> </span>
                 </td>
                 <td width="20%">
                     <select id="qryField" class="form-control">
@@ -60,9 +59,7 @@
                 <td width="25%">
                     <input type="text" class="form-control" id ="txtValue"/>
                 </td>
-                <td width="5%">
-                    <input type="text"  class="form-control"  placeholder=")" id="txtCloseBracket"/>
-                </td>
+
                 <td width="20%">
                     <input type="Hidden" id="hdnOperator" />
                     <button  id ="btnANDButton" onclick="addAnd();" class="btn-info" style="width:40%;">
@@ -81,6 +78,11 @@
         <div class="col-md-2 col-sm-4 col-lg-2">
             <button  id ="btnRepButton" onclick="submitRunQry();" class="form-control btn-primary">
                 <i class="fa fa-file" id ="btnRepIcon"></i> Run Query
+            </button>
+        </div>
+        <div class="col-md-2 col-sm-4 col-lg-2">
+            <button  id ="btnClearButton" onclick="clearQry();" class="form-control btn-warning">
+                <i class="fa fa-film" id ="btnClrIcon"></i> Clear Query
             </button>
         </div>
     </div>
