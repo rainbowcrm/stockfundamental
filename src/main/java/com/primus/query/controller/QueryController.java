@@ -1,5 +1,10 @@
 package com.primus.query.controller;
 
+import com.primus.query.model.QueryLine;
+import com.primus.query.service.QueryService;
+import com.primus.ui.model.StockCompleteData;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,10 +16,15 @@ import java.util.Map;
 @RequestMapping("/query")
 public class QueryController {
 
+    @Autowired
+    QueryService queryService ;
+
     @RequestMapping(value = "/runQuery", method = RequestMethod.POST)
-    public ResponseEntity<List<Map>> applyQuery(       @RequestBody Map<String,Object> queryContent )
+    public ResponseEntity<List<StockCompleteData>> applyQuery(@RequestBody List<QueryLine> queryLines )
     {
-        return null;
+        List<StockCompleteData> stockCompleteDataList = queryService.applyFilter(queryLines);
+        ResponseEntity entity =  new ResponseEntity<List<StockCompleteData>>(stockCompleteDataList, HttpStatus.OK);
+        return  entity;
     }
 
 }

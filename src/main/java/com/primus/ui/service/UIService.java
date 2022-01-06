@@ -61,6 +61,23 @@ public class UIService {
 
     }
 
+    public List<StockCompleteData> getFullStocks()
+    {
+        List<FundamentalData> fundamentalDataList = fundamentalService.getAllFundamentals(null);
+        List<FinancialData> financialDataList = financialService.getAllFinancials() ;
+        List<StocksMaster> stocksMasterList = stockMasterService.getAllStocks();
+        List<StockCompleteData> returnList = new ArrayList<>();
+        for (FundamentalData fundamentalData : fundamentalDataList) {
+            FinancialData financialDataSel = financialDataList.stream().filter( financialData ->
+            {  return financialData.getBseCode().equalsIgnoreCase(fundamentalData.getBseCode())?true:false; }).findFirst().orElse(null) ;
+            StocksMaster stocksMasterSel = stocksMasterList.stream().filter(stocksMaster ->
+            { return  stocksMaster.getBseCode().equalsIgnoreCase(fundamentalData.getBseCode())?true:false; }).findFirst().orElse(null);
+            StockCompleteData stockCompleteData = new StockCompleteData(fundamentalData,financialDataSel,stocksMasterSel);
+            returnList.add(stockCompleteData) ;
+        }
+        return returnList ;
+
+    }
 
     public List<Map> applyFilterStocks(int from, int to, Map<String,Object> criteriaMap)
     {
