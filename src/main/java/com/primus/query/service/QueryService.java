@@ -32,6 +32,9 @@ public class QueryService {
             else if(queryLine.getProperty().equals(QueryLine.PropertySet.CPSZ)){
                 fullStockData = filterOnCapSize(fullStockData,queryLine.getValue());
             }
+            else if(queryLine.getProperty().equals(QueryLine.PropertySet.CRPRC)){
+                fullStockData = filterOnPrice(fullStockData,Double.parseDouble(queryLine.getValue()),queryLine.getOperator());
+            }
             else if(queryLine.getProperty().equals(QueryLine.PropertySet.EPS)){
                 fullStockData = filterOnEPS(fullStockData,Double.parseDouble(queryLine.getValue()),queryLine.getOperator());
             }

@@ -261,7 +261,6 @@ function populateData(pkValue,entity)
 function setToken (request)
 {
 
-
     var allcookies = document.cookie;
    cookiearray = allcookies.split(';');
 

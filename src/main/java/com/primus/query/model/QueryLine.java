@@ -10,7 +10,8 @@ public class QueryLine {
     PropertySet property;
     String operator;
     String value;
-    String lOperator;
+    String condition;
+
     int openingBraces;
     int closingBraces;
 
@@ -38,13 +39,6 @@ public class QueryLine {
         this.value = value;
     }
 
-    public String getlOperator() {
-        return lOperator;
-    }
-
-    public void setlOperator(String lOperator) {
-        this.lOperator = lOperator;
-    }
 
     public int getOpeningBraces() {
         return openingBraces;
@@ -60,5 +54,13 @@ public class QueryLine {
 
     public void setClosingBraces(int closingBraces) {
         this.closingBraces = closingBraces;
+    }
+
+    public String getCondition() {
+        return condition;
+    }
+
+    public void setCondition(String condition) {
+        this.condition = condition;
     }
 }

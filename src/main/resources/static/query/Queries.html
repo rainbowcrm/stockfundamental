@@ -32,7 +32,7 @@
                     <span id="spnOper" name = "spnOper" style="color:green"> </span>
                 </td>
                 <td width="20%">
-                    <select id="qryField" class="form-control">
+                    <select id="qryField" name="qryField" class="form-control">
                         <option value="INDS">Industry</option>
                         <option value="SCT">Sector</option>
                         <option value="CRPRC">Curr Price</option>
@@ -47,7 +47,7 @@
                     </select>
                 </td>
                 <td width="15%">
-                    <select id="qryOP" class="form-control">
+                    <select id="qryOP" name="qryOP"  class="form-control">
                         <option value="EQ">==</option>
                         <option value="NEW">!=</option>
                         <option value="GT"> > </option>
@@ -57,7 +57,7 @@
                     </select>
                 </td>
                 <td width="25%">
-                    <input type="text" class="form-control" id ="txtValue"/>
+                    <input type="text"  name="txtValue"  class="form-control" id ="txtValue"/>
                 </td>
 
                 <td width="20%">
@@ -76,7 +76,7 @@
     </div>
     <div class="row">
         <div class="col-md-2 col-sm-4 col-lg-2">
-            <button  id ="btnRepButton" onclick="submitRunQry();" class="form-control btn-primary">
+            <button  id ="btnRepButton" onclick="buildQuery();" class="form-control btn-primary">
                 <i class="fa fa-file" id ="btnRepIcon"></i> Run Query
             </button>
         </div>
