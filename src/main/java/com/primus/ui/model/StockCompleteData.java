@@ -7,6 +7,7 @@ import com.primus.stock.master.model.FundamentalData;
 import com.primus.stock.master.model.StocksMaster;
 
 import java.util.Map;
+import java.util.Objects;
 
 public class StockCompleteData {
 
@@ -236,5 +237,19 @@ public class StockCompleteData {
                 ", marketCap=" + marketCap +
                 ", groupCap='" + groupCap + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StockCompleteData that = (StockCompleteData) o;
+        return bseCode.equals(that.bseCode) &&
+                stock.equals(that.stock);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(bseCode, stock);
     }
 }

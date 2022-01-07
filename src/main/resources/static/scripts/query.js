@@ -36,7 +36,6 @@ function clearQry()
 {
 
   let tabl = document.getElementById('qryTable');
-
   var lastrow  =tabl.rows[1];
   while ( document.getElementsByName("spnOper").length > 1 ) {
         console.log("i="  + i);
@@ -48,6 +47,11 @@ function clearQry()
      for (var i = 0; i < inputs.length; i++) {
         inputs[i].value = "";
      }
+
+}
+
+function populateResults()
+{
 
 }
 
@@ -108,7 +112,48 @@ function buildQuery()
     request.send(JSON.stringify(jsonArr),true) ;
     var snapsotresponse  =   JSON.parse(request.responseText)  ;
     console.log(snapsotresponse);
-
-
-
+    reRenderTable('resultsTable',snapsotresponse);
 }
+
+
+ function reRenderTable(tableId,data)
+ {
+         var dataTable = document.getElementById(tableId);
+         while (dataTable.rows.length > 1) {
+                 dataTable.deleteRow(dataTable.rows.length -1 );
+         }
+
+         for ( var i in data) {
+                singleRow=  data[i];
+                //innerContent = "<tr>";
+                var bgColor = i%2==0?'beige':'white';
+                innerContent = '<tr data-row="' + bgColor +  '">';
+                innerContent =  innerContent + '<td>' + singleRow['bseCode'] + '</td>';
+                innerContent =  innerContent + '<td>' + singleRow['stock'] + '</td>';
+                innerContent =  innerContent + '<td>' + singleRow['industry'] + '</td>';
+                innerContent =  innerContent + '<td>' + singleRow['sector'] + '</td>';
+                innerContent =  innerContent + '<td>' + singleRow['group'] + '</td>';
+                innerContent =  innerContent + '<td>' + singleRow['marketCap'] + '</td>';
+                innerContent =  innerContent + '<td>' + singleRow['groupCap'] + '</td>';
+                innerContent =  innerContent + '<td>' + singleRow['currentPrice'] + '</td>';
+                innerContent =  innerContent + '<td>' + singleRow['eps'] + '</td>';
+                innerContent =  innerContent + '<td>' + singleRow['bookvalue'] + '</td>';
+                innerContent =  innerContent + '<td>' + singleRow['revenue'] + '</td>';
+                innerContent =  innerContent + '<td>' + singleRow['profit'] + '</td>';
+                innerContent =  innerContent + '<td>' + singleRow['divident'] + '</td>';
+                innerContent =  innerContent + '<td>' + singleRow['pe'] + '</td>';
+                innerContent =  innerContent + '<td>' + singleRow['pb'] + '</td>';
+                innerContent =  innerContent + '<td>' + singleRow['roe'] + '</td>';
+                innerContent =  innerContent + '</tr>';
+                 var newrow = dataTable.insertRow();
+                 newrow.innerHTML =  innerContent;
+             }
+            applyColor();
+
+ }
+
+ function applyColor()
+  {
+     $("tr:odd").css("background-color", "white");
+     $("tr:even").css("background-color", "aliceblue");
+  }
