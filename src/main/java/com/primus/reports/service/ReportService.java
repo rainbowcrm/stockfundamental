@@ -168,7 +168,7 @@ public class ReportService {
             }
             stringBuffer.append("<TR>");
             if (!"Sector".equalsIgnoreCase(groupBy))  stringBuffer.append("<TD>" +  transReportData.getSector() + "</TD>");
-            stringBuffer.append("<TD>" +  transReportData.getSecurity() + "</TD>");
+            stringBuffer.append("<TD>" +  transReportData.getSecurity().replace("-&#160;"," ") + "</TD>");
             if (!"Industry".equalsIgnoreCase(groupBy))  stringBuffer.append("<TD>" +  transReportData.getIndustry() + "</TD>");
             if (!"Group".equalsIgnoreCase(groupBy)) stringBuffer.append("<TD>" +  transReportData.getGroup() + "</TD>");
             if (!"marketCap".equalsIgnoreCase(groupBy)) stringBuffer.append("<TD>" +  transReportData.getMarketCapGroup() + "</TD>");
@@ -258,7 +258,7 @@ public class ReportService {
                 {  return stockTransaction.getStocksMaster().getBseCode().equalsIgnoreCase(stocksMaster.getBseCode())?true:false; })
                         .collect(Collectors.toList());
                 if (!CollectionUtils.isEmpty(indTransactionList)){
-                    TransReportData transReportData = new TransReportData(stocksMaster.getSecurityName(),stocksMaster.getIndustry(),
+                    TransReportData transReportData = new TransReportData(stocksMaster.getSecurityName().replace("-&#160;"," "),stocksMaster.getIndustry(),
                             stocksMaster.getGroupC(),stocksMaster.getMarketGroup(),stocksMaster.getSector());
                     transReportData.setOpeningPrice(indTransactionList.get(0).getOpenPrice());
                     transReportData.setFinalPricde(indTransactionList.get(indTransactionList.size()-1).getClosePrice());

@@ -462,6 +462,16 @@ function showPage(pageName)
 {
  $("#ifrmContent")[0].src=pageName;
 }
+function logout()
+{
+    let fullurl = url + 'api/logout';
+    let request = formRequest("GET",fullurl,false);
+    request.send() ;
+   // var snapsotresponse  =   JSON.parse(request.responseText)  ;
+    console.log("Response =" + request.responseText );
+    window.location.replace('./bologin.html');
+
+}
 function login()
     {
         var name = $("#txtname")[0].value ;

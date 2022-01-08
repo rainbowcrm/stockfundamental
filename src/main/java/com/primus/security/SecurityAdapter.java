@@ -37,6 +37,8 @@ public class SecurityAdapter extends WebSecurityConfigurerAdapter {
                   frameOptions().sameOrigin().and().csrf()
                  .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and().formLogin().loginPage("/bologin.html").failureUrl("/bologin.html?error=true")
                   .loginProcessingUrl("/bologin.html").permitAll();
+
+          http.logout().logoutSuccessUrl("/bologin.html");
           /*
           .failureHandler(new AuthenticationFailureHandler() {
               @Override
