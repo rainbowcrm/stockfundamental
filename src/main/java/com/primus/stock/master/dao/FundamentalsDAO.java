@@ -65,4 +65,30 @@ public class FundamentalsDAO {
 
     }
 
+    public List<String> getDistinctIndustry(String searchStr)
+    {
+        Query query =  em.createQuery("Select distinct  industry from FundamentalData where industry like :searchKey "  );
+        query.setParameter("searchKey",searchStr + "%");
+        List<String> ans = query.getResultList();
+        return ans;
+
+    }
+
+    public List<String> getDistinctSector(String searchStr)
+    {
+        Query query =  em.createQuery("Select distinct  sector from FundamentalData where sector like :searchKey  "  );
+        query.setParameter("searchKey",searchStr + "%");
+        List<String> ans = query.getResultList();
+        return ans;
+    }
+
+    public List<String> getDistinctStock(String searchStr)
+    {
+        Query query =  em.createQuery("Select distinct  company from FundamentalData where company like :searchKey  "  );
+        query.setParameter("searchKey",searchStr + "%");
+        List<String> ans = query.getResultList();
+        return ans;
+
+    }
+
 }

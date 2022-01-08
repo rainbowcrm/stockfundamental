@@ -1,6 +1,7 @@
 package com.primus.ui.controller;
 
 import com.primus.dashboard.service.DashboardService;
+import com.primus.ui.service.LookupService;
 import com.primus.ui.service.UIService;
 import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class UIController {
 
     @Autowired
     DashboardService dashboardService;
+
+    @Autowired
+    LookupService lookupService;
 
 
     @RequestMapping(value = "/getDistinctSector", method = RequestMethod.GET)
@@ -82,6 +86,16 @@ public class UIController {
         ResponseEntity entity =  new ResponseEntity<Integer>(returnData, HttpStatus.OK);
         return  entity;
 
+    }
+
+
+    @RequestMapping(value = "/lookup", method = RequestMethod.GET)
+    public ResponseEntity<Map<String,String>> lookupValues(@RequestParam String lookupType, @RequestParam String searchStr,
+                                                           @RequestParam(required = false) String additionalInput)
+    {
+        Map<String,String> returnData = lookupService.lookupVals(lookupType,searchStr);
+        ResponseEntity entity =  new ResponseEntity<Map<String,String>>(returnData, HttpStatus.OK);
+        return  entity;
     }
 
     @RequestMapping( value = "/downloadFile/{fileType}", method = RequestMethod.POST)

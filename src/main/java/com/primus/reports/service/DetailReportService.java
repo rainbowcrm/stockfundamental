@@ -10,6 +10,7 @@ import com.primus.reports.data.TransReportData;
 import com.primus.stocktransaction.dao.StockTransactionDAO;
 import com.primus.stocktransaction.model.StockTransaction;
 import com.primus.utils.ExportService;
+import org.apache.commons.collections.CollectionUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,17 +78,18 @@ public class DetailReportService extends ReportService{
         stringBuffer.append("<TH>Volume</TH>");
         stringBuffer.append("</TR>");
         String currGroup = "";
-        for (TransLine transLine : transDetailReport.getTransLineList() )
-        {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            stringBuffer.append("<TR>");
-            stringBuffer.append("<TD>" + simpleDateFormat.format(transLine.getDate())+ "</TD>");
-            stringBuffer.append("<TD>" +  transLine.getOpening() + "</TD>");
-            stringBuffer.append("<TD>" +  transLine.getLow() + "</TD>");
-            stringBuffer.append("<TD>" +  transLine.getHigh() + "</TD>");
-            stringBuffer.append("<TD>" +  transLine.getClosing() + "</TD>");
-            stringBuffer.append("<TD>" +  transLine.getVolume() + "</TD>");
-            stringBuffer.append("</TR>");
+        if (transDetailReport != null && CollectionUtils.isNotEmpty(transDetailReport.getTransLineList())) {
+            for (TransLine transLine : transDetailReport.getTransLineList()) {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                stringBuffer.append("<TR>");
+                stringBuffer.append("<TD>" + simpleDateFormat.format(transLine.getDate()) + "</TD>");
+                stringBuffer.append("<TD>" + transLine.getOpening() + "</TD>");
+                stringBuffer.append("<TD>" + transLine.getLow() + "</TD>");
+                stringBuffer.append("<TD>" + transLine.getHigh() + "</TD>");
+                stringBuffer.append("<TD>" + transLine.getClosing() + "</TD>");
+                stringBuffer.append("<TD>" + transLine.getVolume() + "</TD>");
+                stringBuffer.append("</TR>");
+            }
         }
         stringBuffer.append("</TABLE>");
         stringBuffer.append("</HTML>");

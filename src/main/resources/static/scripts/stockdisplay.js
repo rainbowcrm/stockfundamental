@@ -389,3 +389,38 @@ function getAllStockCount()
       return snapsotresponse;
 
  }
+
+ function getLookupWithAjax( currentCtrl,dataListCtrlName)
+ {
+     var srValue = currentCtrl.value ;
+   	if(srValue.length  > 2 || srValue.indexOf('*') !=  -1 ) {
+
+     var lookupType ='Stock' ;
+ 	currentCtrl.autocomplete ="on";
+
+ 	var requestStr = url + "uiapi/lookup?lookupType=" + lookupType
+ 	+ "&searchStr=" + srValue ;
+
+ 	var reqObject = new XMLHttpRequest();
+ 	reqObject.open("GET",requestStr,false);
+ 	reqObject.send();
+ 	console.log("Resp" + reqObject.responseText);
+ 	var elem = document.getElementsByName(dataListCtrlName)[0];
+ 	console.log ('before' + elem.innerHTML) ;
+  	elem.innerHTML='';
+ 	 var options = '';
+ 	var propArray =  JSON.parse(reqObject.responseText) ;
+    var found =false;
+ 	for (var key in propArray) {
+ 		  var value = propArray[key];
+ 		  options += '<option  value="'+value+'" />' + key + '</option>';
+ 		  found =true ;
+ 	}
+ 	if (found == false) {
+ 		currentCtrl.autocomplete ="off";
+ 	}
+ 	elem.innerHTML=  options;
+ 	console.log ('after' + elem.innerHTML) ;
+ 	}
+
+ }
