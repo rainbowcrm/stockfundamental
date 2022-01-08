@@ -23,6 +23,7 @@ public class GeneralService {
         stockTransactionService.saveDailyTransactions("A ");
         stockTransactionService.saveDailyTransactions("B ");
         stockTransactionService.saveDailyTransactions("X ");
+        System.out.println("Daily Record Imported");
 
     }
 
@@ -31,13 +32,15 @@ public class GeneralService {
         fundamentalService.saveAllFundamentals("A ");
         fundamentalService.saveAllFundamentals("B ");
         fundamentalService.saveAllFundamentals("X ");
+        System.out.println("Completed Fundamentals");
     }
 
     public void readWeeklyFinancials()
     {
-        financialService.saveAllFinancialData("A ");
-        financialService.saveAllFinancialData("B ");
+      //  financialService.saveAllFinancialData("A ");
+      //  financialService.saveAllFinancialData("B ");
         financialService.saveAllFinancialData("X ");
+        System.out.println("Completed Financials");
     }
 
 

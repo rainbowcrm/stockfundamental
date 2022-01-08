@@ -49,8 +49,9 @@ public class StockTransactionService {
                 stockTransaction.setLowPrice(lowPrice);
                 stockTransaction.setHighPrice(highPrice);
                 stockTransaction.setTransDate(transDate);
+                System.out.println(stockTransaction);
                 stockTransactionDAO.update(stockTransaction);
-
+                Thread.sleep(100);
 
             }catch (Exception exception) {
                 exception.printStackTrace();

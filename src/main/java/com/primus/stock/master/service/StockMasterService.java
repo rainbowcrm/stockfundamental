@@ -54,7 +54,7 @@ public class StockMasterService {
                     stocksMaster.setMarketGroup(capGroup);
                     System.out.println(stocksMaster.getBseCode() + ":::::" + marketCap);
                     stockMasterDAO.update(stocksMaster);
-                    Thread.sleep(350);
+                    Thread.sleep(100);
                 }
             }catch (Exception ex)
             {

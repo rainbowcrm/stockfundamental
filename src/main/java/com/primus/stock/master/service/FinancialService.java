@@ -108,7 +108,7 @@ public class FinancialService {
     public  FinancialData saveFinancialData(String scripCode,Long id)
     {
         try {
-            Thread.sleep(500);
+            Thread.sleep(100);
             Map<String,Object> responseData = apiService.getFinancialData(scripCode);
             Object finContent = responseData.get("QtlyinCr");
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();

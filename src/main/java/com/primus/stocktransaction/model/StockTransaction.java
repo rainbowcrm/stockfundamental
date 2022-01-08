@@ -111,4 +111,13 @@ public class StockTransaction {
     public void setVolume(Integer volume) {
         this.volume = volume;
     }
+
+    @Override
+    public String toString() {
+        return "StockTransaction{" +
+                "security_name='" + security_name + '\'' +
+                ", transDate=" + transDate +
+                ", closePrice=" + closePrice +
+                '}';
+    }
 }

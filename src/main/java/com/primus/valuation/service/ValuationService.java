@@ -154,7 +154,7 @@ public class ValuationService {
     {
         List<StockValuationData> underValuedShares= new ArrayList<>();
         List<StockValuationData> filteredDataList = stockCompleteDataList.stream().filter(stockCompleteData ->  {
-            return  stockCompleteData.getSector().equalsIgnoreCase(sector) && stockCompleteData.getGroupCap().equalsIgnoreCase(marketCap);
+            return  sector.equalsIgnoreCase(stockCompleteData.getSector()) && marketCap.equalsIgnoreCase(stockCompleteData.getGroupCap());
         }).collect(Collectors.toList());
         IntrinsicData intrinsicData = makeIntrinsicData(sector,marketCap,filteredDataList);
         for (StockValuationData stockCompleteData : filteredDataList)
@@ -184,7 +184,7 @@ public class ValuationService {
     {
         List<StockValuationData> overValuedShares= new ArrayList<>();
         List<StockValuationData> filteredDataList = stockCompleteDataList.stream().filter(stockCompleteData ->  {
-            return  stockCompleteData.getSector().equalsIgnoreCase(sector) && stockCompleteData.getGroupCap().equalsIgnoreCase(marketCap);
+            return  sector.equalsIgnoreCase(stockCompleteData.getSector()) && marketCap.equalsIgnoreCase(stockCompleteData.getGroupCap());
         }).collect(Collectors.toList());
         IntrinsicData intrinsicData = makeIntrinsicData(sector,marketCap,filteredDataList);
         for (StockValuationData stockCompleteData : filteredDataList)

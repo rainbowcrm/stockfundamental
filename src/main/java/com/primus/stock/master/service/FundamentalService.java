@@ -179,13 +179,13 @@ public class FundamentalService {
                 fdMAP.put("CompHeaderData", comHeaderData);
                 fdMAP.put("ScripHeaderData", scripHeaderData);
                 FundamentalData fundamentalData = createFullFDFromMap(fdMAP);
-                System.out.println("id=" + stocksMaster.getId() + ":" + fundamentalData);
-                if (fundamentalData.getCurPrice() > 0.0) {
+                 if (fundamentalData.getCurPrice() > 0.0) {
+                    System.out.println("id=" + stocksMaster.getId() + ":" + fundamentalData);
                     createFundamentals(fundamentalData);
                 } else {
                     System.out.println("Skipping =  " + fundamentalData);
                 }
-                Thread.sleep(500);
+                Thread.sleep(100);
             }catch (Exception ex)
             {
                 ex.printStackTrace();

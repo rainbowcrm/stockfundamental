@@ -1,11 +1,13 @@
 1. OTP
 2. Reports - Simple **
 3. OV and UV Pages  **
-4. Query
+4. Query **
 5. Storing Business Context
 6. UX mod
 7. Dashboard re arrangement
 9. Spring batch to read values daily *
 
 ________________________
+Download All shares
+https://www.bseindia.com/corporates/List_Scrips.html
 
