@@ -104,6 +104,17 @@ public class UserService {
         userOTPDAO.update(userOTP);
     }
 
+    public void updatePassword(User user,String encodedPwd)
+    {
+
+        byte[] byteArray = Base64.decodeBase64(encodedPwd);
+        String newPassword = new String(byteArray);
+        String encrPwd = AES.encrypt(newPassword,secretKey);
+        user.setPassword(encrPwd);
+        userDAO.update(user);
+
+    }
+
 
 
 

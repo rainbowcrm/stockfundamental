@@ -1,6 +1,9 @@
 package com.primus.user.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.primus.common.BusinessContext;
 import com.primus.common.PrimusError;
+import com.primus.user.model.User;
 import com.primus.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +22,28 @@ public class UserController {
     @Autowired
     UserService userService;
 
+
+    @RequestMapping(value = "/getLoggedinUser", method = RequestMethod.GET)
+    public ResponseEntity<Map> getLoggedInUser()
+    {
+        Map<String,Object> map = new HashMap<>() ;
+        try {
+            BusinessContext businessContext = BusinessContext.getBusinessContent();
+            User selUser = businessContext.getUser();
+            ObjectMapper objectMapper = new ObjectMapper();
+            map = objectMapper.convertValue(selUser,Map.class);
+            map.put("Result","Success");
+            map.remove("friendsFamily");
+            map.remove("password");
+
+        }catch (Exception error)
+        {
+            map.put("Result","Failure");
+            map.put("Error",error.getMessage());
+        }
+        ResponseEntity entity =  new ResponseEntity<Map>(map, HttpStatus.OK);
+        return  entity;
+    }
 
     @RequestMapping(value = "/sendPassword", method = RequestMethod.GET)
     public ResponseEntity<Map> sendPassword(@RequestParam String userEmail)
@@ -56,6 +81,17 @@ public class UserController {
     public ResponseEntity<Map> saveOTP(@RequestParam String phoneNumber)
     {
         userService.sendOTP(phoneNumber);
+        Map<String,Object> map = new HashMap<>() ;
+        map.put("Result","Success");
+        ResponseEntity entity =  new ResponseEntity<Map>(map, HttpStatus.OK);
+        return  entity;
+    }
+
+    @RequestMapping(value = "/resetPassword", method = RequestMethod.GET)
+    public ResponseEntity<Map> resetPassword(@RequestParam String updatedPWD)
+    {
+        BusinessContext businessContext  = BusinessContext.getBusinessContent();
+        userService.updatePassword(businessContext.getUser(),updatedPWD);
         Map<String,Object> map = new HashMap<>() ;
         map.put("Result","Success");
         ResponseEntity entity =  new ResponseEntity<Map>(map, HttpStatus.OK);

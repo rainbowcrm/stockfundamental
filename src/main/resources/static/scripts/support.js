@@ -50,6 +50,66 @@ let request = new XMLHttpRequest () ;
           }
 
 }
+
+function updatePassword()
+{
+  let request = new XMLHttpRequest () ;
+  let pass = $("#txtPass").val();
+  let confirmPass = $("#txtConfPass").val();
+  if ( pass.trim() == '' || confirmPass.trim() == '' )
+    {
+    console.log('error') ;
+     $("#errorText").css("color","red");
+     $("#errorText").html('<br>Please enter Password');
+     return ;
+     }
+     if( pass != confirmPass) {
+     $("#errorText").css("color","red");
+       $("#errorText").html('<br> Password does not match');
+        return ;
+     }
+    $("#errorText").html('');
+     $("#errorText").css("color","blue");
+
+
+  let input = btoa(pass)
+  request.open("GET",url+'user/resetPassword?updatedPWD=' + input,true);
+  request.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+           console.log("Response =" + request.responseText )
+           var snapsotresponse  =   JSON.parse(request.responseText)  ;
+           alert('Password Updated, Please relogin');
+           let fullurl = url + 'api/logout';
+           let request2 = formRequest("GET",fullurl,false);
+           request2.send() ;
+           console.log("Response =" + request2.responseText );
+           window.parent.location.replace('./bologin.html');
+           }
+   };
+
+   request.send(true);
+
+}
+
+function getUserDetails()
+{
+  let request = new XMLHttpRequest () ;
+  request.open("GET",url+'user/getLoggedinUser',true);
+
+  request.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+           console.log("Response =" + request.responseText )
+           var snapsotresponse  =   JSON.parse(request.responseText)  ;
+           $("#txtFname").val(snapsotresponse.firstName);
+           $("#txtLname").val(snapsotresponse.lastName);
+           $("#txtEmail").val(snapsotresponse.emailId);
+           $("#txtPhone").val(snapsotresponse.phoneNumber);
+           }
+  };
+   request.send(true);
+
+}
+
 function submitOTP()
 {
   let phone = $("#txtPhone").val();
