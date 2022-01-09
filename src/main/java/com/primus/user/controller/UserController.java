@@ -98,5 +98,16 @@ public class UserController {
         return  entity;
     }
 
+    @RequestMapping(value = "/updateNames", method = RequestMethod.GET)
+    public ResponseEntity<Map> resetPassword(@RequestParam String firstName,@RequestParam String lastName )
+    {
+        BusinessContext businessContext  = BusinessContext.getBusinessContent();
+        userService.updateNames(businessContext.getUser(),firstName,lastName);
+        Map<String,Object> map = new HashMap<>() ;
+        map.put("Result","Success");
+        ResponseEntity entity =  new ResponseEntity<Map>(map, HttpStatus.OK);
+        return  entity;
+    }
+
 
 }

@@ -91,6 +91,33 @@ function updatePassword()
 
 }
 
+function updateName()
+{
+  let request = new XMLHttpRequest () ;
+  let firstName = $("#txtFname").val();
+  let lastName = $("#txtLname").val();
+  if ( firstName.trim() == '' || lastName.trim() == '' )
+    {
+    console.log('error') ;
+     $("#errorText").css("color","red");
+     $("#errorText").html('<br>Please enter First Name and Last Name');
+     return ;
+     }
+    $("#errorText").html('');
+     $("#errorText").css("color","blue");
+
+  request.open("GET",url+'user/updateNames?firstName=' + firstName + '&lastName=' + lastName,true);
+  request.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+           console.log("Response =" + request.responseText );
+           var snapsotresponse  =   JSON.parse(request.responseText)  ;
+           $("#errorText").html('Name updated');
+           }
+   };
+   request.send(true);
+
+}
+
 function getUserDetails()
 {
   let request = new XMLHttpRequest () ;

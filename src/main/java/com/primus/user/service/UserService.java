@@ -116,6 +116,15 @@ public class UserService {
     }
 
 
+    public void updateNames(User user,String firstName, String lastName)
+    {
+
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        userDAO.update(user);
+
+    }
+
 
 
 
