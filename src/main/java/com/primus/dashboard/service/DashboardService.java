@@ -58,7 +58,6 @@ public class DashboardService {
         ObjectMapper objectMapper =  new ObjectMapper();
         try {
 
-
             if (dashBoardClobData == null) {
                 dashboardData = getDashboardData(prevDays);
                 dashBoardClobData = new DashBoardClobData();
@@ -353,7 +352,7 @@ public class DashboardService {
                 sectors.add(stocksMaster.getSector());
         });
         Map<String,List<Double>> sectorValues = new HashMap<>();
-        Map<String,List< Double>> sectorPrices= new HashMap<>();
+        Map<String,List< Double>> sectorPrices= new LinkedHashMap<>();
         List<String> sectorList = new ArrayList<>();
         List<String> datesList = new ArrayList<>() ;
         SectorPriceHolder sectorPriceHolder = new SectorPriceHolder();
@@ -427,7 +426,11 @@ public class DashboardService {
                     }
 
             }
-        sectorPriceHolder.setDateValues(sectorPrices);
+        List<Map.Entry<String,List<Double>>> sectorPriceList = new ArrayList<>();
+        for (Map.Entry<String,List<Double>> entry : sectorPrices.entrySet()) {
+            sectorPriceList.add(entry);
+        }
+        sectorPriceHolder.setDateValues(sectorPriceList);
         sectorPriceHolder.setSectors(sectorList);
         dashboardData.setSectorPriceHolder(sectorPriceHolder);
     }

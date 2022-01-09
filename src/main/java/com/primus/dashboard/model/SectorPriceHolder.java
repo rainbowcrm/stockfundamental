@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class SectorPriceHolder  implements Serializable {
     List<String> sectors;
-    Map<String,List<Double>> dateValues;
+    List<Map.Entry<String,List<Double>>> dateValues;
 
     public List<String> getSectors() {
         return sectors;
@@ -16,11 +16,11 @@ public class SectorPriceHolder  implements Serializable {
         this.sectors = sectors;
     }
 
-    public Map<String, List<Double>> getDateValues() {
+    public List<Map.Entry<String, List<Double>>> getDateValues() {
         return dateValues;
     }
 
-    public void setDateValues(Map<String, List<Double>> dateValues) {
+    public void setDateValues(List<Map.Entry<String, List<Double>>> dateValues) {
         this.dateValues = dateValues;
     }
 }

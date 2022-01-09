@@ -78,18 +78,20 @@
         }
    sectorPrcTrend.push(sectTitle);
 
-   for (var key in sectorHolder.dateValues) {
-        console.log(key);
+   for (var i=0; i< sectorHolder.dateValues.length; i ++) {
+        var jsonDateValues = sectorHolder.dateValues[i];
         let indRow = [];
-        indRow.push(key);
-        let valRow = sectorHolder.dateValues[key];
-        for ( let j = 0 ; j <  valRow.length ; j ++ ){
-        indRow.push(valRow[j]);
+        for (key in jsonDateValues) {
+            console.log(key);
+            indRow.push(key);
+            let valRow = jsonDateValues[key];
+            for ( let j = 0 ; j <  valRow.length ; j ++ ){
+                indRow.push(valRow[j]);
+        }
         }
         sectorPrcTrend.push(indRow);
    }
 
-    console.log(underValueds);
 
       //sectors= sectorHolder
   /*  sectorPrcTrend = [
