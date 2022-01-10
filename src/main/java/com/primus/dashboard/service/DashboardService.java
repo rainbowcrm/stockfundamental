@@ -86,8 +86,8 @@ public class DashboardService {
         Date curDate = new java.util.Date();
         Date startDay = new java.util.Date( curDate.getTime() - (oneDayinMillis * prevDays));
         List<StockTransaction> stockTransactionList = stockTransactionDAO.getData(startDay,curDate);
-        List<StocksMaster> stocksMasterList = stockMasterService.getAllTrackedStocks();
-        List<FundamentalData> fundamentals = fundamentalService.getAllFundamentals(" where marketGroup is not  null ");
+        List<StocksMaster> stocksMasterList = stockMasterService.getStocksForDashBoard();
+        List<FundamentalData> fundamentals = fundamentalService.getAllFundamentals(" where marketGroup  in ('L','M','S') ");
         DashboardData dashboardData = new DashboardData() ;
         setGroupCardData(stocksMasterList,stockTransactionList,dashboardData);
         setCapCardData(stocksMasterList,stockTransactionList,dashboardData);

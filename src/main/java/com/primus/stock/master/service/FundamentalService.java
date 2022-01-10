@@ -43,6 +43,10 @@ public class FundamentalService {
         return fundamentalsDAO.getAllFundamentals(whereCondition);
     }
 
+    public FundamentalData getFundamentalData(String bseCode )
+    {
+        return fundamentalsDAO.getFundamentalData(bseCode);
+    }
     public void updateMarketCap()
     {
         List<StocksMaster> trackedStocks = stockMasterService.getAllTrackedStocks();

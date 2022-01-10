@@ -2,6 +2,7 @@ package com.primus.stock.master.dao;
 
 import com.primus.stock.master.model.FundamentalData;
 import com.primus.stock.master.model.StocksMaster;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
@@ -29,6 +30,16 @@ public class FundamentalsDAO {
         em.merge(model);
     }
 
+    public FundamentalData getFundamentalData (  String bseCode)
+    {
+        Query query =  em.createQuery("from FundamentalData where bseCode = '"  + bseCode + "'" );
+        List<FundamentalData> ans = query.getResultList();
+        if (!CollectionUtils.isEmpty(ans))
+            return ans.get(0);
+        else
+            return null;
+
+    }
 
     public List<FundamentalData> getAllFundamentals (  String whereCondition)
     {

@@ -59,6 +59,12 @@ public class StockMasterDAO {
         return ans;
     }
 
+    public List<StocksMaster> getStocksForDashboard (  )
+    {
+        Query query =  em.createQuery("from StocksMaster  where  useJavaAPI = true and marketGroup in ('L','S','M') and groupC in ('A ','B ','X ')" );
+        List<StocksMaster> ans = query.getResultList();
+        return ans;
+    }
 
 
 }

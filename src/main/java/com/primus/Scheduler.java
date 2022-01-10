@@ -29,9 +29,10 @@ public class Scheduler {
         if (!run) {
             run = true;
             System.out.println("Hello " + new java.util.Date());
-             //generalService.readDailyTransactionData();
+            generalService.readDailyTransactionData();
+           // generalService.readWeeklyFundamentals();
             //stockMasterService.updateMarketCap();
-            fundamentalService.updateMarketCap();
+            //fundamentalService.updateMarketCap();
         }
 
     }

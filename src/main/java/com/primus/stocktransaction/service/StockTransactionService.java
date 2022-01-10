@@ -1,7 +1,9 @@
 package com.primus.stocktransaction.service;
 
 import com.primus.stock.api.service.APIService;
+import com.primus.stock.master.model.FundamentalData;
 import com.primus.stock.master.model.StocksMaster;
+import com.primus.stock.master.service.FundamentalService;
 import com.primus.stock.master.service.StockMasterService;
 import com.primus.stocktransaction.dao.StockTransactionDAO;
 import com.primus.stocktransaction.model.StockTransaction;
@@ -24,6 +26,9 @@ public class StockTransactionService {
 
     @Autowired
     StockTransactionDAO stockTransactionDAO;
+
+    @Autowired
+    FundamentalService fundamentalService;
 
     public void saveDailyTransactions(String groupC)
     {
@@ -51,6 +56,12 @@ public class StockTransactionService {
                 stockTransaction.setTransDate(transDate);
                 System.out.println(stockTransaction);
                 stockTransactionDAO.update(stockTransaction);
+
+                FundamentalData fundamentalData = fundamentalService.getFundamentalData(stocksMaster.getBseCode());
+                if (fundamentalData != null ) {
+                    fundamentalData.setCurPrice(closePrice);
+                    fundamentalService.updateFundamentals(fundamentalData);
+                }
                 Thread.sleep(100);
 
             }catch (Exception exception) {

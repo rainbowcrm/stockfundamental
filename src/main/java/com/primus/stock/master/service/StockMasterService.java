@@ -27,6 +27,11 @@ public class StockMasterService {
         return  stockMasterDAO.getAllStocks() ;
     }
 
+    public List<StocksMaster> getStocksForDashBoard (  ){
+        return  stockMasterDAO.getStocksForDashboard() ;
+    }
+
+
     public List<StocksMaster> getAllTrackedStocks (  ){
         return  stockMasterDAO.getAllTrackedStocks() ;
     }
