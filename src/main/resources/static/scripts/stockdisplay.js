@@ -156,7 +156,7 @@ function getFilterJSON()
    console.log(bseCode);
 
    if ( industry != '0'){
-   postContent['industry'] = industry
+   postContent['industry'] = industry;
    }
    if ( sector != '0'){
       postContent['sector'] = sector;

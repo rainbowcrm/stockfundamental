@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.primus.common.BusinessContext;
 import com.primus.common.PrimusError;
 import com.primus.user.model.User;
+import com.primus.user.model.UserPreferences;
 import com.primus.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -108,6 +109,27 @@ public class UserController {
         ResponseEntity entity =  new ResponseEntity<Map>(map, HttpStatus.OK);
         return  entity;
     }
+
+    @RequestMapping(value = "/getUserPref", method = RequestMethod.GET)
+    public ResponseEntity<UserPreferences> getUserPreference()
+    {
+        BusinessContext businessContext  = BusinessContext.getBusinessContent();
+        UserPreferences userPreferences = userService.getPreferences(businessContext);
+        ResponseEntity entity =  new ResponseEntity<UserPreferences>(userPreferences, HttpStatus.OK);
+        return  entity;
+
+    }
+
+    @RequestMapping(value = "/updateUserPref", method = RequestMethod.POST)
+    public ResponseEntity<UserPreferences> updateUserPreference(@RequestBody UserPreferences userPreference)
+    {
+        BusinessContext businessContext  = BusinessContext.getBusinessContent();
+        userService.updatePreferences(userPreference,businessContext);
+        ResponseEntity entity =  new ResponseEntity<UserPreferences>(userPreference, HttpStatus.OK);
+        return  entity;
+
+    }
+
 
 
 }

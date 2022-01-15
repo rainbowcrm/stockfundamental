@@ -2,16 +2,20 @@ package com.primus.user.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.primus.common.AES;
+import com.primus.common.BusinessContext;
 import com.primus.common.CommonErrorCodes;
 import com.primus.common.PrimusError;
 import com.primus.user.dao.UserDAO;
 import com.primus.user.dao.UserOTPDAO;
+import com.primus.user.dao.UserPreferencesDAO;
 import com.primus.user.model.User;
 import com.primus.user.model.UserOTP;
+import com.primus.user.model.UserPreferences;
 import com.primus.utils.EmailService;
 import org.apache.commons.codec.binary.Base64;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -27,10 +31,32 @@ public class UserService {
     @Autowired
     UserOTPDAO userOTPDAO ;
 
+    @Autowired
+    UserPreferencesDAO userPreferencesDAO;
+
     final String secretKey= "Dubai";
 
     @Autowired
     EmailService emailService ;
+
+    public void updatePreferences(UserPreferences userPreferences, BusinessContext businessContext)
+    {
+        userPreferences.setEmailId(businessContext.getUserEmail());
+        userPreferencesDAO.update(userPreferences);
+    }
+
+    public UserPreferences getPreferences(BusinessContext businessContext)
+    {
+        UserPreferences userPreferences =  userPreferencesDAO.getByEmail(businessContext.getUserEmail());
+        if( userPreferences == null) {
+            userPreferences = new UserPreferences();
+            userPreferences.setEmailId(businessContext.getUserEmail());
+            userPreferences.setDashboardDays(30);
+            userPreferences.setValidationAlgo("Default");
+            userPreferences.setLandingPage("Default");
+        }
+        return  userPreferences ;
+    }
 
     public  void extractUserInfo(String encodedStr) throws PrimusError
     {

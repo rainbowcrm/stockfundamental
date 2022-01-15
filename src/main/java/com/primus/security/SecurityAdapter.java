@@ -31,7 +31,7 @@ public class SecurityAdapter extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-          http.authorizeRequests().antMatchers("/scripts/support.js").permitAll().antMatchers("/assets/background.jpg").permitAll()
+          http.authorizeRequests().antMatchers("/scripts/support.js").permitAll().antMatchers("/assets/wp1.jpg").permitAll()
                   .antMatchers(("/user/setOTP")).permitAll().antMatchers(("/user/saveOTP")).permitAll().antMatchers(("/user/sendPassword")).permitAll()
                   .anyRequest().authenticated().and().formLogin().and().httpBasic().authenticationEntryPoint(new NoPopupBasicAuthenticationEntryPoint()).and().headers().
                   frameOptions().sameOrigin().and().csrf()

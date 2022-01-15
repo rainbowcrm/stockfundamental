@@ -60,6 +60,7 @@ public class StockTransactionService {
                 FundamentalData fundamentalData = fundamentalService.getFundamentalData(stocksMaster.getBseCode());
                 if (fundamentalData != null ) {
                     fundamentalData.setCurPrice(closePrice);
+                    System.out.println(fundamentalData);
                     fundamentalService.updateFundamentals(fundamentalData);
                 }
                 Thread.sleep(100);

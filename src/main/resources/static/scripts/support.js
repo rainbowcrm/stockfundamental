@@ -91,6 +91,26 @@ function updatePassword()
 
 }
 
+function updatePref()
+{
+
+
+  let postContent= { };
+  let dDays = $("#txtDBoard").val();
+  let validationAlgo = $("#vltTCQ").val();
+  let landingPage = $("#landingPage").val();
+  postContent['landingPage'] = landingPage;
+  postContent['dashboardDays'] = dDays;
+  postContent['validationAlgo'] = validationAlgo;
+
+  let request = formRequest("POST",url+'user/updateUserPref');
+  setToken(request);
+  request.send(JSON.stringify(postContent),true) ;
+  $("#errorText").html('');
+  $("#errorText").css("color","blue");
+  $("#errorText").html('Preferences updated');
+
+}
 function updateName()
 {
   let request = new XMLHttpRequest () ;
@@ -114,6 +134,23 @@ function updateName()
            $("#errorText").html('Name updated');
            }
    };
+   request.send(true);
+
+}
+
+function getUserPref()
+{
+  let request = new XMLHttpRequest () ;
+  request.open("GET",url+'user/getUserPref',true);
+  request.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+           console.log("Response =" + request.responseText )
+           var snapsotresponse  =   JSON.parse(request.responseText)  ;
+           $("#txtDBoard").val(snapsotresponse.dashboardDays);
+           $("#vltTCQ").val(snapsotresponse.validationAlgo);
+           $("#landingPage").val(snapsotresponse.landingPage);
+      }
+  };
    request.send(true);
 
 }

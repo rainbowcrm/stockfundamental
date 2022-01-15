@@ -11,3 +11,14 @@ ________________________
 Download All shares
 https://www.bseindia.com/corporates/List_Scrips.html
 
+______________________________________________________
+1. Dashboard re-arrangement **
+2. Remove dirtly line graph  **
+3. Password update  **
+4. settings and preferences
+5. OTP
+6. Remove Volume from Reports
+7. Feeback page
+8. Login page rearrangement
+9. reading avg volume
+
