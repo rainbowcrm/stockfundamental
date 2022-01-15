@@ -168,7 +168,7 @@ public class ReportService {
             }
             stringBuffer.append("<TR>");
             if (!"Sector".equalsIgnoreCase(groupBy))  stringBuffer.append("<TD>" +  transReportData.getSector() + "</TD>");
-            stringBuffer.append("<TD>" +  transReportData.getSecurity().replace("-&#160;"," ") + "</TD>");
+            stringBuffer.append("<TD>" +  transReportData.getSecurity().replace("&#160;"," ") + "</TD>");
             if (!"Industry".equalsIgnoreCase(groupBy))  stringBuffer.append("<TD>" +  transReportData.getIndustry() + "</TD>");
             if (!"Group".equalsIgnoreCase(groupBy)) stringBuffer.append("<TD>" +  transReportData.getGroup() + "</TD>");
             if (!"marketCap".equalsIgnoreCase(groupBy)) stringBuffer.append("<TD>" +  transReportData.getMarketCapGroup() + "</TD>");

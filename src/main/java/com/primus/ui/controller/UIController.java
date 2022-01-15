@@ -1,8 +1,11 @@
 package com.primus.ui.controller;
 
+import com.primus.common.BusinessContext;
 import com.primus.dashboard.service.DashboardService;
 import com.primus.ui.service.LookupService;
 import com.primus.ui.service.UIService;
+import com.primus.user.model.UserPreferences;
+import com.primus.user.service.UserService;
 import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -20,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:20452", maxAge = 3600)
-@RequestMapping("/uiapi")
+@RequestMapping("/stockapi/uiapi")
 @RestController
 public class UIController {
 
@@ -32,6 +35,9 @@ public class UIController {
 
     @Autowired
     LookupService lookupService;
+
+    @Autowired
+    UserService userService;
 
 
     @RequestMapping(value = "/getDistinctSector", method = RequestMethod.GET)
@@ -130,8 +136,14 @@ public class UIController {
     }
 
     @RequestMapping(value = "/getDashBoardData", method = RequestMethod.GET)
-    public ResponseEntity<Map> getDashBoardData(@RequestParam int days )
+    public ResponseEntity<Map> getDashBoardData()
     {
+        BusinessContext businessContext= BusinessContext.getBusinessContent() ;
+        UserPreferences userPreferences = userService.getPreferences(businessContext);
+        int days = 30;
+        if ( userPreferences !=null ) {
+            days = userPreferences.getDashboardDays();
+        }
         Map returnData = dashboardService.getPersistedDashboardData(days);
         ResponseEntity<Map> entity =  new ResponseEntity<Map>(returnData, HttpStatus.OK);
         return  entity;

@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:20452", maxAge = 3600)
-@RequestMapping("/reports")
+@RequestMapping("/stockapi/reports")
 public class ReportController {
 
     @Autowired

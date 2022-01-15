@@ -96,7 +96,22 @@ var loadPage = function(pageId) {
         </div>
     </div>
 </nav>
+<script>
+    let lp = getLandingPage();
+    console.log(lp);
+    let page = "./dashboard.html";
+    if (lp == 'Stocks')
+        page = './stocks.html';
+    else if (lp == 'Reps')
+        page = './reports/basicReports.html';
+    else if (lp == 'Qrs')
+        page = './query/Queries.html';
+    else if (lp == 'VLTS')
+        page = './valuation/valuations.html?val=Under';
 
-<iframe id ="frmCont" src="./dashboard.html" style="width:100%;height:100%"></iframe>
+    document.write('<iframe id ="frmCont" src="'+ page + '" style="width:100%;height:100%"></iframe>');
+
+</script>
+
 </body>
 </html>

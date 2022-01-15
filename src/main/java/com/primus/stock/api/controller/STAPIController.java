@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:20452", maxAge = 3600)
-@RequestMapping("/api")
+@RequestMapping("/stockapi/api")
 @RestController
 public class STAPIController {
 

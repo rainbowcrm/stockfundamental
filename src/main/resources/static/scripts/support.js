@@ -11,7 +11,11 @@ class SessionUser {
 }
 
 sessionUser = new SessionUser('','','')
- url = "https://localhost:20452/"
+ //url = "https://localhost:20452/stockapi/";
+ let completeURL = window.location.href;
+ let index = completeURL.indexOf("/bol");
+ url = completeURL.substring(0,index) + '/stockapi/';
+
 //--disable-web-security --disable-gpu --user-data-dir=~/chromeTem
 function closePopup()
 {
@@ -137,7 +141,14 @@ function updateName()
    request.send(true);
 
 }
-
+function getLandingPage()
+{
+let request = new XMLHttpRequest () ;
+  request.open("GET",url+'user/getUserPref',false);
+   request.send(false);
+   var snapsotresponse  =   JSON.parse(request.responseText)  ;
+    return snapsotresponse.landingPage;
+}
 function getUserPref()
 {
   let request = new XMLHttpRequest () ;
@@ -152,7 +163,6 @@ function getUserPref()
       }
   };
    request.send(true);
-
 }
 
 function getUserDetails()

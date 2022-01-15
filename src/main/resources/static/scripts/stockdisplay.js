@@ -1,4 +1,7 @@
- url = "https://localhost:20452/";
+//url = "https://localhost:20452/stockapi/";
+ let completeURL = window.location.href;
+ let index = completeURL.indexOf("/bol");
+ url = completeURL.substring(0,index) + '/stockapi/';
  displayPage = 0;
 
  function formRequest(methodType,api)
@@ -381,7 +384,7 @@ function getAllStockCount()
 
  function getDashBoard()
  {
-  let request = formRequest("GET",url+'uiapi/getDashBoardData?days=15');
+  let request = formRequest("GET",url+'uiapi/getDashBoardData');
       setToken(request);
       request.send() ;
       var snapsotresponse  =   JSON.parse(request.responseText)  ;

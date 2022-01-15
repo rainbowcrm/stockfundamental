@@ -14,7 +14,7 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:20452", maxAge = 3600)
-@RequestMapping("/valuation")
+@RequestMapping("/stockapi/valuation")
 public class ValuationController{
 
     @Autowired
