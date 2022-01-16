@@ -463,15 +463,11 @@ public class DashboardService {
         groupCardData.setGroupXGainer((Integer)groupXResults.get(GAINERS));
         groupCardData.setGroupXGainPerc((Double)groupXResults.get(AVGGAIN));
 
-        groupCardData.setNoOfSecurities((Integer) groupBResults.get(TOTAL)  + (Integer) groupAResults.get(TOTAL) + (Integer) groupXResults.get(TOTAL));
-        groupCardData.setGainers((Integer)groupBResults.get(GAINERS) + (Integer)groupXResults.get(GAINERS) + (Integer)groupAResults.get(GAINERS));
+        Map<String,Object> allGroupResults=  getGroupResults(stocksMasterList,stockTransactionList);
+        groupCardData.setNoOfSecurities((Integer)allGroupResults.get(TOTAL));
+        groupCardData.setGainers((Integer)allGroupResults.get(GAINERS));
+        groupCardData.setTotalGainPerc((Double)allGroupResults.get(AVGGAIN));
 
-        double totalRateofIncr = (groupCardData.getGroupAGainPerc() * groupCardData.getGroupANo())  +
-                (groupCardData.getGroupBGainPerc() * groupCardData.getGroupBNo()) +
-                (groupCardData.getGroupXGainPerc() * groupCardData.getGroupXNo());
-        double avgRateofIncr= totalRateofIncr/groupCardData.getNoOfSecurities();
-
-        groupCardData.setTotalGainPerc(Math.round(avgRateofIncr* 100.0 )/100.0);
         dashboardData.setGroupCardData(groupCardData);
 
 
@@ -504,14 +500,11 @@ public class DashboardService {
         capData.setCapSGainer((Integer)capSResults.get(GAINERS));
         capData.setCapSGainPerc((Double)capSResults.get(AVGGAIN));
 
-        capData.setNoOfSecurities((Integer) capSResults.get(TOTAL)  + (Integer) capLResults.get(TOTAL) + (Integer) capMResults.get(TOTAL));
-        capData.setGainers((Integer)capSResults.get(GAINERS) + (Integer)capLResults.get(GAINERS) + (Integer)capMResults.get(GAINERS));
 
-        double totalRateofIncr = (capData.getCapLGainPerc() * capData.getCapLNo())  +
-                (capData.getCapMGainPerc() * capData.getCapMNo()) +
-                (capData.getCapSGainPerc() * capData.getCapSNo());
-        double avgRateofIncr= totalRateofIncr/capData.getNoOfSecurities();
-        capData.setTotalGainPerc(Math.round(avgRateofIncr* 100.0 )/100.0);
+        Map<String,Object> allGroupResults=  getGroupResults(stocksMasterList,stockTransactionList);
+        capData.setNoOfSecurities((Integer)allGroupResults.get(TOTAL));
+        capData.setGainers((Integer)allGroupResults.get(GAINERS));
+        capData.setTotalGainPerc((Double)allGroupResults.get(AVGGAIN));
 
         dashboardData.setCapCardData(capData);
 

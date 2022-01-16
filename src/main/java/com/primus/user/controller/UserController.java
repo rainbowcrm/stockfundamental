@@ -79,10 +79,25 @@ public class UserController {
     }
 
     @RequestMapping(value = "/saveOTP", method = RequestMethod.GET)
-    public ResponseEntity<Map> saveOTP(@RequestParam String phoneNumber)
+    public ResponseEntity<Map> saveOTP(@RequestParam String phoneNumber,@RequestParam String email)
     {
-        userService.sendOTP(phoneNumber);
         Map<String,Object> map = new HashMap<>() ;
+        if (userService.isPhonePresent(phoneNumber))
+        {
+            map.put("Result","failure");
+            map.put("message","Phone Number already Exist");
+            ResponseEntity entity =  new ResponseEntity<Map>(map, HttpStatus.BAD_REQUEST);
+            return  entity;
+        }
+        if (userService.isEmailPresent(email))
+        {
+            map.put("Result","failure");
+            map.put("message","Email Already Registered! Please use forgot Password!");
+            ResponseEntity entity =  new ResponseEntity<Map>(map, HttpStatus.BAD_REQUEST);
+            return  entity;
+        }
+        userService.sendOTP(phoneNumber);
+
         map.put("Result","Success");
         ResponseEntity entity =  new ResponseEntity<Map>(map, HttpStatus.OK);
         return  entity;

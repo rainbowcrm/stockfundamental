@@ -122,6 +122,16 @@ public class UserService {
         return userDAO.getByEmail(email);
     }
 
+    public boolean isEmailPresent(String email)
+    {
+        return userDAO.getByEmail(email)!=null?true:false;
+    }
+
+    public boolean isPhonePresent(String phone)
+    {
+        return userDAO.getByPhone(phone)!=null?true:false;
+    }
+
     public void sendOTP(String phone)
     {
         UserOTP userOTP = new UserOTP();

@@ -28,6 +28,16 @@ function closePopup()
              $("#forgotPWD").addClass('modal fade');
              $("#forgotPWD").css("display","none");
 
+             $("#userFieldsDiv").removeClass('modal show');
+             $("#userFieldsDiv").addClass('modal fade');
+             $("#userFieldsDiv").css("display","none");
+
+             $("#divTermsCond").removeClass('modal fade');
+             $("#divTermsCond").addClass('modal show')
+             $("#divTermsCond").css("display","flex");
+
+
+
 }
 
 function resendPassword()
@@ -255,26 +265,37 @@ function sendOTP()
   $("#errorText").html('');
 
   let request = new XMLHttpRequest () ;
-  request.open("GET",url+'user/saveOTP?phoneNumber=' + phone,true);
-  console.log(url+'user/saveOTP?phoneNumber=' + phone);
-  request.onreadystatechange = function() {
+  request.open("GET",url+'user/saveOTP?phoneNumber=' + phone +"&email="+ email,false);
+  try {
+       request.send(false) ;
+       var snresponse = JSON.parse(request.responseText);
+       if (snresponse['Result'] == 'Success') {
+            $("#userFieldsDiv").css("display","none");
+            $("#otpEntryDiv").css("display","block");
+       }else  {
+              $("#errorText").html(snresponse['message']);
+       }
+
+
+
+    }catch(err)
+    {
+     $("#errorText").html("Could not send OTP");
+    }
+
+  /*request.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
            $("#userFieldsDiv").css("display","none");
            $("#otpEntryDiv").css("display","block");
 
       }else
       {
-       $("#errorText").html("Could not send OTP!");
+       var response = Json.parse(request.responseText);
+       $("#errorText").html(response['message']);
       }
-  };
+  };*/
 
-  try {
-     request.send(JSON.st) ;
-     console.log('otp req sent');
-  }catch(err)
-  {
-   $("#errorText").html("Could not send OTP");
-  }
+
 
 }
 
@@ -288,16 +309,38 @@ console.log('open forgot pwd dialog');
 
 }
 
+function agreeDisagree()
+{
+   let clicked =  $("#chkTermsAgreed").prop("checked");
+   if (clicked == true ) {
+     $("#btnAgreeTerms").prop("disabled",false);
+   }else {
+    $("#btnAgreeTerms").prop("disabled",true);
+   }
 
+}
 
-function openNewUserpopup()
+function termsAndConditions()
 {
 
 console.log('open dialog');
  $("#newUserMode").removeClass('modal fade');
  $("#newUserMode").addClass('modal show');
  $("#newUserMode").css("display","block");
+}
 
+function openNewUserpopup()
+{
+
+
+$("#divTermsCond").removeClass('modal show');
+ $("#divTermsCond").addClass('modal fade');
+ $("#divTermsCond").css("display","none");
+
+console.log('open dialog');
+ $("#userFieldsDiv").removeClass('modal fade');
+ $("#userFieldsDiv").addClass('modal show');
+ $("#userFieldsDiv").css("display","block");
 }
 function formRequest(methodType,api)
 {
@@ -616,11 +659,11 @@ function login()
     };
      let request = new XMLHttpRequest () ;
     auth = "Basic " + btoa(name + ":" + pwd);
-    request.open("GET",url+'api/justTry',true);
+    request.open("GET",url+'api/justTry',false);
     request.setRequestHeader("Authorization", auth);
     setToken(request);
      request.setRequestHeader("Content-type", "application/json");
-        request.onreadystatechange = function() {
+       /* request.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
          window.location.href = './bolanding.html'
         }else
@@ -628,12 +671,21 @@ function login()
          $("#erromessage")[0].innerHTML ="Authorization failed";
         }
     };
-
+    */
     try {
-       request.send(JSON.stringify(data),true) ;
+       request.send(JSON.stringify(data),false) ;
+       var snapsotresponse  =  JSON.parse( request.responseText)  ;
+       console.log(snapsotresponse);
+       if (snapsotresponse['result'] == 'success'){
+            window.location.href = './bolanding.html'
+       }else
+       {
+            $("#erromessage")[0].innerHTML ="Authorization failed";
+       }
+
     }catch(err)
     {
-     $("#erromessage")[0].innerHTML ="Authorization failed";
+     $("#erromessage")[0].innerHTML ="Authorization failed (Error)";
     }
        // alert(document.cookie);
     return false;

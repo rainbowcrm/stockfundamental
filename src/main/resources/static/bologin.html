@@ -79,8 +79,8 @@
 <div class="bg">
 <div class="container" >
     <div class="wrapper"   width= "60%">
-        <form class="form-signin">
-            <h4 class="form-signin-heading" style="text-align:center"  >Stock Sparrow</h4>
+        <form class="form-signin"  style="border-radius:10px">
+            <img src="./assets/logo.PNG" style="width:100%"/>
             <h6 class="form-signin-heading" style="text-align:center" > <span id ="erromessage" style="color:red"></span> </h6>
             <h6 class="form-signin-heading" style="text-align:center" > <span id ="infomessage" style="color:blue"></span> </h6>
             <br>
@@ -93,7 +93,7 @@
             <br>
             <h6 class="form-signin-heading" style="text-align:center" > <span onclick="forgotPasswordPopup();" class="btn btn-link" data-toggle="modal"> Forgot Username/Password?</span> </h6>
 
-            <h6 class="form-signin-heading" style="text-align:center" >   <span onclick="openNewUserpopup();" class="btn btn-link" data-toggle="modal"> New User?</span> </h6>
+            <h6 class="form-signin-heading" style="text-align:center" >   <span onclick="termsAndConditions();" class="btn btn-link" data-toggle="modal"> New User?</span> </h6>
 
         </form>
     </div>
@@ -130,6 +130,75 @@
     </div>
     <div id="newUserMode" class="modal fade">
         <div class="modal-dialog" style="height:450px;">
+            <div class="modal-content" id="divTermsCond" style="height:770px; width:750px; margin-top:5px; margin-left:-40px;background-color:cadetblue;">
+                <form id="frmTermsCond">
+                    <div class="container-fluid">
+                        <h4> Terms and Conditions!</h4>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-lg-12">
+                                <span> 1. StockSparrow is intended to provide analytics on Stocks traded in Bombay Stock Exchange (BSE) belonging to category A , B and X .
+                                We do not gurantee that all stocks in BSE would be tracked in StockSparrow.
+                                </span>
+                            </div>
+                        </div>
+                            <br>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-lg-12">
+                                <span> 2. StockSparrow does not give any buy or sell recommendations. We give reports, analysis and valuation of those stocks by our home grown algorithm.
+                                    Investors are required to due their own research before making investment decisions.
+                                </span>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-lg-12">
+                                <span> 3. Our  rating  of a stock as undervalued or overvalued is solely based on their financial results and it does not take into considertation any subjective matters.
+                                    This does not guarantee that the stock price is guaranteed to move to the estimated fair price in short or long term
+                                </span>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-lg-12">
+                                <span> 4. The figures we display are mostly taken from BSE website and would be true to best of our knowledge. However due to manual or technical errors the values can be
+                                    different. We do not offer any liability or compensation for mistaken values .
+                                </span>
+                            </div>
+                        </div>
+                            <br>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-lg-12">
+                                <span> 5.Subscribers can make investment decisions based on our reports and analytics. but distributing them to others for profit is not allowed .
+                                </span>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-lg-12">
+                                <span> 6. Currently Stock Sparrow is in beta release for 3 months . Post that there would be a subscription fees charged to the users.
+                                    Users however can choose not to avail the services without any liability.
+                                </span>
+                            </div>
+                        </div>
+                        <br>
+                        <div>
+                            <div class="col-md-12 col-sm-12 col-lg-12">
+                                <input type="checkbox"  onclick="agreeDisagree();"  id = "chkTermsAgreed"/>
+                                <span> I have read the notes above and agree to the terms and conditions </span>
+                            </div>
+                        </div>
+
+                            <div class="col-md-12 col-sm-12 col-lg-12">
+                                <input type="button" class="btn-primary" id="btnAgreeTerms"  disabled onclick="openNewUserpopup();" value="Agree"> </input>
+                                &nbsp;
+                                <input type="button" class="btn-secondary"  onclick="closePopup();" value="Decline"> </input>
+
+                            </div>
+                            <br>
+                        </div>
+
+                </form>
+            </div>
             <div class="modal-content" id="otpEntryDiv" style="height:450px; margin-top:75px;display:none">
                 <form id="frmOTPEnty">
                     <div class="container-fluid">
@@ -151,7 +220,7 @@
                     </div>
                 </form>
             </div>
-            <div class="modal-content" id="userFieldsDiv" style="height:450px; margin-top:75px">
+            <div class="modal-content" id="userFieldsDiv" style="height:450px; margin-top:75px;display:none">
                 <form id="frmgenericAdd">
                     <div class="container-fluid">
                         <span id ="errorText" style="color:red"></span>
@@ -185,14 +254,11 @@
                     </div>
                         <br><br>
                     <div class="row">
-                        <div class="col-md-6 col-sm-12 col-lg-3">
+                        <div class="col-md-6 col-sm-12 col-lg-6">
                             <input type="button" class="btn-primary"  onclick="sendOTP();" value="Send OTP"> </input>
                             &nbsp;
                             <input type="button" class="btn-secondary"  onclick="closePopup();" value="Close Popup"> </input>
                         </div>
-
-
-
                     </div>
                     </div>
                 </form>

@@ -6,6 +6,7 @@ import com.primus.stock.master.model.FundamentalData;
 import com.primus.stock.master.service.FinancialService;
 import com.primus.stock.master.service.FundamentalService;
 import com.primus.stock.master.service.StockMasterService;
+import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,9 +49,11 @@ public class STAPIController {
 
 
     @RequestMapping(value = "/justTry", method = RequestMethod.GET)
-    public ResponseEntity<String> justTry()
+    public ResponseEntity<Map<String,String>> justTry()
     {
-        ResponseEntity entity =  new ResponseEntity<String>("Hello", HttpStatus.OK);
+        Map<String,String> res = new HashMap();
+        res.put("result","success");
+        ResponseEntity entity =  new ResponseEntity<Map<String,String>>(res, HttpStatus.OK);
         return  entity;
     }
 

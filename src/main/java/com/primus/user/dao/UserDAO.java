@@ -33,6 +33,19 @@ public class UserDAO {
 
     }
 
+    public User getByPhone(String phone)
+    {
+        Query query = em.createQuery(" from User where phoneNumber=?");
+        query.setParameter(1,phone);
+        List<User> retValue = query.getResultList();
+        if (!CollectionUtils.isEmpty(retValue))
+            return  retValue.get(0);
+        else
+            return null;
+
+    }
+
+
     public User getByEmailAndPassword(String email,String password)
     {
         Query query = em.createQuery(" from User where email=? and password = ? ");
