@@ -25,7 +25,7 @@ public class UserPreferencesDAO {
 
     public UserPreferences getByEmail(String email)
     {
-        Query query = em.createQuery(" from UserPreferences where emailId=?");
+        Query query = em.createQuery(" from UserPreferences where emailId=?1");
         query.setParameter(1,email);
         List<UserPreferences> retValue = query.getResultList();
         if (!CollectionUtils.isEmpty(retValue))

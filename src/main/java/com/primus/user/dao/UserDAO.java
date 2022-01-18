@@ -23,7 +23,7 @@ public class UserDAO {
 
     public User getByEmail(String email)
     {
-        Query query = em.createQuery(" from User where email=?");
+        Query query = em.createQuery(" from User where email=?1");
         query.setParameter(1,email);
         List<User> retValue = query.getResultList();
         if (!CollectionUtils.isEmpty(retValue))
@@ -35,7 +35,7 @@ public class UserDAO {
 
     public User getByPhone(String phone)
     {
-        Query query = em.createQuery(" from User where phoneNumber=?");
+        Query query = em.createQuery(" from User where phoneNumber=?1");
         query.setParameter(1,phone);
         List<User> retValue = query.getResultList();
         if (!CollectionUtils.isEmpty(retValue))
@@ -48,7 +48,7 @@ public class UserDAO {
 
     public User getByEmailAndPassword(String email,String password)
     {
-        Query query = em.createQuery(" from User where email=? and password = ? ");
+        Query query = em.createQuery(" from User where email=?1 and password = ?2 ");
         query.setParameter(1,email);
         query.setParameter(2,password);
         List<User> retValue = query.getResultList();

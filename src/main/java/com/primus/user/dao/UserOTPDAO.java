@@ -25,7 +25,7 @@ public class UserOTPDAO {
 
     public UserOTP getByMobile(String phone)
     {
-        Query query = em.createQuery(" from UserOTP where phoneNumber=?");
+        Query query = em.createQuery(" from UserOTP where phoneNumber=?1");
         query.setParameter(1,phone);
         List<UserOTP> retValue = query.getResultList();
         if (!CollectionUtils.isEmpty(retValue))

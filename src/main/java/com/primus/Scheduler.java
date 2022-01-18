@@ -21,9 +21,9 @@ public class Scheduler {
     @Autowired
     StockMasterService stockMasterService;
 
-    Boolean run = false ;
+    Boolean run = true ;
 
-    @Scheduled(cron = "0 10 17 ? * MON-FRI")
+    @Scheduled(cron = "0 56 20 ? * MON-FRI")
     void someExecution()
     {
         if (!run) {

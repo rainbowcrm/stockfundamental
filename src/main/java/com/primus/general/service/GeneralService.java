@@ -3,6 +3,7 @@ package com.primus.general.service;
 import com.primus.stock.master.service.FinancialService;
 import com.primus.stock.master.service.FundamentalService;
 import com.primus.stocktransaction.service.StockTransactionService;
+import org.apache.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ public class GeneralService {
 
     public void readDailyTransactionData()
     {
+
         stockTransactionService.saveDailyTransactions("A ");
         stockTransactionService.saveDailyTransactions("B ");
         stockTransactionService.saveDailyTransactions("X ");
