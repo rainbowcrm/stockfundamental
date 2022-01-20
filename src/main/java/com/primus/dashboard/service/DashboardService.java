@@ -51,6 +51,7 @@ public class DashboardService {
     private static final String AVGGAIN = "AvgGain";
 
 
+
     public Map<String, Object> getPersistedDashboardData(long prevDays)
     {
         DashBoardClobData dashBoardClobData =  dashboardDAO.getDashboardData(prevDays);
@@ -80,6 +81,21 @@ public class DashboardService {
 
     }
 
+    public void updateDashBoardData(long prevDays)
+    {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            DashboardData dashboardData = getDashboardData(prevDays);
+            DashBoardClobData dashBoardClobData = new DashBoardClobData();
+            dashBoardClobData.setDays((int) prevDays);
+            dashBoardClobData.setDashboardData(objectMapper.writeValueAsString(dashboardData));
+            dashboardDAO.update(dashBoardClobData);
+        }catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+
+    }
     private DashboardData getDashboardData(long prevDays)
     {
         long oneDayinMillis =  24l * 3600l * 1000l ;

@@ -21,15 +21,16 @@ public class Scheduler {
     @Autowired
     StockMasterService stockMasterService;
 
-    Boolean run = true ;
+    Boolean run = false ;
 
-    @Scheduled(cron = "0 56 20 ? * MON-FRI")
+    @Scheduled(cron = "0 17 22 ? * MON-FRI")
     void someExecution()
     {
         if (!run) {
             run = true;
             System.out.println("Hello " + new java.util.Date());
             generalService.readDailyTransactionData();
+            generalService.updateDashBoards();
            // generalService.readWeeklyFundamentals();
             //stockMasterService.updateMarketCap();
             //fundamentalService.updateMarketCap();

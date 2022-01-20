@@ -15,10 +15,37 @@ ______________________________________________________
 1. Dashboard re-arrangement **
 2. Remove dirtly line graph  **
 3. Password update  **
-4. settings and preferences
+4. settings and preferences **
 5. OTP
 6. Remove Volume from Reports
 7. Feeback page
-8. Login page rearrangement
+8. Login page rearrangement *
 9. reading avg volume
+______________________________________________________
+1. window.location url ***
+2. honoring preference **
+3.Dashboard sum error - **
+4. OTP - msg91
+5. feedback
+6. Terms and Conditions  - ***
+7. Dashboard delete
+8. Portfolio
+9.login error ***
+_____________________________________________________
+
+mysql passowrd on AWS - Delhi999
+++++++++++++++++++++++++++++++++++++++++++++
+
+1. SUCCESFULL DEPLOYMENT
+2. DAILY DATA TRACKER **
+3. lOG WRITER **
+4. dASHBOARD UPDATE  **
+5. rEPORT BY INCR
+6. MSG 91
+7. Share by Volume
+
+
+
+
+
 

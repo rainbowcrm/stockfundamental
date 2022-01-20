@@ -70,7 +70,7 @@ public class ReportService {
         return MathUtil.getMedian(doubleList);
     }
 
-    private void createCSV(List<TransReportData> transReportDataList,String csvFileName) throws PrimusError
+    protected void createCSV(List<TransReportData> transReportDataList,String csvFileName) throws PrimusError
     {
 
         try {
@@ -239,7 +239,7 @@ public class ReportService {
 
     }
 
-    private List<TransReportData> generateReport(Date fromDate, Date toDate) throws PrimusError
+    protected List<TransReportData> generateReport(Date fromDate, Date toDate) throws PrimusError
     {
         try {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
