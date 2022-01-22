@@ -23,13 +23,13 @@ public class Scheduler {
 
     Boolean run = false ;
 
-    @Scheduled(cron = "0 17 22 ? * MON-FRI")
+    @Scheduled(cron = "0 55 21 ? * MON-FRI")
     void someExecution()
     {
         if (!run) {
             run = true;
             System.out.println("Hello " + new java.util.Date());
-            generalService.readDailyTransactionData();
+           // generalService.readDailyTransactionData();
             generalService.updateDashBoards();
            // generalService.readWeeklyFundamentals();
             //stockMasterService.updateMarketCap();

@@ -50,7 +50,37 @@ public class DashboardService {
     private static final String GAINERS = "Gainers";
     private static final String AVGGAIN = "AvgGain";
 
+    private List<String> sensexList= Arrays.asList(
+         "500820", "532215", "532977", "500034", "532978", "532454", "500124", "532281", "500010", "500180", "500696", "532174", "532187",
+         "500209", "500875", "500247", "500510", "500520", "532500", "500790", "532555", "500312", "532898", "500325", "500112", "524715",
+         "532540", "532755", "500114", "532538");
 
+
+    private void setScrollText(DashboardData dashboardData, List<StockTransaction> stockTransactionList,
+                               List<StocksMaster> stocksMasterList,Date curDate)
+    {
+        Date fromDate = new Date(curDate.getTime()- 7 * 24 *3600 * 1000);
+        List filteredTransaction = stockTransactionList.stream().filter( stockTransaction ->  {
+            return stockTransaction.getTransDate().after(fromDate)?true:false;
+        }).collect(Collectors.toList());
+
+        Map<String,Double> sortedStocks =  sortStockSales(stocksMasterList,filteredTransaction);
+        StringBuffer marqString = new StringBuffer("");
+        for (String bseCode : sensexList) {
+            StocksMaster stocksMasterSelected = stocksMasterList.stream().filter(stocksMaster ->
+             stocksMaster.getBseCode().equalsIgnoreCase(bseCode) ).findFirst().orElse(null);
+            if (stocksMasterSelected != null) {
+                Double value = sortedStocks.getOrDefault(stocksMasterSelected.getSecurityName(), null);
+                if (value != null) {
+                    marqString.append(stocksMasterSelected.getSecurityName() + " " + ((value > 0) ? "+" : " ") + value);
+                    marqString.append(" ");
+                }
+            }
+
+        }
+        dashboardData.setScroller(marqString.toString());
+
+    }
 
     public Map<String, Object> getPersistedDashboardData(long prevDays)
     {
@@ -112,6 +142,7 @@ public class DashboardService {
         setSectorTrend(stocksMasterList,stockTransactionList,dashboardData);
         setHotStocks(stockTransactionList,stocksMasterList,dashboardData);
         setValuedShares(dashboardData);
+        setScrollText(dashboardData,stockTransactionList,stocksMasterList,new java.util.Date());
 
         return dashboardData ;
 
@@ -147,7 +178,7 @@ public class DashboardService {
         dashboardData.setOvShares(ovMap);
     }
 
-    private void setHotStocks(List<StockTransaction> stockTransactionList,List<StocksMaster> stocksMasterList,DashboardData dashboardData)
+    private Map<String,Double> sortStockSales(List<StocksMaster> stocksMasterList,List<StockTransaction> stockTransactionList)
     {
         Map<String,Double> hotStocks = new HashMap<>();
         for(StocksMaster stocksMaster : stocksMasterList) {
@@ -166,7 +197,12 @@ public class DashboardService {
 
         Map<String,Double> reverseSortedMap = new LinkedHashMap<>();
         hotStocks.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).forEachOrdered(x -> reverseSortedMap.put(x.getKey(), x.getValue()));
+        return  reverseSortedMap;
+    }
 
+    private void setHotStocks(List<StockTransaction> stockTransactionList,List<StocksMaster> stocksMasterList,DashboardData dashboardData)
+    {
+        Map<String,Double> reverseSortedMap  =sortStockSales(stocksMasterList,stockTransactionList);
         Map<String,Double> priorSortedMap = new LinkedHashMap<>();
         int j =0 ;
         for (Map.Entry<String,Double> entry: reverseSortedMap.entrySet()) {

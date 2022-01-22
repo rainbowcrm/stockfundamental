@@ -18,9 +18,10 @@ public class StockTransactionDAO {
     protected EntityManager em;
 
     public List<StockTransaction> getData(Date from , Date to  ) {
+        Date modDate = new java.util.Date(to.getTime() + (24l * 3600l * 1000l));
         Query query =  em.createQuery("from StockTransaction  where transDate>=?1 and transDate <= ?2 order by  transDate")  ;
         query.setParameter(1,from);
-        query.setParameter(2,to);
+        query.setParameter(2,modDate);
 
         List<StockTransaction> ans = query.getResultList();
         return ans;

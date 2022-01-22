@@ -18,6 +18,8 @@ public class DashboardData  implements  Serializable{
      Map<String,Integer> uvShares;
      Map<String,Integer> ovShares;
 
+     String scroller;
+
 
 
     public CapCardData getCapCardData() {
@@ -106,6 +108,14 @@ public class DashboardData  implements  Serializable{
 
     public void setOvShares(Map<String, Integer> ovShares) {
         this.ovShares = ovShares;
+    }
+
+    public String getScroller() {
+        return scroller;
+    }
+
+    public void setScroller(String scroller) {
+        this.scroller = scroller;
     }
 }
 

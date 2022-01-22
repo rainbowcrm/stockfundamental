@@ -243,6 +243,12 @@ function submitReport()
   runReport('reports/getTransSummary',"groupBy="+grp)
 }
 
+function submitGrowthReport()
+{
+
+  runReport('reports/getGrowthReport',"groupBy=1");
+}
+
 function submitDetailedReport()
 {
   let secur = $("#txtSecurity").val();

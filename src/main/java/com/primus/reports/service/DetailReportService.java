@@ -64,7 +64,7 @@ public class DetailReportService extends ReportService{
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append("<HTML><HEAD><TITLE>Trade Details</TITLE></HEAD>");
         stringBuffer.append("<BODY>");
-        stringBuffer.append(getHeader(businessContext,fromDate,toDate));
+        stringBuffer.append(getHeader(businessContext,fromDate,toDate,"Transaction Details"));
         stringBuffer.append("<TABLE WIDTH='90%'>");
         stringBuffer.append("<TR>");
         stringBuffer.append("<TH>Security:</TH>" + transDetailReport.getSecurity()  );

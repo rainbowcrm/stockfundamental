@@ -120,11 +120,16 @@ public class ReportService {
         return "";
     }
 
-    protected String getHeader(BusinessContext businessContext,String fromDate, String toDate)
+    protected String getHeader(BusinessContext businessContext,String fromDate, String toDate,String title)
     {
-        StringBuffer header = new StringBuffer("<H2>");
-        header.append("Trade From:  " + fromDate + " To: " + toDate + "</H2>");
-        header.append("<H3>Report run by " + businessContext.getUser().getFirstName() + " "+ businessContext.getUser().getLastName() +"</H3>" );
+
+        StringBuffer header = new StringBuffer("<H3>");
+        header.append("Stock Sparrow</H3>");
+        header.append("<H4>");
+        header.append(title + "</H4>");
+        header.append("<H4>");
+        header.append("Trade From:  " + fromDate + " To: " + toDate + "</H4>");
+        header.append("<br>Report run by " + businessContext.getUser().getFirstName() + " "+ businessContext.getUser().getLastName() +"" );
         return header.toString();
 
     }
@@ -135,7 +140,7 @@ public class ReportService {
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append("<HTML><HEAD><TITLE>Trade Details</TITLE></HEAD>");
         stringBuffer.append("<BODY>");
-        stringBuffer.append(getHeader(businessContext,fromDate,toDate));
+        stringBuffer.append(getHeader(businessContext,fromDate,toDate,"Transaction Summary"));
         stringBuffer.append("<TABLE WIDTH='90%'>");
         stringBuffer.append("<TR>");
         if (!"Sector".equalsIgnoreCase(groupBy)) stringBuffer.append("<TH>Sector</TH>"  );
