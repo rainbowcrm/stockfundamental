@@ -1,5 +1,6 @@
 package com.primus.general.service;
 
+import com.primus.common.LogWriter;
 import com.primus.dashboard.service.DashboardService;
 import com.primus.stock.master.service.DailyUpdateService;
 import com.primus.stock.master.service.FinancialService;
@@ -34,6 +35,7 @@ public class GeneralService {
         dashboardService.updateDashBoardData(45);
         dashboardService.updateDashBoardData(60);
         dashboardService.updateDashBoardData(90);
+        LogWriter.debug("Dashboards updated");
     }
     public void readDailyTransactionData()
     {
@@ -50,7 +52,7 @@ public class GeneralService {
             stockTransactionService.saveDailyTransactions("X ");
             dailyUpdateService.updateDailyService("X ", new java.util.Date() );
         }
-        System.out.println("Daily Record Imported");
+        LogWriter.debug("Daily Record Imported");
 
     }
 
@@ -59,15 +61,16 @@ public class GeneralService {
         fundamentalService.saveAllFundamentals("A ");
         fundamentalService.saveAllFundamentals("B ");
         fundamentalService.saveAllFundamentals("X ");
-        System.out.println("Completed Fundamentals");
+        fundamentalService.updateMarketCap();
+        LogWriter.debug("Completed Fundamentals");
     }
 
     public void readWeeklyFinancials()
     {
-      //  financialService.saveAllFinancialData("A ");
-      //  financialService.saveAllFinancialData("B ");
+        financialService.saveAllFinancialData("A ");
+        financialService.saveAllFinancialData("B ");
         financialService.saveAllFinancialData("X ");
-        System.out.println("Completed Financials");
+        LogWriter.debug("Completed Financials");
     }
 
 

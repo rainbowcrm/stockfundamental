@@ -1,5 +1,6 @@
 package com.primus.stock.master.service;
 
+import com.primus.common.LogWriter;
 import com.primus.stock.api.service.APIService;
 import com.primus.stock.master.dao.StockMasterDAO;
 import com.primus.stock.master.model.StocksMaster;
@@ -63,7 +64,7 @@ public class StockMasterService {
                 }
             }catch (Exception ex)
             {
-                ex.printStackTrace();
+                LogWriter.logException("Ex in StockMasterService" ,this.getClass(),ex);
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.primus;
 
+import com.primus.common.LogWriter;
 import com.primus.general.service.GeneralService;
 import com.primus.stock.master.service.FundamentalService;
 import com.primus.stock.master.service.StockMasterService;
@@ -23,19 +24,25 @@ public class Scheduler {
 
     Boolean run = false ;
 
-    @Scheduled(cron = "0 55 21 ? * MON-FRI")
+    @Scheduled(cron = "0 41 11 ? * MON-SAT")
     void someExecution()
     {
         if (!run) {
             run = true;
-            System.out.println("Hello " + new java.util.Date());
-           // generalService.readDailyTransactionData();
-            generalService.updateDashBoards();
+            LogWriter.debug( "Daily Processing for " + new java.util.Date());
+              generalService.readDailyTransactionData();
+            //generalService.updateDashBoards();
            // generalService.readWeeklyFundamentals();
             //stockMasterService.updateMarketCap();
             //fundamentalService.updateMarketCap();
         }
-
     }
 
+    @Scheduled(cron = "0 09 11 ? * SAT")
+    void updateFundamentals()
+    {
+        LogWriter.debug(" Updating fundamentals for " + new java.util.Date());
+        generalService.readWeeklyFundamentals();
+
+    }
 }

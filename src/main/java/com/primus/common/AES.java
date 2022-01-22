@@ -24,10 +24,10 @@ public class AES {
             secretKey = new SecretKeySpec(key, "AES");
         }
         catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            LogWriter.error(e);
         }
         catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            LogWriter.error(e);
         }
     }
 
@@ -42,7 +42,7 @@ public class AES {
         }
         catch (Exception e)
         {
-            System.out.println("Error while encrypting: " + e.toString());
+            LogWriter.error(e);
         }
         return null;
     }

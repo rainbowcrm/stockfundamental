@@ -1,5 +1,6 @@
 package com.primus.stock.master.service;
 
+import com.primus.common.LogWriter;
 import com.primus.stock.api.service.APIService;
 import com.primus.stock.master.dao.FundamentalsDAO;
 import com.primus.stock.master.model.FinancialData;
@@ -62,7 +63,7 @@ public class FundamentalService {
                     fundamentalData.setMarketCapFF(stocksMaster.getMarketCapFF());
                     fundamentalData.setMarketGroup(stocksMaster.getMarketGroup());
                     fundamentalsDAO.update(fundamentalData);
-                    System.out.println(stocksMaster.getBseCode() + ":::::" + stocksMaster.getMarketCap());
+                    LogWriter.debug(stocksMaster.getBseCode() + ":::::" + stocksMaster.getMarketCap());
                 }
             }
         }
@@ -187,12 +188,13 @@ public class FundamentalService {
                     System.out.println("id=" + stocksMaster.getId() + ":" + fundamentalData);
                     createFundamentals(fundamentalData);
                 } else {
+
                     System.out.println("Skipping =  " + fundamentalData);
                 }
                 Thread.sleep(100);
             }catch (Exception ex)
             {
-                ex.printStackTrace();
+                LogWriter.logException("Ex in FundamentalService" ,this.getClass(),ex);
 
             }
         }

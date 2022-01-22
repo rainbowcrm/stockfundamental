@@ -1,5 +1,6 @@
 package com.primus.valuation.service;
 
+import com.primus.common.LogWriter;
 import com.primus.stock.master.model.FinancialData;
 import com.primus.stock.master.model.FundamentalData;
 import com.primus.stock.master.model.StocksMaster;
@@ -247,7 +248,8 @@ public class ValuationService {
             return intrinsicData;
         }catch (Exception ex)
         {
-            ex.printStackTrace();
+
+            LogWriter.logException("Ex in ValuationService" ,this.getClass(),ex);
         }
         return null;
 

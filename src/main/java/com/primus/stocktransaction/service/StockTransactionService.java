@@ -1,5 +1,6 @@
 package com.primus.stocktransaction.service;
 
+import com.primus.common.LogWriter;
 import com.primus.stock.api.service.APIService;
 import com.primus.stock.master.model.FundamentalData;
 import com.primus.stock.master.model.StocksMaster;
@@ -54,19 +55,19 @@ public class StockTransactionService {
                 stockTransaction.setLowPrice(lowPrice);
                 stockTransaction.setHighPrice(highPrice);
                 stockTransaction.setTransDate(transDate);
-                System.out.println(stockTransaction);
+                LogWriter.debug(stockTransaction.toString());
                 stockTransactionDAO.update(stockTransaction);
 
                 FundamentalData fundamentalData = fundamentalService.getFundamentalData(stocksMaster.getBseCode());
                 if (fundamentalData != null ) {
                     fundamentalData.setCurPrice(closePrice);
-                    System.out.println(fundamentalData);
+                    LogWriter.debug(fundamentalData.toString());
                     fundamentalService.updateFundamentals(fundamentalData);
                 }
                 Thread.sleep(100);
 
             }catch (Exception exception) {
-                exception.printStackTrace();
+                LogWriter.logException("Ex in StockTransactionservice" ,this.getClass(),exception);
             }
         }
 

@@ -14,6 +14,7 @@ import javax.mail.internet.MimeMessage;
 
 import com.primus.common.CommonErrorCodes;
 import com.primus.common.Configuration;
+import com.primus.common.LogWriter;
 import com.primus.common.PrimusError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
@@ -63,7 +64,7 @@ public class EmailService {
 
         }catch (MessagingException mex)
         {
-            mex.printStackTrace();;
+            LogWriter.logException("Ex in EmailService" ,this.getClass(),mex);
             throw new PrimusError(CommonErrorCodes.EMAIL_NOT_SEND,"Could not send email");
         }
 

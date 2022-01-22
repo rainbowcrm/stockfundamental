@@ -1,5 +1,6 @@
 package com.primus.stock.master.service;
 
+import com.primus.common.LogWriter;
 import com.primus.stock.api.service.APIService;
 import com.primus.stock.master.dao.FinancialsDAO;
 import com.primus.stock.master.model.FinancialData;
@@ -99,7 +100,8 @@ public class FinancialService {
             }
             return yearDiv;
         }catch (Exception ex) {
-            ex.printStackTrace();
+
+            LogWriter.logException("Ex in FinancialService" ,this.getClass(),ex);
         }
         return 0.0;
 
@@ -136,10 +138,10 @@ public class FinancialService {
                     financialData.setNetProfit(Double.parseDouble(netProfit.replace(",", "")));
                 financialData.setDivident(divident);
 
-                System.out.println(id + ":values= " + revenue + " " + expenditure + " " + netProfit + " " + equity + " " + divident);
+                LogWriter.debug(id + ":values= " + revenue + " " + expenditure + " " + netProfit + " " + equity + " " + divident);
                 return  financialData ;
             }else
-                System.out.println("Cannot get Financials for " + scripCode + " =" + id);
+                LogWriter.debug("Cannot get Financials for " + scripCode + " =" + id);
 
                 return null;
 
@@ -147,7 +149,7 @@ public class FinancialService {
 
         }catch (Exception ex)
         {
-                ex.printStackTrace();
+            LogWriter.logException("Ex in FinancialService" ,this.getClass(),ex);
         }
         return  null;
 

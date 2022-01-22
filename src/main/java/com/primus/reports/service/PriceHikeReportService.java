@@ -2,6 +2,7 @@ package com.primus.reports.service;
 
 import com.primus.common.BusinessContext;
 import com.primus.common.CommonErrorCodes;
+import com.primus.common.LogWriter;
 import com.primus.common.PrimusError;
 import com.primus.common.datastructures.DataPair;
 import com.primus.reports.data.TransReportData;
@@ -158,7 +159,7 @@ public class PriceHikeReportService extends ReportService{
             Resource resource = new ClassPathResource(unqValue);
             return  resource ;
         }catch (Exception ex){
-            ex.printStackTrace();
+            LogWriter.logException("Ex in PriceeportService" ,this.getClass(),ex);
             throw new PrimusError(CommonErrorCodes.FROM_DATE_WRONG, "Start Date cannot be post 01-06-2021");
         }
     }

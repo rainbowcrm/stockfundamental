@@ -1,6 +1,7 @@
 package com.primus.dashboard.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.primus.common.LogWriter;
 import com.primus.dashboard.dao.DashboardDAO;
 import com.primus.dashboard.model.*;
 import com.primus.stock.master.model.FundamentalData;
@@ -57,9 +58,9 @@ public class DashboardService {
 
 
     private void setScrollText(DashboardData dashboardData, List<StockTransaction> stockTransactionList,
-                               List<StocksMaster> stocksMasterList,Date curDate)
+                               List<StocksMaster> stocksMasterList,Date curDate, long days)
     {
-        Date fromDate = new Date(curDate.getTime()- 7 * 24 *3600 * 1000);
+        Date fromDate = new Date(curDate.getTime()- days * 24 *3600 * 1000);
         List filteredTransaction = stockTransactionList.stream().filter( stockTransaction ->  {
             return stockTransaction.getTransDate().after(fromDate)?true:false;
         }).collect(Collectors.toList());
@@ -98,11 +99,12 @@ public class DashboardService {
                 return objectMapper.convertValue(dashboardData,Map.class) ;
 
             } else {
+                LogWriter.debug("Reading Persisted data for " + prevDays);
                 String dashboardJson = dashBoardClobData.getDashboardData();
                 return objectMapper.readValue(dashboardJson, Map.class);
             }
         }catch (Exception ex) {
-            ex.printStackTrace();
+            LogWriter.error(ex);
 
         }
             return new HashMap<>();
@@ -122,7 +124,7 @@ public class DashboardService {
             dashboardDAO.update(dashBoardClobData);
         }catch (Exception ex)
         {
-            ex.printStackTrace();
+            LogWriter.error(ex);
         }
 
     }
@@ -142,7 +144,7 @@ public class DashboardService {
         setSectorTrend(stocksMasterList,stockTransactionList,dashboardData);
         setHotStocks(stockTransactionList,stocksMasterList,dashboardData);
         setValuedShares(dashboardData);
-        setScrollText(dashboardData,stockTransactionList,stocksMasterList,new java.util.Date());
+        setScrollText(dashboardData,stockTransactionList,stocksMasterList,new java.util.Date(),prevDays);
 
         return dashboardData ;
 
@@ -189,7 +191,7 @@ public class DashboardService {
                 StockTransaction firstTrans = indTransaction.get(0);
                 StockTransaction endTrans = indTransaction.get(indTransaction.size() - 1);
                 Double openPrice = firstTrans.getOpenPrice();
-                Double closePrice = firstTrans.getClosePrice() ;
+                Double closePrice = endTrans.getClosePrice() ;
                 Double percChange =MathUtil.round (((closePrice-openPrice)/openPrice ) * 100);
                 hotStocks.put(stocksMaster.getSecurityName(),percChange);
             }
@@ -570,21 +572,28 @@ public class DashboardService {
         Double groupAggrePerc = 0.0 ;
         List<Double> gainPerList = new ArrayList<>();
         for (StocksMaster groupStock : groupStocks) {
+            long time = System.currentTimeMillis();
             List<StockTransaction> indStockRecords=  stockTransactionList.stream().filter( stockTransaction -> {
                 return stockTransaction.getApi_code().equalsIgnoreCase(groupStock.getApiCode());
             } ).collect(Collectors.toList());
+            long newTime = System.currentTimeMillis() ;
+            //System.out.println("Secs 1 = " + ( newTime - time));
                 if (!CollectionUtils.isEmpty(indStockRecords)) {
                     Double openPrice = indStockRecords.get(0).getOpenPrice();
                     Double closePrice = indStockRecords.get(indStockRecords.size() - 1).getClosePrice();
                     Double percChange = ((closePrice - openPrice) / openPrice) * 100;
+                     time = System.currentTimeMillis();
+              //      System.out.println("Secs 2 = " + ( time - newTime));
                     if (percChange > 0.0) {
                         groupPositives += 1;
                     }
                     groupAggrePerc += percChange;
                     gainPerList.add(percChange) ;
+                    newTime = System.currentTimeMillis() ;
+                    //System.out.println("Secs 3 = " + ( newTime - time));
                 }else
                 {
-                    System.out.println("remove "+ groupStock.getBseCode() + "  : " + groupStock.getGroupC());
+                    LogWriter.debug("remove "+ groupStock.getBseCode() + "  : " + groupStock.getGroupC());
                     groupTotalCount --;
                 }
         }

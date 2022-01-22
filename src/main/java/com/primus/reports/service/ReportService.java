@@ -3,6 +3,7 @@ package com.primus.reports.service;
 import com.opencsv.CSVWriter;
 import com.primus.common.BusinessContext;
 import com.primus.common.CommonErrorCodes;
+import com.primus.common.LogWriter;
 import com.primus.common.PrimusError;
 import com.primus.reports.data.TransReportData;
 import com.primus.stock.master.dao.StockMasterDAO;
@@ -55,7 +56,7 @@ public class ReportService {
             renderer.layout();
             renderer.createPDF(outputStream);
         }catch (Exception ex) {
-            ex.printStackTrace();
+            LogWriter.logException("Ex in ReportService" ,this.getClass(),ex);
             throw new PrimusError(CommonErrorCodes.PDF_COULDNOTBE_GEN, "Pdf could not be generated");
         }
     }
@@ -88,7 +89,7 @@ public class ReportService {
                 }
             writer.close();
         }catch (Exception ex){
-            ex.printStackTrace();
+            LogWriter.logException("Ex in ReportService" ,this.getClass(),ex);
             throw new PrimusError(CommonErrorCodes.CSV_COULDNOTBE_GEN,"CSV file could not be generated");
 
         }
@@ -238,7 +239,7 @@ public class ReportService {
             return  resource ;
 
         }catch (Exception ex){
-            ex.printStackTrace();
+            LogWriter.logException("Ex in ReportService" ,this.getClass(),ex);
             throw new PrimusError(CommonErrorCodes.FROM_DATE_WRONG, "Start Date cannot be post 01-06-2021");
         }
 
@@ -276,7 +277,7 @@ public class ReportService {
             }
             return transReportDataList;
         }catch (Exception ex) {
-            ex.printStackTrace();
+            LogWriter.logException("Ex in ReportService" ,this.getClass(),ex);
             throw new PrimusError(CommonErrorCodes.FROM_DATE_WRONG, "Start Date cannot be post 01-06-2021");
         }
 

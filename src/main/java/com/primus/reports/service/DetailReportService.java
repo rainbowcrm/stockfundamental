@@ -3,6 +3,7 @@ package com.primus.reports.service;
 import com.opencsv.CSVWriter;
 import com.primus.common.BusinessContext;
 import com.primus.common.CommonErrorCodes;
+import com.primus.common.LogWriter;
 import com.primus.common.PrimusError;
 import com.primus.reports.data.TransDetailReport;
 import com.primus.reports.data.TransLine;
@@ -52,7 +53,7 @@ public class DetailReportService extends ReportService{
             }
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LogWriter.logException("Ex in DailyReportService" ,this.getClass(),ex);
             throw new PrimusError(CommonErrorCodes.REPORT_GEN_FAILED,"Report could not be generated");
         }
         return transDetailReport;
@@ -114,7 +115,7 @@ public class DetailReportService extends ReportService{
             }
             writer.close();
         }catch (Exception ex){
-            ex.printStackTrace();
+            LogWriter.logException("Ex in DailyReportService" ,this.getClass(),ex);
             throw new PrimusError(CommonErrorCodes.CSV_COULDNOTBE_GEN,"CSV file could not be generated");
 
         }
@@ -147,7 +148,7 @@ public class DetailReportService extends ReportService{
             return  resource ;
 
         }catch (Exception ex){
-            ex.printStackTrace();
+            LogWriter.logException("Ex in DailyReportService" ,this.getClass(),ex);
             throw new PrimusError(CommonErrorCodes.FROM_DATE_WRONG, "Start Date cannot be post 01-06-2021");
         }
 
