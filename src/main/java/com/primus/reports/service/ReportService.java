@@ -1,10 +1,7 @@
 package com.primus.reports.service;
 
 import com.opencsv.CSVWriter;
-import com.primus.common.BusinessContext;
-import com.primus.common.CommonErrorCodes;
-import com.primus.common.LogWriter;
-import com.primus.common.PrimusError;
+import com.primus.common.*;
 import com.primus.reports.data.TransReportData;
 import com.primus.stock.master.dao.StockMasterDAO;
 import com.primus.stock.master.model.StocksMaster;
@@ -37,6 +34,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class ReportService {
+
+    @Autowired
+    Configuration configuration ;
 
     @Autowired
     StockTransactionDAO stockTransactionDAO;
@@ -222,20 +222,20 @@ public class ReportService {
             String unqValue ="";
             if("PDF".equalsIgnoreCase(repFormat)) {
                 String xhtml = createHTML(transReportDataList,groupBy,context,fromDateS,toDateS);
-                unqValue = "reports/" + ExportService.randomStr()   +".pdf";
-                String absPath = ResourceUtils.getFile("classpath:application.properties").getAbsolutePath();
-                String rootFolder = absPath.substring(0,absPath.length()-22);
+                unqValue =  ExportService.randomStr()   +".pdf";
+             //   String absPath = ResourceUtils.getFile("classpath:application.properties").getAbsolutePath();
+                String rootFolder = configuration.getReportFolder();
                 Document document = Jsoup.parse(xhtml, "UTF-8");
                 document.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
                 savePDF(document.html(), rootFolder + "/" + unqValue);
             }else  if("CSV".equalsIgnoreCase(repFormat)){
-                unqValue = "reports/" + ExportService.randomStr()   +".csv";
-                String absPath = ResourceUtils.getFile("classpath:application.properties").getAbsolutePath();
-                String rootFolder = absPath.substring(0,absPath.length()-22);
+                unqValue =  ExportService.randomStr()   +".csv";
+             //   String absPath = ResourceUtils.getFile("classpath:application.properties").getAbsolutePath();
+                String rootFolder = configuration.getReportFolder();
                 createCSV(transReportDataList,rootFolder + "/" + unqValue);
 
             }
-            Resource resource = new ClassPathResource(unqValue);
+            Resource resource = new ClassPathResource(configuration.getReportFolder()  + unqValue);
             return  resource ;
 
         }catch (Exception ex){

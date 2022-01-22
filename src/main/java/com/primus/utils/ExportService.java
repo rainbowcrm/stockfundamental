@@ -1,12 +1,15 @@
 package com.primus.utils;
 
+import com.primus.common.Configuration;
 import com.primus.stock.master.model.ReportData;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class ExportService {
+
+    @Autowired
+    Configuration configuration;
 
     public static String randomStr()
     {
@@ -67,14 +73,15 @@ public class ExportService {
                     row.createCell(count++).setCellValue("");
             }
         }
-        String unqValue = "reports/" + randomStr()   +".xls";
-        String absPath = ResourceUtils.getFile("classpath:application.properties").getAbsolutePath();
-        String rootFolder = absPath.substring(0,absPath.length()-22);
+        String unqValue =  randomStr()   +".xls";
+        //String absPath = ResourceUtils.getFile("classpath:application.properties").getAbsolutePath();
+        String rootFolder = configuration.getReportFolder();
         FileOutputStream fileOut = new FileOutputStream(rootFolder
             +  "/" + unqValue );
         workbook.write(fileOut);
         fileOut.close();
-        Resource resource = new ClassPathResource(unqValue);
+        Resource resource = new FileSystemResource(rootFolder
+                +  "/" + unqValue);
         /*InputStream tempIpStream = resource.getInputStream();
         File targetFile = new File(rootFolder + "/reports/newFile.xls");
         OutputStream outStream = new FileOutputStream(targetFile);

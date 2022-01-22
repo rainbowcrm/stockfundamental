@@ -1,10 +1,7 @@
 package com.primus.reports.service;
 
 import com.opencsv.CSVWriter;
-import com.primus.common.BusinessContext;
-import com.primus.common.CommonErrorCodes;
-import com.primus.common.LogWriter;
-import com.primus.common.PrimusError;
+import com.primus.common.*;
 import com.primus.reports.data.TransDetailReport;
 import com.primus.reports.data.TransLine;
 import com.primus.reports.data.TransReportData;
@@ -16,6 +13,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
@@ -28,6 +26,9 @@ import java.util.List;
 
 @Service
 public class DetailReportService extends ReportService{
+
+    @Autowired
+    Configuration configuration ;
 
     @Autowired
     StockTransactionDAO stockTransactionDAO;
@@ -76,7 +77,6 @@ public class DetailReportService extends ReportService{
         stringBuffer.append("<TH>Low Price</TH>");
         stringBuffer.append("<TH>High Price</TH>");
         stringBuffer.append("<TH>Close Price</TH>");
-        stringBuffer.append("<TH>Volume</TH>");
         stringBuffer.append("</TR>");
         String currGroup = "";
         if (transDetailReport != null && CollectionUtils.isNotEmpty(transDetailReport.getTransLineList())) {
@@ -88,7 +88,6 @@ public class DetailReportService extends ReportService{
                 stringBuffer.append("<TD>" + transLine.getLow() + "</TD>");
                 stringBuffer.append("<TD>" + transLine.getHigh() + "</TD>");
                 stringBuffer.append("<TD>" + transLine.getClosing() + "</TD>");
-                stringBuffer.append("<TD>" + transLine.getVolume() + "</TD>");
                 stringBuffer.append("</TR>");
             }
         }
@@ -131,20 +130,20 @@ public class DetailReportService extends ReportService{
             String unqValue ="";
             if("PDF".equalsIgnoreCase(repFormat)) {
                 String xhtml = createHTML(transDetailReport,context,fromDateS,toDateS);
-                unqValue = "reports/" + ExportService.randomStr()   +".pdf";
-                String absPath = ResourceUtils.getFile("classpath:application.properties").getAbsolutePath();
-                String rootFolder = absPath.substring(0,absPath.length()-22);
+                unqValue =  ExportService.randomStr()   +".pdf";
+               // String absPath = ResourceUtils.getFile("classpath:application.properties").getAbsolutePath();
+                String rootFolder = configuration.getReportFolder();
                 Document document = Jsoup.parse(xhtml, "UTF-8");
                 document.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
                 savePDF(document.html(), rootFolder + "/" + unqValue);
             }else  if("CSV".equalsIgnoreCase(repFormat)){
-                unqValue = "reports/" + ExportService.randomStr()   +".csv";
-                String absPath = ResourceUtils.getFile("classpath:application.properties").getAbsolutePath();
-                String rootFolder = absPath.substring(0,absPath.length()-22);
+                unqValue =  ExportService.randomStr()   +".csv";
+                //String absPath = ResourceUtils.getFile("classpath:application.properties").getAbsolutePath();
+                String rootFolder = configuration.getReportFolder();
                 createCSV(transDetailReport,rootFolder + "/" + unqValue);
 
             }
-            Resource resource = new ClassPathResource(unqValue);
+            Resource resource = new FileSystemResource(configuration.getReportFolder()  + unqValue);
             return  resource ;
 
         }catch (Exception ex){

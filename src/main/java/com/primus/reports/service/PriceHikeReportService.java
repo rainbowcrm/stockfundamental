@@ -1,9 +1,6 @@
 package com.primus.reports.service;
 
-import com.primus.common.BusinessContext;
-import com.primus.common.CommonErrorCodes;
-import com.primus.common.LogWriter;
-import com.primus.common.PrimusError;
+import com.primus.common.*;
 import com.primus.common.datastructures.DataPair;
 import com.primus.reports.data.TransReportData;
 import com.primus.stock.master.dao.StockMasterDAO;
@@ -13,6 +10,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
@@ -30,10 +28,9 @@ import java.util.stream.Collectors;
 public class PriceHikeReportService extends ReportService{
 
     @Autowired
-    StockTransactionDAO stockTransactionDAO;
+    Configuration configuration ;
 
-    @Autowired
-    StockMasterDAO stockMasterDAO ;
+
 
     private static void sort(List<TransReportData> list)
     {
@@ -143,20 +140,20 @@ public class PriceHikeReportService extends ReportService{
             String unqValue ="";
             if("PDF".equalsIgnoreCase(repFormat)) {
                 String xhtml = createHTML(transReportDataList,context,fromDateS,toDateS);
-                unqValue = "reports/" + ExportService.randomStr()   +".pdf";
-                String absPath = ResourceUtils.getFile("classpath:application.properties").getAbsolutePath();
-                String rootFolder = absPath.substring(0,absPath.length()-22);
+                unqValue =  ExportService.randomStr()   +".pdf";
+               // String absPath = ResourceUtils.getFile("classpath:application.properties").getAbsolutePath();
+                String rootFolder = configuration.getReportFolder();
                 Document document = Jsoup.parse(xhtml, "UTF-8");
                 document.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
                 savePDF(document.html(), rootFolder + "/" + unqValue);
             }else  if("CSV".equalsIgnoreCase(repFormat)){
-                unqValue = "reports/" + ExportService.randomStr()   +".csv";
-                String absPath = ResourceUtils.getFile("classpath:application.properties").getAbsolutePath();
-                String rootFolder = absPath.substring(0,absPath.length()-22);
+                unqValue =  ExportService.randomStr()   +".csv";
+                //String absPath = ResourceUtils.getFile("classpath:application.properties").getAbsolutePath();
+                String rootFolder = configuration.getReportFolder();
                 createCSV(transReportDataList,rootFolder + "/" + unqValue);
 
             }
-            Resource resource = new ClassPathResource(unqValue);
+            Resource resource = new FileSystemResource(configuration.getReportFolder()  + unqValue);
             return  resource ;
         }catch (Exception ex){
             LogWriter.logException("Ex in PriceeportService" ,this.getClass(),ex);

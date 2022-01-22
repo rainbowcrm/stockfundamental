@@ -16,6 +16,10 @@ public class Configuration {
     @Value("${spring.emailPassword}")
     String emailPassword;
 
+    @Value("${spring.reports.folder}")
+    String reportFolder;
+
+
     public String getEmailHost() {
         return emailHost;
     }
@@ -38,5 +42,13 @@ public class Configuration {
 
     public void setEmailPassword(String emailPassword) {
         this.emailPassword = emailPassword;
+    }
+
+    public String getReportFolder() {
+        return reportFolder;
+    }
+
+    public void setReportFolder(String reportFolder) {
+        this.reportFolder = reportFolder;
     }
 }
