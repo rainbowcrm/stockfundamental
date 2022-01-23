@@ -437,6 +437,7 @@ function getAllStockCount()
 
  function getLookupWithAjax( currentCtrl,dataListCtrlName)
  {
+    console.log('reached');
      var srValue = currentCtrl.value ;
    	if(srValue.length  > 2 || srValue.indexOf('*') !=  -1 ) {
 

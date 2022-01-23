@@ -39,6 +39,59 @@ function closePopup()
 
 
 }
+function searchAndNavStock()
+{
+    let securityName =  $("#txtSecurty").val();
+    var requestStr = url + "uiapi/getStockFromSecurity?securityName=" + securityName ;
+    var reqObject = new XMLHttpRequest();
+    reqObject.open("GET",requestStr,false);
+    reqObject.send();
+    console.log("Resp" + reqObject.responseText);
+    var snapsotresponse  =   JSON.parse(reqObject.responseText)  ;
+    let bseCode = snapsotresponse.bseCode;
+    let pageId= './stockDetails.html?bseCode=' + bseCode;
+    $("#frmCont").attr('src',pageId);
+    return false;
+
+
+
+}
+
+function getLookupWithAjax( currentCtrl,dataListCtrlName)
+ {
+    console.log('reached');
+     var srValue = currentCtrl.value ;
+   	if(srValue.length  > 2 || srValue.indexOf('*') !=  -1 ) {
+
+     var lookupType ='Stock' ;
+ 	currentCtrl.autocomplete ="on";
+
+ 	var requestStr = url + "uiapi/lookup?lookupType=" + lookupType
+ 	+ "&searchStr=" + srValue ;
+
+ 	var reqObject = new XMLHttpRequest();
+ 	reqObject.open("GET",requestStr,false);
+ 	reqObject.send();
+ 	console.log("Resp" + reqObject.responseText);
+ 	var elem = document.getElementsByName(dataListCtrlName)[0];
+ 	console.log ('before' + elem.innerHTML) ;
+  	elem.innerHTML='';
+ 	 var options = '';
+ 	var propArray =  JSON.parse(reqObject.responseText) ;
+    var found =false;
+ 	for (var key in propArray) {
+ 		  var value = propArray[key];
+ 		  options += '<option  value="'+value+'" />' + key + '</option>';
+ 		  found =true ;
+ 	}
+ 	if (found == false) {
+ 		currentCtrl.autocomplete ="off";
+ 	}
+ 	elem.innerHTML=  options;
+ 	console.log ('after' + elem.innerHTML) ;
+ 	}
+
+ }
 
 function resendPassword()
 {

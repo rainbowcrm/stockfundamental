@@ -29,7 +29,11 @@ public class StockMasterService {
     }
 
     public StocksMaster getStocksData (String bseCode  ){
-        return  stockMasterDAO.getStocksData(bseCode) ;
+        return  stockMasterDAO.getStocksDataFromBSECode(bseCode) ;
+    }
+
+    public StocksMaster getStocksDataFromName (String securityName  ){
+        return  stockMasterDAO.getStocksDataFromSecurity(securityName) ;
     }
 
     public List<StocksMaster> getStocksForDashBoard (  ){

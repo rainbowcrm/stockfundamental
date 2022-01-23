@@ -14,6 +14,7 @@ import com.primus.ui.model.DailyPrice;
 import com.primus.ui.model.FullStockProfile;
 import com.primus.ui.model.StockCompleteData;
 import com.primus.utils.ExportService;
+import com.primus.utils.MathUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -85,13 +86,22 @@ public class UIService {
         List<StockTransaction> stockTransactionList = stockTransactionDAO.getDataForStock(fromDate,toDate,stocksMaster.getSecurityName());
         List<DailyPrice> dataPair = new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yy");
+        List<Double> closingPrices = new ArrayList<>();
         for (StockTransaction stockTransaction :stockTransactionList) {
             String str = sdf.format(stockTransaction.getTransDate());
             dataPair.add(new DailyPrice(str,stockTransaction.getOpenPrice(),stockTransaction.getLowPrice(),stockTransaction.getClosePrice(),
                     stockTransaction.getHighPrice()));
+            closingPrices.add(stockTransaction.getClosePrice());
 
         }
         stockCompleteData.setPrices(dataPair);
+        Double medPrice = MathUtil.getMedian(closingPrices);
+        Double meanPrice = MathUtil.getMean(closingPrices);
+        Double stdDeviation = MathUtil.getStandardDeviation(closingPrices);
+        stockCompleteData.setMedianPrice(medPrice);
+        stockCompleteData.setMeanPrice(meanPrice);
+        stockCompleteData.setStdDeviation(stdDeviation);
+
         return stockCompleteData;
 
     }

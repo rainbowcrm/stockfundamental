@@ -83,6 +83,19 @@ var loadPage = function(pageId) {
             <i class="fa fa-power-off" aria-hidden="true"></i>
             <i class="fa fa-twitter" aria-hidden="true"></i>
             <i class="fa fa-instagram" aria-hidden="true"></i>-->
+            <li class="nav-item">
+                <input type="text" list="lstpossibleVals"  class="form-control" autocomplete="off" placeholder="Search By Security Name"
+                       onkeyup="getLookupWithAjax(this,'lstpossibleVals');"   name="txtSecurty" id ="txtSecurty"/>
+                <datalist name = "lstpossibleVals" id ="lstpossibleVals">
+
+                </datalist>
+
+            </li>
+            <li class="nav-item">
+            <button  id ="btnRepButton" onclick="searchAndNavStock();" class="form-control btn-primary">
+                <i class="fa fa-search" id ="btnRepIcon"></i>
+            </button>
+            </li>
             <li class="nav-item dropdown dmenu">
                 <a class="nav-link dropdown-toggle"  style="color:#f8f9fa" href="#" id="navbarright" data-toggle="dropdown">
                     Profile

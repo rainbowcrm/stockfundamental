@@ -29,6 +29,45 @@ public class MathUtil {
     }
 
 
+    public static Double getMode (List<Double> valueList) {
+
+        if (!CollectionUtils.isEmpty(valueList)) {
+            List<Double> sortedValues = valueList.stream().sorted().collect(Collectors.toList());
+
+
+            Double minValue = sortedValues.get(0);
+            Double maxValue = sortedValues.get(valueList.size() - 1);
+
+        }
+        return 0d;
+    }
+
+    public static Double getStandardDeviation (List<Double> valueList) {
+
+        Double avg = getMean(valueList);
+        Double sum = 0.0;
+        for (Double val : valueList)  {
+            Double entry = (val-avg) * (val-avg);
+            sum += entry;
+        }
+        Double variance =  (sum/valueList.size());
+        Double sqrt = Math.sqrt(variance);
+        return round(sqrt) ;
+    }
+
+
+
+    public static Double getMean(List<Double> valueList)
+    {
+        Double sum = 0.0;
+        for (Double val : valueList) {
+            sum += val ;
+        }
+        return round(sum/valueList.size());
+    }
+
+
+
     public static Double getMedian(List<Double> valueList)
     {
         if (!CollectionUtils.isEmpty(valueList)) {

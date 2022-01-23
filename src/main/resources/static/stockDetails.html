@@ -235,22 +235,39 @@
             <a class="nav-link" id="pills-tech-tab" data-toggle="pill" href="#pills-tech" role="tab" aria-controls="pills-profile" aria-selected="false">Technicals</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="pills-comments-tab" data-toggle="pill" href="#pills-comments" role="tab" aria-controls="pills-profile" aria-selected="false">Comments</a>
+            <a class="nav-link" id="pills-comments-tab" data-toggle="pill" href="#pills-comments" role="tab" aria-controls="pills-comments" aria-selected="false">Comments</a>
         </li>
 
     </ul>
     <div class="tab-content" id="pills-tabContent">
-        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+        <div class="tab-pane fade show active " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
             <div id="curve_chart" style="width: 1200px; height: 500px"></div>
         </div>
-        <div class="tab-pane fade show active" id="pills-candle" role="tabpanel" aria-labelledby="pills-candle-tab">
+        <div class="tab-pane fade active" id="pills-candle" role="tabpanel" aria-labelledby="pills-candle-tab">
             <div id="chart_div" style="width: 1200px; height: 500px"></div>
         </div>
         <div class="tab-pane fade" id="pills-tech" role="tabpanel" aria-labelledby="pills-tech-tab">
-            Technicals
+
+            <div class="row">
+                <div class="col-md-6 col-sm-12 col-lg-4">
+                    <span class="label">Median:</span>
+                    <span class="data" id="spnMedian" ><script> document.write(responseJson.medianPrice);</script></span>
+                </div>
+
+                <div class="col-md-6 col-sm-12 col-lg-4">
+                    <span class="label">Mean:</span>
+                    <span class="data" id="spnMean" ><script> document.write(responseJson.meanPrice);</script></span>
+                </div>
+
+                <div class="col-md-6 col-sm-12 col-lg-4">
+                    <span class="label">Std Deviation:</span>
+                    <span class="data" id="spnDeviatio "><script> document.write(responseJson.stdDeviation);</script></span>
+                </div>
+            </div>
+
         </div>
         <div class="tab-pane fade" id="pills-comments" role="tabpanel" aria-labelledby="pills-comments-tab">
-            Comments
+            <span style="color:brown"> This section is under development. shall be done soon </span>
         </div>
     </div>
 </div>

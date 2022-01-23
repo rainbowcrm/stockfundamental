@@ -2,6 +2,8 @@ package com.primus.ui.controller;
 
 import com.primus.common.BusinessContext;
 import com.primus.dashboard.service.DashboardService;
+import com.primus.stock.master.model.StocksMaster;
+import com.primus.stock.master.service.StockMasterService;
 import com.primus.ui.model.StockCompleteData;
 import com.primus.ui.service.LookupService;
 import com.primus.ui.service.UIService;
@@ -39,6 +41,9 @@ public class UIController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    StockMasterService stockMasterService;
 
 
     @RequestMapping(value = "/getDistinctSector", method = RequestMethod.GET)
@@ -152,11 +157,21 @@ public class UIController {
     }
 
     @RequestMapping(value = "/getStockCompleteData", method = RequestMethod.GET)
-    public ResponseEntity<StockCompleteData> getDashBoardData(@RequestParam String bseCode)
+    public ResponseEntity<StockCompleteData> getStockCompleteData(@RequestParam String bseCode)
     {
         BusinessContext businessContext= BusinessContext.getBusinessContent() ;
         StockCompleteData stockCompleteData = uiService.getStockCompleteData(bseCode,businessContext);
         ResponseEntity<StockCompleteData> entity =  new ResponseEntity<StockCompleteData>(stockCompleteData, HttpStatus.OK);
+        return  entity;
+
+    }
+
+    @RequestMapping(value = "/getStockFromSecurity", method = RequestMethod.GET)
+    public ResponseEntity<StocksMaster> getStockFromSecurity(@RequestParam String securityName)
+    {
+        BusinessContext businessContext= BusinessContext.getBusinessContent() ;
+        StocksMaster stocksMaster = stockMasterService.getStocksDataFromName(securityName);
+        ResponseEntity<StocksMaster> entity =  new ResponseEntity<StocksMaster>(stocksMaster, HttpStatus.OK);
         return  entity;
 
     }

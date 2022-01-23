@@ -13,7 +13,8 @@ public class FullStockProfile  extends StockCompleteData{
     List<DailyPrice> prices ;
 
     Double medianPrice;
-    Double variance;
+    Double stdDeviation;
+    Double meanPrice;
 
     public List<DailyPrice> getPrices() {
         return prices;
@@ -31,12 +32,21 @@ public class FullStockProfile  extends StockCompleteData{
         this.medianPrice = medianPrice;
     }
 
-    public Double getVariance() {
-        return variance;
+
+    public Double getStdDeviation() {
+        return stdDeviation;
     }
 
-    public void setVariance(Double variance) {
-        this.variance = variance;
+    public void setStdDeviation(Double stdDeviation) {
+        this.stdDeviation = stdDeviation;
+    }
+
+    public Double getMeanPrice() {
+        return meanPrice;
+    }
+
+    public void setMeanPrice(Double meanPrice) {
+        this.meanPrice = meanPrice;
     }
 
     public FullStockProfile() {
