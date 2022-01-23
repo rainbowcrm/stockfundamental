@@ -13,6 +13,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -235,7 +236,7 @@ public class ReportService {
                 createCSV(transReportDataList,rootFolder + "/" + unqValue);
 
             }
-            Resource resource = new ClassPathResource(configuration.getReportFolder()  + unqValue);
+            Resource resource = new FileSystemResource(configuration.getReportFolder()  + unqValue);
             return  resource ;
 
         }catch (Exception ex){

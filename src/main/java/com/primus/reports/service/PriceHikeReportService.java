@@ -6,6 +6,7 @@ import com.primus.reports.data.TransReportData;
 import com.primus.stock.master.dao.StockMasterDAO;
 import com.primus.stocktransaction.dao.StockTransactionDAO;
 import com.primus.utils.ExportService;
+import com.primus.utils.MathUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,12 +52,12 @@ public class PriceHikeReportService extends ReportService{
                  minHike = transReportData.getChange() ;
              }
          }
-         return  new DataPair<Double>(minHike,maxHike);
+         return  new DataPair<Double,Double>(minHike,maxHike);
 
     }
 
-    private List<DataPair<Double>> getRangeValues(DataPair<Double>pair) {
-        List<DataPair<Double>> range = new ArrayList<>();
+    private List<DataPair<Double,Double>> getRangeValues(DataPair<Double,Double>pair) {
+        List<DataPair<Double,Double>> range = new ArrayList<>();
         Double sep = new Double(5) ;
         if ( pair.getValue2() - pair.getValue1() > 200) {
             sep = new Double(10);
@@ -65,8 +66,8 @@ public class PriceHikeReportService extends ReportService{
         }
         Double index = pair.getValue2();
         while(index > pair.getValue1()) {
-            range.add(new DataPair<>(index - sep,index));
-            index-=sep;
+            range.add(new DataPair<>(MathUtil.round(index - sep),index));
+            index=MathUtil.round(index-sep);
         }
         return range;
     }
@@ -75,8 +76,8 @@ public class PriceHikeReportService extends ReportService{
                                String fromDate, String toDate)
     {
         StringBuffer stringBuffer = new StringBuffer();
-        DataPair<Double> dataPair = getRangeforChange(transReportDataList);
-        List<DataPair<Double>> valueRange = getRangeValues(dataPair);
+        DataPair<Double,Double> dataPair = getRangeforChange(transReportDataList);
+        List<DataPair<Double,Double>> valueRange = getRangeValues(dataPair);
         stringBuffer.append("<HTML><HEAD><TITLE>Trade Details</TITLE></HEAD>");
         stringBuffer.append("<BODY>");
         stringBuffer.append(getHeader(businessContext,fromDate,toDate,"Growth By Rate"));
@@ -88,8 +89,8 @@ public class PriceHikeReportService extends ReportService{
         stringBuffer.append("<TH>Change%</TH>");
         stringBuffer.append("</TR>");
 
-        Iterator<DataPair<Double>> it = valueRange.iterator();
-        DataPair<Double> curDP = it.next();
+        Iterator<DataPair<Double,Double>> it = valueRange.iterator();
+        DataPair<Double,Double> curDP = it.next();
         stringBuffer.append("<TR>");
         stringBuffer.append("<TR>");
         stringBuffer.append("<TD border= '1px solid' colspan='5'> <h4>   " +  curDP.getValue1()  + "% To " + curDP.getValue2() + "% </h4></TD>");

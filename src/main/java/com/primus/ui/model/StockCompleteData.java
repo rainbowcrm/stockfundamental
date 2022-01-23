@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.primus.stock.master.model.FinancialData;
 import com.primus.stock.master.model.FundamentalData;
 import com.primus.stock.master.model.StocksMaster;
+import com.primus.utils.MathUtil;
 
 import java.util.Map;
 import java.util.Objects;
@@ -15,6 +16,7 @@ public class StockCompleteData {
     String stock ;
     String industry ;
     String sector ;
+    String isin;
     String group ;
     Double faceValue ;
     Double currentPrice;
@@ -26,6 +28,7 @@ public class StockCompleteData {
     Double profit;
     Double equity;
     Double divident ;
+    Double dividentYield;
     Double pe;
     Double pb;
     Double marketCap;
@@ -186,6 +189,7 @@ public class StockCompleteData {
         this.marketCap=fundamentalData.getMarketCap();
         this.groupCap=fundamentalData.getMarketGroup();
         this.faceValue = stocksMaster.getFaceValue() ;
+        this.isin = stocksMaster.getIsinNo();
         this.currentPrice = fundamentalData.getCurPrice() ;
         this.eps = fundamentalData.getEps() ;
         this.bookvalue= fundamentalData.getBookValue();
@@ -197,6 +201,10 @@ public class StockCompleteData {
             this.profit = financialData.getNetProfit();
             this.equity = financialData.getEquit();
             this.divident = financialData.getDivident();
+            if (divident > 0 ) {
+                this.dividentYield = MathUtil.round((divident/currentPrice) * 100);
+            }
+
         }
         if(this.eps != 0 ){
             this.pe = Math.round((this.currentPrice/this.eps)*100.0)/100.0;
@@ -251,5 +259,21 @@ public class StockCompleteData {
     @Override
     public int hashCode() {
         return Objects.hash(bseCode, stock);
+    }
+
+    public String getIsin() {
+        return isin;
+    }
+
+    public void setIsin(String isin) {
+        this.isin = isin;
+    }
+
+    public Double getDividentYield() {
+        return dividentYield;
+    }
+
+    public void setDividentYield(Double dividentYield) {
+        this.dividentYield = dividentYield;
     }
 }

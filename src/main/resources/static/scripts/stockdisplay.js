@@ -103,11 +103,11 @@ function getStockCompleteData()
       $("#spnIndustry").html(snapsotresponse.industry);
       $("#spnbseCode").html(snapsotresponse.bseCode);
       $("#spnTradeGroup").html(snapsotresponse.group);
-      $("#spnISIN").html(snapsotresponse.stock);
+      $("#spnISIN").html(snapsotresponse.isin);
       $("#spnFaceValue").html(snapsotresponse.faceValue);
       $("#spnMarketCap").html(snapsotresponse.marketCap);
       $("#spnCapSize").html(snapsotresponse.groupCap);
-      $("#spnCurrPrice").htmll(snapsotresponse.currentPrice);
+      $("#spnCurrPrice").html(snapsotresponse.currentPrice);
       $("#spnEPS").html(snapsotresponse.eps);
 
       $("#spnPE").html(snapsotresponse.pe);
@@ -119,9 +119,9 @@ function getStockCompleteData()
       $("#spnProfit").html(snapsotresponse.profit);
       $("#spnEquity").html(snapsotresponse.equity);
       $("#spndivident").html(snapsotresponse.divident);
-      $("#spndividentYield").html(snapsotresponse.stock);
+      $("#spndividentYield").html(snapsotresponse.dividentYield);
 
-
+      return snapsotresponse;
 
 }
 

@@ -1,12 +1,17 @@
 package com.primus.ui.service;
 
 import com.primus.common.BusinessContext;
+import com.primus.common.datastructures.DataPair;
 import com.primus.stock.master.model.FinancialData;
 import com.primus.stock.master.model.FundamentalData;
 import com.primus.stock.master.model.StocksMaster;
 import com.primus.stock.master.service.FinancialService;
 import com.primus.stock.master.service.FundamentalService;
 import com.primus.stock.master.service.StockMasterService;
+import com.primus.stocktransaction.dao.StockTransactionDAO;
+import com.primus.stocktransaction.model.StockTransaction;
+import com.primus.ui.model.DailyPrice;
+import com.primus.ui.model.FullStockProfile;
 import com.primus.ui.model.StockCompleteData;
 import com.primus.utils.ExportService;
 import org.apache.commons.lang3.StringUtils;
@@ -15,10 +20,14 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
 public class UIService {
+
+    @Autowired
+    StockTransactionDAO stockTransactionDAO;
 
     @Autowired
     StockMasterService stockMasterService ;
@@ -31,6 +40,8 @@ public class UIService {
 
     @Autowired
     ExportService exportService ;
+
+
 
     public int getAllStockCount(Map<String,Object> criteriaMap)
     {
@@ -67,7 +78,20 @@ public class UIService {
         FundamentalData fundamentalData = fundamentalService.getFundamentalData(bseCode);
         FinancialData financialData= financialService.getFinancialData(bseCode);
         StocksMaster stocksMaster = stockMasterService.getStocksData(bseCode);
-        StockCompleteData stockCompleteData = new StockCompleteData(fundamentalData,financialData,stocksMaster);
+        FullStockProfile stockCompleteData = new FullStockProfile(fundamentalData,financialData,stocksMaster);
+
+        Date toDate = new java.util.Date();
+        Date fromDate = new Date(toDate.getTime() - 90l * 24l  * 3600l * 1000l ) ;
+        List<StockTransaction> stockTransactionList = stockTransactionDAO.getDataForStock(fromDate,toDate,stocksMaster.getSecurityName());
+        List<DailyPrice> dataPair = new ArrayList<>();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yy");
+        for (StockTransaction stockTransaction :stockTransactionList) {
+            String str = sdf.format(stockTransaction.getTransDate());
+            dataPair.add(new DailyPrice(str,stockTransaction.getOpenPrice(),stockTransaction.getLowPrice(),stockTransaction.getClosePrice(),
+                    stockTransaction.getHighPrice()));
+
+        }
+        stockCompleteData.setPrices(dataPair);
         return stockCompleteData;
 
     }

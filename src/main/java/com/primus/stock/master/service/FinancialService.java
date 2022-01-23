@@ -137,7 +137,6 @@ public class FinancialService {
                 if (NumberUtils.isNumber(netProfit.replace(",", "")))
                     financialData.setNetProfit(Double.parseDouble(netProfit.replace(",", "")));
                 financialData.setDivident(divident);
-
                 LogWriter.debug(id + ":values= " + revenue + " " + expenditure + " " + netProfit + " " + equity + " " + divident);
                 return  financialData ;
             }else
