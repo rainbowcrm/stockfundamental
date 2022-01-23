@@ -87,7 +87,43 @@ if (currentPage > 0) {
       reRenderTableForOVUV('tableValuation',snapsotresponse);
   }
 
+function getStockCompleteData()
+{
+    var params = new window.URLSearchParams(window.location.search);
+    var xyz = params.get('bseCode');
+    console.log('bseCode=' + xyz)
+    let fullURL = url+'/uiapi/getStockCompleteData?bseCode=' + xyz  ;
+    let request = formRequest("GET",fullURL);
+      setToken(request);
+      request.send() ;
+      var snapsotresponse  =   JSON.parse(request.responseText)  ;
+      console.log("Responss   e =" + request.responseText );
+      $("#spnSecurity").html(snapsotresponse.stock);
+      $("#spnSector").html(snapsotresponse.sector);
+      $("#spnIndustry").html(snapsotresponse.industry);
+      $("#spnbseCode").html(snapsotresponse.bseCode);
+      $("#spnTradeGroup").html(snapsotresponse.group);
+      $("#spnISIN").html(snapsotresponse.stock);
+      $("#spnFaceValue").html(snapsotresponse.faceValue);
+      $("#spnMarketCap").html(snapsotresponse.marketCap);
+      $("#spnCapSize").html(snapsotresponse.groupCap);
+      $("#spnCurrPrice").htmll(snapsotresponse.currentPrice);
+      $("#spnEPS").html(snapsotresponse.eps);
 
+      $("#spnPE").html(snapsotresponse.pe);
+      $("#spnPB").html(snapsotresponse.pb);
+      $("#spnROE").html(snapsotresponse.roe);
+
+      $("#spnRevenue").html(snapsotresponse.revenue);
+      $("#spnExpenditure").html(snapsotresponse.expenditure);
+      $("#spnProfit").html(snapsotresponse.profit);
+      $("#spnEquity").html(snapsotresponse.equity);
+      $("#spndivident").html(snapsotresponse.divident);
+      $("#spndividentYield").html(snapsotresponse.stock);
+
+
+
+}
 
 function getAllIndustries()
 {
@@ -319,7 +355,7 @@ function getAllStockCount()
                 //innerContent = "<tr>";
                 var bgColor = i%2==0?'beige':'white';
                 innerContent = '<tr data-row="' + bgColor +  '">';
-                innerContent =  innerContent + '<td>' + singleRow['bseCode'] + '</td>';
+                innerContent =  innerContent + '<td><a href="./stockDetails.html?bseCode='+ singleRow['bseCode'] +'">' + singleRow['bseCode'] + '</a></td>';
                 innerContent =  innerContent + '<td>' + singleRow['stock'] + '</td>';
                 innerContent =  innerContent + '<td>' + singleRow['industry'] + '</td>';
                 innerContent =  innerContent + '<td>' + singleRow['sector'] + '</td>';

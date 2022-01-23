@@ -1,6 +1,7 @@
 package com.primus.stock.master.dao;
 
 import com.primus.stock.master.model.StocksMaster;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
@@ -50,6 +51,16 @@ public class StockMasterDAO {
         Query query =  em.createQuery("from StocksMaster "  );
         List<StocksMaster> ans = query.getResultList();
         return ans;
+    }
+
+    public StocksMaster getStocksData ( String bseCode )
+    {
+        Query query =  em.createQuery("from StocksMaster where bseCode='" + bseCode + "'"  );
+        List<StocksMaster> ans = query.getResultList();
+        if(CollectionUtils.isNotEmpty(ans))
+            return ans.get(0);
+        else
+            return null;
     }
 
     public List<StocksMaster> getAllTrackedStocks (  )

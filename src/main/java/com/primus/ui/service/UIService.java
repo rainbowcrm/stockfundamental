@@ -1,5 +1,6 @@
 package com.primus.ui.service;
 
+import com.primus.common.BusinessContext;
 import com.primus.stock.master.model.FinancialData;
 import com.primus.stock.master.model.FundamentalData;
 import com.primus.stock.master.model.StocksMaster;
@@ -58,6 +59,16 @@ public class UIService {
         });
 
         return exportService.exportToExcel(mapList,"Fundamentals List",titleKeys);
+
+    }
+
+    public StockCompleteData getStockCompleteData(String bseCode, BusinessContext businessContext)
+    {
+        FundamentalData fundamentalData = fundamentalService.getFundamentalData(bseCode);
+        FinancialData financialData= financialService.getFinancialData(bseCode);
+        StocksMaster stocksMaster = stockMasterService.getStocksData(bseCode);
+        StockCompleteData stockCompleteData = new StockCompleteData(fundamentalData,financialData,stocksMaster);
+        return stockCompleteData;
 
     }
 

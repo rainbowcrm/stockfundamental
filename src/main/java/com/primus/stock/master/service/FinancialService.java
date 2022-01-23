@@ -159,4 +159,9 @@ public class FinancialService {
     {
         return financialsDAO.getAllFinancials();
     }
+
+    public FinancialData getFinancialData ( String bseCode )
+    {
+        return financialsDAO.getFinancialData(bseCode);
+    }
 }

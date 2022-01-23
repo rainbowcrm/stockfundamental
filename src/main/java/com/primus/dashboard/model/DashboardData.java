@@ -19,6 +19,7 @@ public class DashboardData  implements  Serializable{
      Map<String,Integer> ovShares;
 
      String scroller;
+     long days;
 
 
 
@@ -116,6 +117,14 @@ public class DashboardData  implements  Serializable{
 
     public void setScroller(String scroller) {
         this.scroller = scroller;
+    }
+
+    public long getDays() {
+        return days;
+    }
+
+    public void setDays(long days) {
+        this.days = days;
     }
 }
 

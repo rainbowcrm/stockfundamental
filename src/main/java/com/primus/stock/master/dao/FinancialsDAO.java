@@ -2,6 +2,7 @@ package com.primus.stock.master.dao;
 
 import com.primus.stock.master.model.FinancialData;
 import com.primus.stock.master.model.FundamentalData;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
@@ -33,6 +34,16 @@ public class FinancialsDAO {
         Query query =  em.createQuery("from FinancialData "  );
         List<FinancialData> ans = query.getResultList();
         return ans;
+    }
+
+    public FinancialData getFinancialData ( String bseCode )
+    {
+        Query query =  em.createQuery("from FinancialData where bseCode ='" + bseCode +"'"  );
+        List<FinancialData> ans = query.getResultList();
+        if (CollectionUtils.isNotEmpty(ans))
+            return ans.get(0);
+        else
+            return null;
     }
 
     public List<FinancialData> listData( int from , int to , String whereCondition, String orderby ) {

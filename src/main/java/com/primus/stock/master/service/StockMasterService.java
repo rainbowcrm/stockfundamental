@@ -28,6 +28,10 @@ public class StockMasterService {
         return  stockMasterDAO.getAllStocks() ;
     }
 
+    public StocksMaster getStocksData (String bseCode  ){
+        return  stockMasterDAO.getStocksData(bseCode) ;
+    }
+
     public List<StocksMaster> getStocksForDashBoard (  ){
         return  stockMasterDAO.getStocksForDashboard() ;
     }

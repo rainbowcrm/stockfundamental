@@ -145,7 +145,7 @@ public class DashboardService {
         setHotStocks(stockTransactionList,stocksMasterList,dashboardData);
         setValuedShares(dashboardData);
         setScrollText(dashboardData,stockTransactionList,stocksMasterList,new java.util.Date(),prevDays);
-
+        dashboardData.setDays(prevDays);
         return dashboardData ;
 
     }

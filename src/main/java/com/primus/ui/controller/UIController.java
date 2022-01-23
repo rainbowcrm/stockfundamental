@@ -2,6 +2,7 @@ package com.primus.ui.controller;
 
 import com.primus.common.BusinessContext;
 import com.primus.dashboard.service.DashboardService;
+import com.primus.ui.model.StockCompleteData;
 import com.primus.ui.service.LookupService;
 import com.primus.ui.service.UIService;
 import com.primus.user.model.UserPreferences;
@@ -149,6 +150,17 @@ public class UIController {
         return  entity;
 
     }
+
+    @RequestMapping(value = "/getStockCompleteData", method = RequestMethod.GET)
+    public ResponseEntity<StockCompleteData> getDashBoardData(@RequestParam String bseCode)
+    {
+        BusinessContext businessContext= BusinessContext.getBusinessContent() ;
+        StockCompleteData stockCompleteData = uiService.getStockCompleteData(bseCode,businessContext);
+        ResponseEntity<StockCompleteData> entity =  new ResponseEntity<StockCompleteData>(stockCompleteData, HttpStatus.OK);
+        return  entity;
+
+    }
+
 
 
 

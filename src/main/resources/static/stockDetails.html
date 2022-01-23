@@ -1,0 +1,167 @@
+
+
+<html lang="en">
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,500,500i,700,800i" rel="stylesheet">
+
+</head>
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="./scripts/stockdisplay.js" ></script>
+<style>
+
+    span.data {
+        font-weight:bold;
+    }
+
+    span.label {
+        width:135px;
+        display: inline-block;
+    }
+
+</style>
+
+<div class="container" >
+    <br>
+    <span style="color:red" id="errorMSG"></span>
+    <br>
+    <div class="row">
+        <div class="col-md-6 col-sm-12 col-lg-4">
+        <span class="label">Stock:</span>
+        <span class="data" id="spnSecurity">Axis bank Limited.</span>
+        </div>
+
+        <div class="col-md-6 col-sm-12 col-lg-4">
+            <span class="label">Sector:</span>
+            <span class="data" id="spnSector" >Financial Services</span>
+        </div>
+
+        <div class="col-md-6 col-sm-12 col-lg-4">
+            <span class="label">Industry:</span>
+            <span class="data" id="spnIndustry">Bank</span>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-6 col-sm-12 col-lg-4">
+            <span class="label">BSE code:</span>
+            <span class="data" id="spnbseCode" >51002023</span>
+        </div>
+
+        <div class="col-md-6 col-sm-12 col-lg-4">
+            <span class="label">Trade Group:</span>
+            <span class="data" id="spnTradeGroup" >A</span>
+        </div>
+
+        <div class="col-md-6 col-sm-12 col-lg-4">
+            <span class="label">ISIN:</span>
+            <span class="data" id="spnISIN" >INE056C01010</span>
+        </div>
+    </div>
+
+    <br>
+    <div class="row">
+        <div class="col-md-6 col-sm-12 col-lg-4">
+            <span class="label">Face Value:</span>
+            <span class="data" id="spnFaceValue" >1</span>
+        </div>
+
+        <div class="col-md-6 col-sm-12 col-lg-4">
+            <span class="label">Market Cap(Cr):</span>
+            <span class="data" id="spnMarketCap" >982</span>
+        </div>
+
+        <div class="col-md-6 col-sm-12 col-lg-4">
+            <span class="label">Cap Size:</span>
+            <span class="data" id="spnCapSize">L</span>
+        </div>
+    </div>
+    <hr>
+
+
+    <div class="row">
+        <div class="col-md-6 col-sm-12 col-lg-4">
+            <span class="label">Curr Price</span>
+            <span class="data" id="spnCurrPrice">192.55</span>
+        </div>
+
+        <div class="col-md-6 col-sm-12 col-lg-4">
+            <span class="label">EPS:</span>
+            <span class="data" id="spnEPS">11.20</span>
+        </div>
+
+        <div class="col-md-6 col-sm-12 col-lg-4">
+            <span class="label">Book Value:</span>
+            <span class="data" id="spnBookValue" >89.98</span>
+        </div>
+    </div>
+
+    <br>
+    <div class="row">
+        <div class="col-md-6 col-sm-12 col-lg-4">
+            <span class="label">PE:</span>
+            <span class="data" id="spnPE" >3.55</span>
+        </div>
+
+        <div class="col-md-6 col-sm-12 col-lg-4">
+            <span class="label">PB:</span>
+            <span class="data" id="spnPB" >3.20</span>
+        </div>
+
+        <div class="col-md-6 col-sm-12 col-lg-4">
+            <span class="label">ROE:</span>
+            <span class="data" id="spnROE">3.14</span>
+        </div>
+    </div>
+
+    <hr>
+
+
+    <div class="row">
+        <div class="col-md-6 col-sm-12 col-lg-4">
+            <span class="label">Revenue (In Cr):</span>
+            <span class="data"id="spnRevenue">789.55</span>
+        </div>
+
+        <div class="col-md-6 col-sm-12 col-lg-4">
+            <span class="label">Expenditure(In Cr):</span>
+            <span class="data" id="spnExpenditure">654.35</span>
+        </div>
+
+        <div class="col-md-6 col-sm-12 col-lg-4">
+            <span class="label">Profit(In Cr):</span>
+            <span class="data" id="spnProfit">142.22</span>
+        </div>
+    </div>
+
+    <br>
+    <div class="row">
+        <div class="col-md-6 col-sm-12 col-lg-4">
+            <span class="label">Public Equity:</span>
+            <span class="data" id="spnEquity" >41.44</span>
+        </div>
+
+        <div class="col-md-6 col-sm-12 col-lg-4">
+            <span class="label">Divident:</span>
+            <span class="data" id="spndivident" >4.33</span>
+        </div>
+
+        <div class="col-md-6 col-sm-12 col-lg-4">
+            <span class="label">Divident Yield(%):</span>
+            <span class="data" id="spndividentYield">2.2</span>
+        </div>
+    </div>
+    <hr>
+
+    <script>
+        getStockCompleteData();
+    </script>
+
+</div>
