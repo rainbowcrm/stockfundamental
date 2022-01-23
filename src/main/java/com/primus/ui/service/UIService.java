@@ -101,7 +101,12 @@ public class UIService {
         stockCompleteData.setMedianPrice(medPrice);
         stockCompleteData.setMeanPrice(meanPrice);
         stockCompleteData.setStdDeviation(stdDeviation);
-
+        DataPair<Double,Double> minMax =  MathUtil.getMinMax(closingPrices);
+        stockCompleteData.setMinPrice(minMax.getValue1());
+        stockCompleteData.setMaxPrice(minMax.getValue2());
+        Double rootSize = Math.sqrt(closingPrices.size());
+        stockCompleteData.setVolatality(MathUtil.round(rootSize * stdDeviation));
+        stockCompleteData.setPercVariation(MathUtil.round(((minMax.getValue2() - minMax.getValue1()) / minMax.getValue1()) * 100));
         return stockCompleteData;
 
     }

@@ -125,6 +125,12 @@ function getStockCompleteData()
 
 }
 
+function goToStockList()
+{
+    $("#frmCont").attr('src','./stocks.html');
+     return false;
+}
+
 function getAllIndustries()
 {
     let request = formRequest("GET",url+'uiapi/getDistinctIndustry');

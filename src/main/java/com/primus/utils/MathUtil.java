@@ -1,5 +1,6 @@
 package com.primus.utils;
 
+import com.primus.common.datastructures.DataPair;
 import org.springframework.security.access.method.P;
 import org.springframework.util.CollectionUtils;
 
@@ -33,10 +34,10 @@ public class MathUtil {
 
         if (!CollectionUtils.isEmpty(valueList)) {
             List<Double> sortedValues = valueList.stream().sorted().collect(Collectors.toList());
-
-
             Double minValue = sortedValues.get(0);
             Double maxValue = sortedValues.get(valueList.size() - 1);
+            Double variance  = round((maxValue - minValue) / minValue) ;
+
 
         }
         return 0d;
@@ -56,6 +57,21 @@ public class MathUtil {
     }
 
 
+
+    public static DataPair<Double,Double> getMinMax(List<Double> valueList)
+    {
+        Double min = Double.MAX_VALUE;
+        Double max = Double.MIN_VALUE ;
+        for (Double val : valueList) {
+            if (val < min)  {
+                min = val;
+            }
+            if( val > max ) {
+                max =  val;
+            }
+        }
+        return  new DataPair<Double, Double>(min,max);
+    }
 
     public static Double getMean(List<Double> valueList)
     {

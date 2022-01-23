@@ -246,7 +246,7 @@
         <div class="tab-pane fade active" id="pills-candle" role="tabpanel" aria-labelledby="pills-candle-tab">
             <div id="chart_div" style="width: 1200px; height: 500px"></div>
         </div>
-        <div class="tab-pane fade" id="pills-tech" role="tabpanel" aria-labelledby="pills-tech-tab">
+        <div class="tab-pane fade active" id="pills-tech" role="tabpanel" aria-labelledby="pills-tech-tab">
 
             <div class="row">
                 <div class="col-md-6 col-sm-12 col-lg-4">
@@ -261,13 +261,46 @@
 
                 <div class="col-md-6 col-sm-12 col-lg-4">
                     <span class="label">Std Deviation:</span>
-                    <span class="data" id="spnDeviatio "><script> document.write(responseJson.stdDeviation);</script></span>
+                    <span class="data" id="spnDeviatio"><script> document.write(responseJson.stdDeviation);</script></span>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-6 col-sm-12 col-lg-4">
+                    <span class="label">Min Value:</span>
+                    <span class="data" id="spnMinVal" ><script> document.write(responseJson.minPrice);</script></span>
+                </div>
+
+                <div class="col-md-6 col-sm-12 col-lg-4">
+                    <span class="label">Max Value:</span>
+                    <span class="data" id="spnMaxValue" ><script> document.write(responseJson.maxPrice);</script></span>
+                </div>
+
+                <div class="col-md-6 col-sm-12 col-lg-4">
+                    <span class="label">Volatality:</span>
+                    <span class="data" id="spnVolatatlity"><script> document.write(responseJson.volatality);</script></span>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-6 col-sm-12 col-lg-4">
+                    <span class="label">Change Rate:</span>
+                    <span class="data" id="spnPercRange" ><script> document.write(responseJson.percVariation);</script></span>
                 </div>
             </div>
 
         </div>
         <div class="tab-pane fade" id="pills-comments" role="tabpanel" aria-labelledby="pills-comments-tab">
             <span style="color:brown"> This section is under development. shall be done soon </span>
+        </div>
+    </div>
+
+  <hr>
+    <div class="row">
+        <div class="col-md-3 col-sm-6 col-lg-2">
+            <button  id ="btnRepButton" onclick="goToStockList();" class="form-control btn-primary">
+                <i class="fa fa-back" id ="btnRepIcon">Back</i>
+            </button>
         </div>
     </div>
 </div>
