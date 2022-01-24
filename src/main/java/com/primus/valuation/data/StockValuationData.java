@@ -3,9 +3,10 @@ package com.primus.valuation.data;
 import com.primus.stock.master.model.FinancialData;
 import com.primus.stock.master.model.FundamentalData;
 import com.primus.stock.master.model.StocksMaster;
+import com.primus.ui.model.FullStockProfile;
 import com.primus.ui.model.StockCompleteData;
 
-public class StockValuationData extends StockCompleteData {
+public class StockValuationData extends FullStockProfile {
 
     private float overValuedBy;
 

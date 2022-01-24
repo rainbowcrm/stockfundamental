@@ -73,6 +73,18 @@ if (currentPage > 0) {
 
  }
 
+function getSwingshares()
+  {
+      console.log(url);
+      let fullURL = url+'valuation/getSwingRecommendations';
+      let request = formRequest("GET",fullURL);
+      setToken(request);
+      request.send() ;
+      var snapsotresponse  =   JSON.parse(request.responseText)  ;
+      console.log("Responss   e =" + request.responseText );
+      reRenderTableForSwing('tableValuation',snapsotresponse);
+  }
+
  function getOVUVshares(api)
   {
       console.log(url);
@@ -400,7 +412,7 @@ function getAllStockCount()
                  //innerContent = "<tr>";
                  var bgColor = i%2==0?'beige':'white';
                  innerContent = '<tr data-row="' + bgColor +  '">';
-                 innerContent =  innerContent + '<td>' + singleRow['bseCode'] + '</td>';
+                 innerContent =  innerContent + '<td><a href="../stockDetails.html?bseCode='+ singleRow['bseCode'] +'">' + singleRow['bseCode'] + '</a></td>';
                  innerContent =  innerContent + '<td>' + singleRow['stock'] + '</td>';
                  innerContent =  innerContent + '<td>' + singleRow['sector'] + '</td>';
                  innerContent =  innerContent + '<td>' + singleRow['groupCap'] + '</td>';
@@ -422,6 +434,38 @@ function getAllStockCount()
              applyColor();
 
   }
+
+  function reRenderTableForSwing(tableId,data)
+    {
+            var dataTable = document.getElementById(tableId);
+            while (dataTable.rows.length > 1) {
+                    dataTable.deleteRow(dataTable.rows.length -1 );
+            }
+
+            for ( var i in data) {
+                   singleRow=  data[i];
+                   console.log(singleRow);
+                   console.log(singleRow.intrinsicData);
+
+                   //innerContent = "<tr>";
+                   var bgColor = i%2==0?'beige':'white';
+                   innerContent = '<tr data-row="' + bgColor +  '">';
+                   innerContent =  innerContent + '<td><a href="../stockDetails.html?bseCode='+ singleRow['bseCode'] +'">' + singleRow['bseCode'] + '</a></td>';
+                   innerContent =  innerContent + '<td>' + singleRow['stock'] + '</td>';
+                   innerContent =  innerContent + '<td>' + singleRow['sector'] + '</td>';
+                   innerContent =  innerContent + '<td>' + singleRow['groupCap'] + '</td>';
+                   innerContent =  innerContent + '<td>' + singleRow['currentPrice'] + '</td>';
+                   innerContent =  innerContent + '<td>' + singleRow['minPrice'] + '</td>';
+                   innerContent =  innerContent + '<td>' + singleRow['maxPrice'] + '</td>';
+                   innerContent =  innerContent + '<td>' + singleRow['medianPrice'] + '</td>';
+                   innerContent =  innerContent + '<td>' + singleRow['stdDeviation'] + '</td>';
+                   innerContent =  innerContent + '</tr>';
+                    var newrow = dataTable.insertRow();
+                    newrow.innerHTML =  innerContent;
+                }
+               applyColor();
+
+    }
 
 
  function applyColor()

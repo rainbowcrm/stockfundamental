@@ -55,7 +55,7 @@ public class StockMasterDAO {
 
     public StocksMaster getStocksDataFromBSECode ( String bseCode )
     {
-        Query query =  em.createQuery("from StocksMaster where bseCode='" + bseCode + "'"  );
+        Query query =  em.createQuery("from StocksMaster where bseCode='" + bseCode + "' and useJavaAPI = true and marketGroup is not null"  );
         List<StocksMaster> ans = query.getResultList();
         if(CollectionUtils.isNotEmpty(ans))
             return ans.get(0);
@@ -65,7 +65,7 @@ public class StockMasterDAO {
 
     public StocksMaster getStocksDataFromSecurity ( String security )
     {
-        Query query =  em.createQuery("from StocksMaster where securityName like '" + security + "%'"  );
+        Query query =  em.createQuery("from StocksMaster where securityName like '" + security + "%' and  useJavaAPI = true and marketGroup is not null "  );
         List<StocksMaster> ans = query.getResultList();
         if(CollectionUtils.isNotEmpty(ans))
             return ans.get(0);

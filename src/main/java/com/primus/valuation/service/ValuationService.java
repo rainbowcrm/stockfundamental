@@ -35,10 +35,13 @@ public class ValuationService {
     @Autowired
     StockMasterService stockMasterService;
 
+    @Autowired
+    ValuationHelper valuationHelper;
+
     public List<StockValuationData> getOverValuedShares()
     {
         List<StocksMaster> stocksMasterList = stockMasterService.getAllStocks();
-        List<StockValuationData> stockCompleteDataList= getStockCompleteDataList(stocksMasterList);
+        List<StockValuationData> stockCompleteDataList= valuationHelper.getStockCompleteDataList(stocksMasterList,false);
         Set<String> sectors = getSectors(stocksMasterList);
         List<StockValuationData> ovShares = getOVShares(sectors,stocksMasterList,stockCompleteDataList);
         return ovShares;
@@ -47,7 +50,7 @@ public class ValuationService {
     public List<StockValuationData> getUnderValuedShares()
     {
         List<StocksMaster> stocksMasterList = stockMasterService.getAllStocks();
-        List<StockValuationData> stockCompleteDataList= getStockCompleteDataList(stocksMasterList);
+        List<StockValuationData> stockCompleteDataList= valuationHelper.getStockCompleteDataList(stocksMasterList,false);
         Set<String> sectors = getSectors(stocksMasterList);
         List<StockValuationData> uvShares = getUVShares(sectors,stocksMasterList,stockCompleteDataList);
         return uvShares;
@@ -100,22 +103,7 @@ public class ValuationService {
     }
 
 
-    private  List<StockValuationData> getStockCompleteDataList(List<StocksMaster> stocksMasterList)
-    {
-        List<FundamentalData> fundamentalDataList = fundamentalService.listData(0,900,"","");
-        List<FinancialData> financialDataList = financialService.getAllFinancials() ;
 
-        List<StockValuationData> stockCompleteDataList = new ArrayList<>();
-        for (FundamentalData fundamentalData : fundamentalDataList) {
-            FinancialData financialDataSel = financialDataList.stream().filter( financialData ->
-            {  return financialData.getBseCode().equalsIgnoreCase(fundamentalData.getBseCode())?true:false; }).findFirst().orElse(null) ;
-            StocksMaster stocksMasterSel = stocksMasterList.stream().filter(stocksMaster ->
-            { return  stocksMaster.getBseCode().equalsIgnoreCase(fundamentalData.getBseCode())?true:false; }).findFirst().orElse(null);
-            StockValuationData stockCompleteData = new StockValuationData(fundamentalData,financialDataSel,stocksMasterSel);
-            stockCompleteDataList.add(stockCompleteData);
-        }
-        return stockCompleteDataList;
-    }
 
     private Set<String> getSectors(List<StocksMaster> stocksMasterList)
     {
@@ -129,7 +117,7 @@ public class ValuationService {
     public Map<String,List<StockValuationData>> getUOVShares( int noOV,int noUV)
     {
         List<StocksMaster> stocksMasterList = stockMasterService.getAllStocks();
-        List<StockValuationData> stockCompleteDataList= getStockCompleteDataList(stocksMasterList);
+        List<StockValuationData> stockCompleteDataList= valuationHelper.getStockCompleteDataList(stocksMasterList,false);
         Set<String> sectors = getSectors(stocksMasterList);
         List<StockValuationData> uvShares = getUVShares(sectors,stocksMasterList,stockCompleteDataList);
         if (noUV > 0 ) {

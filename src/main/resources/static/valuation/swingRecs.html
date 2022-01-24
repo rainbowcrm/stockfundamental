@@ -1,0 +1,57 @@
+<html lang="en">
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,500,500i,700,800i" rel="stylesheet">
+
+</head>
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="./../scripts/stockdisplay.js" ></script>
+
+<div class="panel-body" style="padding-left: 10px;padding-right: 10px;">
+
+    <br>
+
+
+    <span style="color:red" id="errorMSG"></span>
+    <br>
+
+
+    <div class="table-responsive">
+        <table id="tableValuation" class="table table-bordered table-striped table-hover">
+            <thead>
+            <tr class="table-primary">
+                <th>BSE Code</th>
+                <th>Security</th>
+                <th>Sector</th>
+                <th>Cap Size</th>
+                <th>Cur Price</th>
+                <th>Min Price</th>
+                <th>Max Price</th>
+                <th>Median Price</th>
+                <th>Std Deviation</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <script>
+
+                   getSwingshares();
+                </script>
+
+            </tbody>
+        </table>
+        <span style="color:blue" id="idMessage">** The fair price mentioned here is evaluated based on lowest variation among pe/pb/roe. This assesment does not guarantee that stock price would get corrected to that value in near future </span>
+    </div>
+
+
+
+</div>
+</div>
+</body>

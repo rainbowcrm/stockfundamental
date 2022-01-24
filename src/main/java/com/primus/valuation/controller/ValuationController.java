@@ -1,6 +1,7 @@
 package com.primus.valuation.controller;
 
 import com.primus.valuation.data.StockValuationData;
+import com.primus.valuation.service.SwingTradingService;
 import com.primus.valuation.service.ValuationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,10 +21,21 @@ public class ValuationController{
     @Autowired
     ValuationService valuationService ;
 
+    @Autowired
+    SwingTradingService swingTradingService ;
+
     @RequestMapping(value = "/getUnderValued", method = RequestMethod.GET)
     public ResponseEntity<List<StockValuationData>> getUnderValuedStocks()
     {
         List<StockValuationData> uvShares=  valuationService.getUnderValuedShares();
+        ResponseEntity<List<StockValuationData>> entity =  new ResponseEntity<List<StockValuationData>>(uvShares, HttpStatus.OK);
+        return  entity;
+    }
+
+    @RequestMapping(value = "/getSwingRecommendations", method = RequestMethod.GET)
+    public ResponseEntity<List<StockValuationData>> getSwingRecommendations()
+    {
+        List<StockValuationData> uvShares=  swingTradingService.giveRecommendations();
         ResponseEntity<List<StockValuationData>> entity =  new ResponseEntity<List<StockValuationData>>(uvShares, HttpStatus.OK);
         return  entity;
     }
