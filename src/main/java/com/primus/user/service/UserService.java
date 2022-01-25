@@ -49,11 +49,26 @@ public class UserService {
     {
         UserPreferences userPreferences =  userPreferencesDAO.getByEmail(businessContext.getUserEmail());
         if( userPreferences == null) {
-            userPreferences = new UserPreferences();
-            userPreferences.setEmailId(businessContext.getUserEmail());
-            userPreferences.setDashboardDays(30);
-            userPreferences.setValidationAlgo("Default");
-            userPreferences.setLandingPage("Default");
+            userPreferences = getDefaultValue(businessContext.getUserEmail());
+        }
+        return  userPreferences ;
+    }
+
+    private UserPreferences getDefaultValue(String email)
+    {
+        UserPreferences userPreferences = new UserPreferences();
+        userPreferences.setEmailId(email);
+        userPreferences.setDashboardDays(30);
+        userPreferences.setValidationAlgo("Default");
+        userPreferences.setLandingPage("Default");
+        userPreferences.setTechDays(90);
+        return userPreferences;
+    }
+    public UserPreferences getPreferences(String  email)
+    {
+        UserPreferences userPreferences =  userPreferencesDAO.getByEmail(email);
+        if( userPreferences == null) {
+            userPreferences = getDefaultValue(email);
         }
         return  userPreferences ;
     }

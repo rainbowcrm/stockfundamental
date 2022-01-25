@@ -13,6 +13,7 @@ public class UserPreferences {
     String landingPage;
     Integer dashboardDays;
     String validationAlgo;
+    Integer techDays ;
 
     @Column(name  ="EMAIL")
     @Id
@@ -49,5 +50,14 @@ public class UserPreferences {
 
     public void setValidationAlgo(String validationAlgo) {
         this.validationAlgo = validationAlgo;
+    }
+
+    @Column(name  ="TECH_DAYS")
+    public Integer getTechDays() {
+        return techDays;
+    }
+
+    public void setTechDays(Integer techDays) {
+        this.techDays = techDays;
     }
 }

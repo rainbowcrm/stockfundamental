@@ -22,7 +22,6 @@
     <span style="color:red" id="errorMSG"></span>
     <br>
 
-
     <div class="table-responsive">
         <table id="tableValuation" class="table table-bordered table-striped table-hover">
             <thead>
@@ -40,14 +39,17 @@
             </tr>
             </thead>
             <tbody>
-            <script>
 
-                   getSwingshares();
+            <script>
+                    setTimeout(getSwingshares, 1);
+
                 </script>
 
             </tbody>
         </table>
-        <span style="color:blue" id="idMessage">** The fair price mentioned here is evaluated based on lowest variation among pe/pb/roe. This assesment does not guarantee that stock price would get corrected to that value in near future </span>
+        <span style="color:blue" id="idMessage">It may take a while to load this page . Please be patient, do not reload/refresh</span>
+        <br>
+        <span style="color:blue" id="idMessage2">Analysis is based on last number of days preferred in user settings</span>
     </div>
 
 

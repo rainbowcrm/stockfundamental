@@ -76,12 +76,13 @@ if (currentPage > 0) {
 function getSwingshares()
   {
       console.log(url);
+
       let fullURL = url+'valuation/getSwingRecommendations';
       let request = formRequest("GET",fullURL);
       setToken(request);
       request.send() ;
       var snapsotresponse  =   JSON.parse(request.responseText)  ;
-      console.log("Responss   e =" + request.responseText );
+      $("#mrnotice").html("** The shares listed here are selected based on their strong fundamentals, high volatality and current low price. This assessment does not guarantee that stock price would raise to that value in near future ");
       reRenderTableForSwing('tableValuation',snapsotresponse);
   }
 

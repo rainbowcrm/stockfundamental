@@ -7,6 +7,7 @@ import com.primus.stock.master.service.FinancialService;
 import com.primus.stock.master.service.FundamentalService;
 import com.primus.stocktransaction.service.StockTransactionService;
 import org.apache.log4j.LogManager;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,11 +31,21 @@ public class GeneralService {
 
     public void updateDashBoards()
     {
-        dashboardService.updateDashBoardData(15);
-        dashboardService.updateDashBoardData(30);
-        dashboardService.updateDashBoardData(45);
-        dashboardService.updateDashBoardData(60);
-        dashboardService.updateDashBoardData(90);
+        DashboardThread dashboardThread = new DashboardThread(dashboardService,30);
+        dashboardThread.start();
+
+        DashboardThread dashboardThread1 = new DashboardThread(dashboardService,60);
+        dashboardThread1.start();
+
+        DashboardThread dashboardThread2 = new DashboardThread(dashboardService,45);
+        dashboardThread2.start();
+
+        DashboardThread dashboardThread3 = new DashboardThread(dashboardService,90);
+        dashboardThread3.start();
+
+        DashboardThread dashboardThread4 = new DashboardThread(dashboardService,15);
+        dashboardThread4.start();
+
         LogWriter.debug("Dashboards updated");
     }
     public void readDailyTransactionData()

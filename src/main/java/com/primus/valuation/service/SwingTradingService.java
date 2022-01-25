@@ -1,5 +1,6 @@
 package com.primus.valuation.service;
 
+import com.primus.common.BusinessContext;
 import com.primus.stock.master.model.StocksMaster;
 import com.primus.stock.master.service.StockMasterService;
 import com.primus.utils.MathUtil;
@@ -21,13 +22,13 @@ public class SwingTradingService  implements TradingService{
     ValuationService valuationService;
 
 
-    public List<StockValuationData> giveRecommendations()
+    public List<StockValuationData> giveRecommendations(BusinessContext businessContext)
     {
        List<StockValuationData> uvShares = valuationService.getUnderValuedShares();
        List<Double> stdValues = new ArrayList<>();
         List<StockValuationData> swingShares = new ArrayList<>();
        for (StockValuationData stockValuationData : uvShares) {
-           valuationHelper.setTechnicals(stockValuationData, 90);
+           valuationHelper.setTechnicals(stockValuationData, businessContext.getUserPreferences().getTechDays());
            if (stockValuationData.getMedianPrice() != null && stockValuationData.getMedianPrice() > 0)
                stdValues.add(stockValuationData.getStdDeviation());
        }

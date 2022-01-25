@@ -166,9 +166,11 @@ function updatePref()
   let dDays = $("#txtDBoard").val();
   let validationAlgo = $("#vltTCQ").val();
   let landingPage = $("#landingPage").val();
+  let techDays = $("#techDays").val();
   postContent['landingPage'] = landingPage;
   postContent['dashboardDays'] = dDays;
   postContent['validationAlgo'] = validationAlgo;
+  postContent['techDays'] = techDays;
 
   let request = formRequest("POST",url+'user/updateUserPref');
   setToken(request);

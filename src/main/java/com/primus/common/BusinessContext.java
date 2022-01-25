@@ -1,6 +1,7 @@
 package com.primus.common;
 
 import com.primus.user.model.User;
+import com.primus.user.model.UserPreferences;
 import com.primus.user.service.UserService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -21,6 +22,8 @@ public class BusinessContext {
 
     User user;
 
+    UserPreferences userPreferences ;
+
 
 
     public static BusinessContext getBusinessContent()
@@ -30,6 +33,8 @@ public class BusinessContext {
         businessContext.setUserEmail(email);
         UserService userService = SpringContext.getBean(UserService.class);
         User user = userService.getUserByEmail(email);
+        UserPreferences userPreferences = userService.getPreferences(email);
+        businessContext.setUserPreferences(userPreferences);
         businessContext.setUser(user);
         return businessContext;
     }
@@ -40,5 +45,13 @@ public class BusinessContext {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public UserPreferences getUserPreferences() {
+        return userPreferences;
+    }
+
+    public void setUserPreferences(UserPreferences userPreferences) {
+        this.userPreferences = userPreferences;
     }
 }

@@ -80,9 +80,9 @@ public class UIService {
         FinancialData financialData= financialService.getFinancialData(bseCode);
         StocksMaster stocksMaster = stockMasterService.getStocksData(bseCode);
         FullStockProfile stockCompleteData = new FullStockProfile(fundamentalData,financialData,stocksMaster);
-
+        long days = businessContext.getUserPreferences().getTechDays();
         Date toDate = new java.util.Date();
-        Date fromDate = new Date(toDate.getTime() - 90l * 24l  * 3600l * 1000l ) ;
+        Date fromDate = new Date(toDate.getTime() - days * 24l  * 3600l * 1000l ) ;
         List<StockTransaction> stockTransactionList = stockTransactionDAO.getDataForStock(fromDate,toDate,stocksMaster.getSecurityName());
         List<DailyPrice> dataPair = new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yy");

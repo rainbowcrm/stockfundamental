@@ -1,5 +1,6 @@
 package com.primus.valuation.controller;
 
+import com.primus.common.BusinessContext;
 import com.primus.valuation.data.StockValuationData;
 import com.primus.valuation.service.SwingTradingService;
 import com.primus.valuation.service.ValuationService;
@@ -35,7 +36,8 @@ public class ValuationController{
     @RequestMapping(value = "/getSwingRecommendations", method = RequestMethod.GET)
     public ResponseEntity<List<StockValuationData>> getSwingRecommendations()
     {
-        List<StockValuationData> uvShares=  swingTradingService.giveRecommendations();
+        BusinessContext businessContext = BusinessContext.getBusinessContent();
+        List<StockValuationData> uvShares=  swingTradingService.giveRecommendations(businessContext);
         ResponseEntity<List<StockValuationData>> entity =  new ResponseEntity<List<StockValuationData>>(uvShares, HttpStatus.OK);
         return  entity;
     }
