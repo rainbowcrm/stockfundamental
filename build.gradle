@@ -49,6 +49,10 @@ dependencies {
     compile group: 'org.xhtmlrenderer', name: 'flying-saucer-core', version: '9.0.1'
     compile group: 'org.xhtmlrenderer', name: 'flying-saucer-pdf-itext5', version: '9.0.1'
     compile group: 'com.opencsv', name: 'opencsv', version: '4.3'
+    compile group: 'org.ehcache', name: 'ehcache', version: '3.6.1'
+    compile group: 'javax.cache', name: 'cache-api', version: '1.0.0'
+
+
 
 
 

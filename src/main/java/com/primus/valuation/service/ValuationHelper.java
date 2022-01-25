@@ -52,7 +52,7 @@ public class ValuationHelper {
         return stockCompleteDataList;
     }
 
-    public   void setTechnicals(FullStockProfile stockCompleteData,long days)
+    public   void setTechnicals(FullStockProfile stockCompleteData,int days)
     {
         Date toDate = new java.util.Date();
         Date fromDate = new Date(toDate.getTime() - days * 24l  * 3600l * 1000l ) ;

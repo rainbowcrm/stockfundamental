@@ -1,6 +1,7 @@
 package com.primus.ui.service;
 
 import com.primus.common.BusinessContext;
+import com.primus.common.LogWriter;
 import com.primus.common.datastructures.DataPair;
 import com.primus.stock.master.model.FinancialData;
 import com.primus.stock.master.model.FundamentalData;
@@ -17,6 +18,7 @@ import com.primus.utils.ExportService;
 import com.primus.utils.MathUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -111,8 +113,31 @@ public class UIService {
 
     }
 
-    public List<StockCompleteData> getFullStocks()
+    @Cacheable( key="#p0", value = "fullStocksCache")
+    public List<StockCompleteData> getFullStocks(String nkey)
     {
+        LogWriter.debug("Reading the fullStock with " + nkey);
+        List<FundamentalData> fundamentalDataList = fundamentalService.getAllFundamentals(null);
+        List<FinancialData> financialDataList = financialService.getAllFinancials() ;
+        List<StocksMaster> stocksMasterList = stockMasterService.getAllStocks();
+        List<StockCompleteData> returnList = new ArrayList<>();
+        for (FundamentalData fundamentalData : fundamentalDataList) {
+            FinancialData financialDataSel = financialDataList.stream().filter( financialData ->
+            {  return financialData.getBseCode().equalsIgnoreCase(fundamentalData.getBseCode())?true:false; }).findFirst().orElse(null) ;
+            StocksMaster stocksMasterSel = stocksMasterList.stream().filter(stocksMaster ->
+            { return  stocksMaster.getBseCode().equalsIgnoreCase(fundamentalData.getBseCode())?true:false; }).findFirst().orElse(null);
+            StockCompleteData stockCompleteData = new StockCompleteData(fundamentalData,financialDataSel,stocksMasterSel);
+            returnList.add(stockCompleteData) ;
+        }
+        return returnList ;
+
+    }
+
+
+    public List<StockCompleteData> getCompetitorStocks(String bseCode)
+    {
+        StocksMaster curStock = stockMasterService.getStocksData(bseCode);
+
         List<FundamentalData> fundamentalDataList = fundamentalService.getAllFundamentals(null);
         List<FinancialData> financialDataList = financialService.getAllFinancials() ;
         List<StocksMaster> stocksMasterList = stockMasterService.getAllStocks();

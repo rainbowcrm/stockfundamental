@@ -14,6 +14,7 @@ import com.primus.valuation.data.IntrinsicData;
 import com.primus.valuation.data.StockValuationData;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -38,6 +39,7 @@ public class ValuationService {
     @Autowired
     ValuationHelper valuationHelper;
 
+    @Cacheable( value = "OVCache")
     public List<StockValuationData> getOverValuedShares()
     {
         List<StocksMaster> stocksMasterList = stockMasterService.getAllStocks();
@@ -47,6 +49,7 @@ public class ValuationService {
         return ovShares;
     }
 
+    @Cacheable( value = "UVCache")
     public List<StockValuationData> getUnderValuedShares()
     {
         List<StocksMaster> stocksMasterList = stockMasterService.getAllStocks();

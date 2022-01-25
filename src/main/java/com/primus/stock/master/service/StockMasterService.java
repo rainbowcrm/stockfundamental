@@ -5,6 +5,7 @@ import com.primus.stock.api.service.APIService;
 import com.primus.stock.master.dao.StockMasterDAO;
 import com.primus.stock.master.model.StocksMaster;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class StockMasterService {
         return stockMasterDAO.listAllTrackedData(groupC);
     }
 
+    @Cacheable( value = "stockMasterCache")
     public List<StocksMaster> getAllStocks (  ){
         return  stockMasterDAO.getAllStocks() ;
     }

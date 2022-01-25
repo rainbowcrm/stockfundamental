@@ -37,7 +37,7 @@ public class ValuationController{
     public ResponseEntity<List<StockValuationData>> getSwingRecommendations()
     {
         BusinessContext businessContext = BusinessContext.getBusinessContent();
-        List<StockValuationData> uvShares=  swingTradingService.giveRecommendations(businessContext);
+        List<StockValuationData> uvShares=  swingTradingService.giveRecommendations(businessContext.getUserPreferences().getTechDays());
         ResponseEntity<List<StockValuationData>> entity =  new ResponseEntity<List<StockValuationData>>(uvShares, HttpStatus.OK);
         return  entity;
     }
