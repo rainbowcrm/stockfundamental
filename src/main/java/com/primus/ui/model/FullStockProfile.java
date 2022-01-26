@@ -14,6 +14,7 @@ public class FullStockProfile  extends StockCompleteData{
 
     Double medianPrice;
     Double stdDeviation;
+    Double relStdDeviation;
     Double meanPrice;
     Double minPrice;
     Double maxPrice;
@@ -90,5 +91,13 @@ public class FullStockProfile  extends StockCompleteData{
 
     public void setPercVariation(Double percVariation) {
         this.percVariation = percVariation;
+    }
+
+    public Double getRelStdDeviation() {
+        return relStdDeviation;
+    }
+
+    public void setRelStdDeviation(Double relStdDeviation) {
+        this.relStdDeviation = relStdDeviation;
     }
 }

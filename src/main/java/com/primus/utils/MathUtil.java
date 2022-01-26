@@ -56,6 +56,20 @@ public class MathUtil {
         return round(sqrt) ;
     }
 
+    public static Double getRelStandardDeviation (List<Double> valueList) {
+
+        Double avg = getMean(valueList);
+        Double sum = 0.0;
+        for (Double val : valueList)  {
+            Double entry = (val-avg) * (val-avg);
+            sum += entry;
+        }
+        Double variance =  (sum/valueList.size());
+        Double sqrt = Math.sqrt(variance);
+        sqrt= (sqrt/avg) * 100;
+        return round(sqrt) ;
+    }
+
 
 
     public static DataPair<Double,Double> getMinMax(List<Double> valueList)

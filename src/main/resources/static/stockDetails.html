@@ -278,17 +278,23 @@
                     <span class="label">Max Value:</span>
                     <span class="data" id="spnMaxValue" ><script> document.write(responseJson.maxPrice);</script></span>
                 </div>
+                <div class="col-md-6 col-sm-12 col-lg-4">
+                    <span class="label">Change Rate:</span>
+                    <span class="data" id="spnPercRange" ><script> document.write(responseJson.percVariation);</script></span>
+                </div>
+
+            </div>
+            <br>
+            <div class="row">
 
                 <div class="col-md-6 col-sm-12 col-lg-4">
                     <span class="label">Volatality:</span>
                     <span class="data" id="spnVolatatlity"><script> document.write(responseJson.volatality);</script></span>
                 </div>
-            </div>
-            <br>
-            <div class="row">
+
                 <div class="col-md-6 col-sm-12 col-lg-4">
-                    <span class="label">Change Rate:</span>
-                    <span class="data" id="spnPercRange" ><script> document.write(responseJson.percVariation);</script></span>
+                    <span class="label">Rel Deviation:</span>
+                    <span class="data" id="spnReldeviation"><script> document.write(responseJson.relStdDeviation);</script></span>
                 </div>
             </div>
             <br>

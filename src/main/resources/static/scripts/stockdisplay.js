@@ -559,7 +559,7 @@ function getAllStockCount()
                    innerContent =  innerContent + '<td>' + singleRow['minPrice'] + '</td>';
                    innerContent =  innerContent + '<td>' + singleRow['maxPrice'] + '</td>';
                    innerContent =  innerContent + '<td>' + singleRow['medianPrice'] + '</td>';
-                   innerContent =  innerContent + '<td>' + singleRow['stdDeviation'] + '</td>';
+                   innerContent =  innerContent + '<td>' + singleRow['relStdDeviation'] + '</td>';
                    innerContent =  innerContent + '</tr>';
                     var newrow = dataTable.insertRow();
                     newrow.innerHTML =  innerContent;

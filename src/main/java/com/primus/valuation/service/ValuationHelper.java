@@ -69,12 +69,14 @@ public class ValuationHelper {
         }
         stockCompleteData.setPrices(dataPair);
         if (closingPrices.size() >0 ) {
-            Double medPrice = MathUtil.getMedian(closingPrices);
-            Double meanPrice = MathUtil.getMean(closingPrices);
-            Double stdDeviation = MathUtil.getStandardDeviation(closingPrices);
+            Double medPrice = MathUtil.round(MathUtil.getMedian(closingPrices));
+            Double meanPrice = MathUtil.round(MathUtil.getMean(closingPrices));
+            Double stdDeviation = MathUtil.round(MathUtil.getStandardDeviation(closingPrices));
+            Double relDeviation =MathUtil.round(MathUtil.getRelStandardDeviation(closingPrices));
             stockCompleteData.setMedianPrice(medPrice);
             stockCompleteData.setMeanPrice(meanPrice);
             stockCompleteData.setStdDeviation(stdDeviation);
+            stockCompleteData.setRelStdDeviation(relDeviation);
             DataPair<Double, Double> minMax = MathUtil.getMinMax(closingPrices);
             stockCompleteData.setMinPrice(minMax.getValue1());
             stockCompleteData.setMaxPrice(minMax.getValue2());

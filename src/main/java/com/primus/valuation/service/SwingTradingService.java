@@ -34,12 +34,12 @@ public class SwingTradingService  {
         for (StockValuationData stockValuationData : uvShares) {
             valuationHelper.setTechnicals(stockValuationData, days);
             if (stockValuationData.getMedianPrice() != null && stockValuationData.getMedianPrice() > 0)
-                stdValues.add(stockValuationData.getStdDeviation());
+                stdValues.add(stockValuationData.getRelStdDeviation());
         }
         Double medianDev= MathUtil.getMedian(stdValues);
         for (StockValuationData stockValuationData : uvShares) {
-            if ( stockValuationData.getStdDeviation() !=null && stockValuationData.getMedianPrice() != null &&
-                    stockValuationData.getStdDeviation() > medianDev
+            if ( stockValuationData.getRelStdDeviation() !=null && stockValuationData.getMedianPrice() != null &&
+                    stockValuationData.getRelStdDeviation() > (medianDev/2)
                     && stockValuationData.getCurrentPrice() < stockValuationData.getMedianPrice()) {
                 swingShares.add(stockValuationData);
             }

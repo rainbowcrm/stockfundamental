@@ -102,9 +102,11 @@ public class UIService {
         Double medPrice = MathUtil.getMedian(closingPrices);
         Double meanPrice = MathUtil.getMean(closingPrices);
         Double stdDeviation = MathUtil.getStandardDeviation(closingPrices);
+        Double relDeviation = MathUtil.getRelStandardDeviation(closingPrices);
         stockCompleteData.setMedianPrice(medPrice);
         stockCompleteData.setMeanPrice(meanPrice);
         stockCompleteData.setStdDeviation(stdDeviation);
+        stockCompleteData.setRelStdDeviation(relDeviation);
         DataPair<Double,Double> minMax =  MathUtil.getMinMax(closingPrices);
         stockCompleteData.setMinPrice(minMax.getValue1());
         stockCompleteData.setMaxPrice(minMax.getValue2());
