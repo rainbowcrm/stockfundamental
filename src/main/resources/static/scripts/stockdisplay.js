@@ -179,6 +179,42 @@ function getAllSectors()
      console.log("All Sectors =" + request.responseText );
      return snapsotresponse;
 }
+
+function writePaginationForCompetitors(dataList)
+{
+
+ var innerHTML = '';
+
+    /*innerHTML +=  '<li id="btnPrev"  class="page-item disabled">';
+    innerHTML +=  '<a class="page-link" onclick = "previousPage(30)"  href="#" tabindex="-1">Previous</a>';
+    innerHTML +=   '</li>';*/
+allStockCount = dataList.length;
+totalPages= Math.ceil(allStockCount/8);
+console.log('allStockCount=' +  allStockCount + ":: totalPages=" + totalPages);
+recordsPerPage = 8;
+currentPage = 1;
+if ( totalPages <=50 ) {
+        for ( i = 1 ; i <= totalPages ; i ++ ) {
+        innerHTML += '<li class="page-item"><a class="page-link" onclick = "navCompRecords('+ (i-1) +','+ recordsPerPage +')" href="#">'+ (i) +'</a></li>';
+     }
+}else {
+     skipIndex = Math.floor(totalPages/10) + 1;
+     console.log('skipIndex ='  + skipIndex );
+    for ( i = 1 ; i <= totalPages ; i+=skipIndex ) {
+        innerHTML += '<li class="page-item"><a class="page-link" onclick = "navCompRecords('+ (i-1) +','+ recordsPerPage +')"  href="#">'+ i +'</a></li>';
+     }
+     console.log('i=' + i );
+     if ( i < totalPages+skipIndex) {
+     innerHTML += '<li class="page-item"><a class="page-link" onclick = "navCompRecords('+ (totalPages-1) +','+ recordsPerPage +')"  href="#">'+ totalPages +'</a></li>';
+     }
+}
+/*   innerHTML += '<li id="btnNext"  class="page-item">';
+   innerHTML +=  '<a class="page-link"  onclick = "nextPage(30)"  href="#">Next</a>';
+   innerHTML +=   '</li>';*/
+
+   $('#idPaginationCtrls').html(innerHTML);
+}
+
 function writePaginationButtons()
 {
 
@@ -326,6 +362,20 @@ function submitDetailedReport()
   runReport('reports/getTransDetails',"stock="+secur)
 }
 
+function  navCompRecords(currentPage,recordsPerPage)
+{
+        var from = currentPage * recordsPerPage;
+        var to= from  + recordsPerPage;
+        var currentCompRecs = []
+        for ( var k = from ; k < to ; k ++ )
+        {
+            if( k< competitorResult.length )
+                currentCompRecs.push(competitorResult[k]);
+        }
+        reRenderTableForCompetitors('tableCompetitors',currentCompRecs);
+
+}
+
 function applyFilter(currentPage,recordsPerPage)
 {
     postContent = getFilterJSON();
@@ -457,32 +507,32 @@ function getAllStockCount()
             while (dataTable.rows.length > 1) {
                     dataTable.deleteRow(dataTable.rows.length -1 );
             }
-            for ( var i in data) {
-                   singleRow=  data[i];
-                   console.log(singleRow);
-                   console.log(singleRow.intrinsicData);
-
-                   //innerContent = "<tr>";
-                   var bgColor = i%2==0?'beige':'white';
-                   innerContent = '<tr data-row="' + bgColor +  '">';
-                   innerContent =  innerContent + '<td><a href="../stockDetails.html?bseCode='+ singleRow['bseCode'] +'">' + singleRow['bseCode'] + '</a></td>';
-                   innerContent =  innerContent + '<td>' + singleRow['stock'] + '</td>';
-                   innerContent =  innerContent + '<td>' + singleRow['sector'] + '</td>';
-                   innerContent =  innerContent + '<td>' + singleRow['currentPrice'] + '</td>';
-                   innerContent =  innerContent + '<td>' + singleRow['eps'] + '</td>';
-                   innerContent =  innerContent + '<td>' + singleRow['pe'] + '</td>';
-                   innerContent =  innerContent + '<td>' + singleRow['pb'] + '</td>';
-                   innerContent =  innerContent + '<td>' + singleRow['roe'] + '</td>';
-                   innerContent =  innerContent + '<td>' + singleRow['dividentYield'] + '</td>';
-                   innerContent =  innerContent + '<td>' + singleRow['revenue'] + '</td>';
-                   innerContent =  innerContent + '<td>' + singleRow['profit'] + '</td>';
-
-
-                   innerContent =  innerContent + '</tr>';
-                    var newrow = dataTable.insertRow();
-                    newrow.innerHTML =  innerContent;
-                }
-               applyColor();
+            for ( var i =0; i < 8; i ++ ) {
+                   if( i < data.length)
+                   {
+                       singleRow=  data[i];
+                       //innerContent = "<tr>";
+                       var bgColor = i%2==0?'beige':'white';
+                       innerContent = '<tr data-row="' + bgColor +  '">';
+                       innerContent =  innerContent + '<td><a href="../stockDetails.html?bseCode='+ singleRow['bseCode'] +'">' + singleRow['bseCode'] + '</a></td>';
+                       innerContent =  innerContent + '<td>' + singleRow['stock'] + '</td>';
+                       innerContent =  innerContent + '<td>' + singleRow['marketCap'] + '</td>';
+                       innerContent =  innerContent + '<td>' + singleRow['groupCap'] + '</td>';
+                       innerContent =  innerContent + '<td>' + singleRow['currentPrice'] + '</td>';
+                       innerContent =  innerContent + '<td>' + singleRow['bookvalue'] + '</td>';
+                       innerContent =  innerContent + '<td>' + singleRow['eps'] + '</td>';
+                       innerContent =  innerContent + '<td>' + singleRow['pe'] + '</td>';
+                       innerContent =  innerContent + '<td>' + singleRow['pb'] + '</td>';
+                       innerContent =  innerContent + '<td>' + singleRow['roe'] + '</td>';
+                       innerContent =  innerContent + '<td>' + singleRow['dividentYield'] + '</td>';
+                       innerContent =  innerContent + '<td>' + singleRow['revenue'] + '</td>';
+                       innerContent =  innerContent + '<td>' + singleRow['profit'] + '</td>';
+                       innerContent =  innerContent + '</tr>';
+                        var newrow = dataTable.insertRow();
+                        newrow.innerHTML =  innerContent;
+                    }
+                   applyColor();
+               }
 
     }
 

@@ -183,8 +183,10 @@ public class UIService {
             {  return financialData.getBseCode().equalsIgnoreCase(competitorStock.getBseCode())?true:false; }).findFirst().orElse(null) ;
             FundamentalData fundamentalData = fundamentalDataList.stream().filter( fundamentalData1 ->  {
                 return fundamentalData1.getBseCode().equalsIgnoreCase(competitorStock.getBseCode())?true:false; }).findFirst().orElse(null) ;
-            StockCompleteData stockCompleteData = new StockCompleteData(fundamentalData,financialDataSel,competitorStock);
-            returnList.add(stockCompleteData) ;
+            if(!curStock.getBseCode().equalsIgnoreCase(competitorStock.getBseCode())) {
+                StockCompleteData stockCompleteData = new StockCompleteData(fundamentalData, financialDataSel, competitorStock);
+                returnList.add(stockCompleteData);
+            }
         }
         return returnList ;
 

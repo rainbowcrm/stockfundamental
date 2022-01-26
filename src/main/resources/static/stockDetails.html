@@ -322,15 +322,26 @@
                     <span class="data" id="spnMediaDivYiels"><script> document.write(respCompJson.meanDivYield);</script></span>
                 </div>
             </div>
+            <br>
+            <nav aria-label="..." >
+                <ul  id="idPaginationCtrls" class="pagination justify-content-end">
+                    <script>
+                      var competitorResult =  respCompJson.competitorDataList;
+                      writePaginationForCompetitors(respCompJson.competitorDataList);
+                    </script>
 
+                </ul>
+            </nav>
             <div class="table-responsive">
                 <table id="tableCompetitors" class="table table-bordered table-striped table-hover">
                     <thead>
                     <tr class="table-primary">
                         <th>BSE Code</th>
                         <th>Security</th>
-                        <th>Sector</th>
+                        <th>M cap</th>
+                        <th>Cap Size</th>
                         <th>Price</th>
+                        <th>Book Value</th>
                         <th>EPS</th>
                         <th>PE</th>
                         <th>PB</th>

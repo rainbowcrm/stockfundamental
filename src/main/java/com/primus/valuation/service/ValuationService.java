@@ -63,14 +63,17 @@ public class ValuationService {
     {
         List<StockValuationData> ovShares = new ArrayList<>();
         for (String sector : sectors) {
-            List<StockValuationData> ovLShares = identifyOvervaluedShares(sector,"L",stockCompleteDataList);
-            ovShares.addAll(ovLShares);
+            Set<String> industries = uniqueIndustries(sector,stockCompleteDataList);
+            for (String industry : industries) {
+                List<StockValuationData> ovLShares = identifyOvervaluedShares(sector, "L", stockCompleteDataList,industry);
+                ovShares.addAll(ovLShares);
 
-            List<StockValuationData> ovMShares = identifyOvervaluedShares(sector,"M",stockCompleteDataList);
-            ovShares.addAll(ovMShares);
+                List<StockValuationData> ovMShares = identifyOvervaluedShares(sector, "M", stockCompleteDataList,industry);
+                ovShares.addAll(ovMShares);
 
-            List<StockValuationData> ovSShares = identifyOvervaluedShares(sector,"S",stockCompleteDataList);
-            ovShares.addAll(ovSShares);
+                List<StockValuationData> ovSShares = identifyOvervaluedShares(sector, "S", stockCompleteDataList,industry);
+                ovShares.addAll(ovSShares);
+            }
 
         }
 
@@ -82,20 +85,35 @@ public class ValuationService {
 
     }
 
+    private Set<String> uniqueIndustries (String sector,List<StockValuationData> stockCompleteDataList)
+    {
+        Set<String> industries = new LinkedHashSet<>();
+        List<StockValuationData> sectorStocks = stockCompleteDataList.stream().filter( sectorStock ->
+        { return sector.equalsIgnoreCase(sectorStock.getSector())?true:false; }).collect(Collectors.toList());
+        for ( StockValuationData sectorStock : sectorStocks ) {
+            industries.add(sectorStock.getIndustry()) ;
+        }
+        return industries ;
+
+    }
 
         private List<StockValuationData> getUVShares(Set<String> sectors,List<StocksMaster> stocksMasterList,List<StockValuationData> stockCompleteDataList)
     {
 
         List<StockValuationData> uvShares = new ArrayList<>();
         for (String sector : sectors) {
-            List<StockValuationData> uvLShares = identifyUndervaluedShares(sector,"L",stockCompleteDataList);
-            uvShares.addAll(uvLShares);
+            Set<String> industries = uniqueIndustries(sector,stockCompleteDataList);
+            for (String industry : industries) {
 
-            List<StockValuationData> uvMShares = identifyUndervaluedShares(sector,"M",stockCompleteDataList);
-            uvShares.addAll(uvMShares);
+                List<StockValuationData> uvLShares = identifyUndervaluedShares(sector, "L", stockCompleteDataList,industry);
+                uvShares.addAll(uvLShares);
 
-            List<StockValuationData> uvSShares = identifyUndervaluedShares(sector,"S",stockCompleteDataList);
-            uvShares.addAll(uvSShares);
+                List<StockValuationData> uvMShares = identifyUndervaluedShares(sector, "M", stockCompleteDataList,industry);
+                uvShares.addAll(uvMShares);
+
+                List<StockValuationData> uvSShares = identifyUndervaluedShares(sector, "S", stockCompleteDataList,industry);
+                uvShares.addAll(uvSShares);
+            }
 
         }
         Collections.sort(
@@ -142,11 +160,14 @@ public class ValuationService {
 
 
 
-    private List<StockValuationData> identifyUndervaluedShares(String sector, String marketCap,List<StockValuationData> stockCompleteDataList)
+    private List<StockValuationData> identifyUndervaluedShares(String sector, String marketCap,List<StockValuationData> stockCompleteDataList,
+                                                               String industry)
     {
         List<StockValuationData> underValuedShares= new ArrayList<>();
         List<StockValuationData> filteredDataList = stockCompleteDataList.stream().filter(stockCompleteData ->  {
-            return  sector.equalsIgnoreCase(stockCompleteData.getSector()) && marketCap.equalsIgnoreCase(stockCompleteData.getGroupCap());
+            return  sector.equalsIgnoreCase(stockCompleteData.getSector()) &&
+                    industry.equalsIgnoreCase(stockCompleteData.getIndustry()) &&
+                    marketCap.equalsIgnoreCase(stockCompleteData.getGroupCap());
         }).collect(Collectors.toList());
         IntrinsicData intrinsicData = makeIntrinsicData(sector,marketCap,filteredDataList);
         for (StockValuationData stockCompleteData : filteredDataList)
@@ -172,11 +193,14 @@ public class ValuationService {
         return underValuedShares;
     }
 
-    private List<StockValuationData> identifyOvervaluedShares(String sector, String marketCap,List<StockValuationData> stockCompleteDataList)
+    private List<StockValuationData> identifyOvervaluedShares(String sector, String marketCap,List<StockValuationData> stockCompleteDataList,
+                                                              String industry)
     {
         List<StockValuationData> overValuedShares= new ArrayList<>();
         List<StockValuationData> filteredDataList = stockCompleteDataList.stream().filter(stockCompleteData ->  {
-            return  sector.equalsIgnoreCase(stockCompleteData.getSector()) && marketCap.equalsIgnoreCase(stockCompleteData.getGroupCap());
+            return  sector.equalsIgnoreCase(stockCompleteData.getSector()) &&
+                    industry.equalsIgnoreCase(stockCompleteData.getIndustry()) &&
+                    marketCap.equalsIgnoreCase(stockCompleteData.getGroupCap());
         }).collect(Collectors.toList());
         IntrinsicData intrinsicData = makeIntrinsicData(sector,marketCap,filteredDataList);
         for (StockValuationData stockCompleteData : filteredDataList)
