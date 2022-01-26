@@ -235,7 +235,7 @@
             <a class="nav-link" id="pills-tech-tab" data-toggle="pill" href="#pills-tech" role="tab" aria-controls="pills-profile" aria-selected="false">Technicals</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="pills-competitors-tab" data-toggle="pill" href="#pills-competitors" role="tab" aria-controls="pills-competitors" aria-selected="false">Comments</a>
+            <a class="nav-link" id="pills-competitors-tab" data-toggle="pill" href="#pills-competitors" role="tab" aria-controls="pills-competitors" aria-selected="false">Competitors</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" id="pills-comments-tab" data-toggle="pill" href="#pills-comments" role="tab" aria-controls="pills-comments" aria-selected="false">Comments</a>
@@ -296,7 +296,63 @@
 
         </div>
         <div class="tab-pane fade" id="pills-competitors" role="tabpanel" aria-labelledby="pills-competitors-tab">
-            <span style="color:brown"> This section is under development. shall be done soon </span>
+            <script>
+
+                let respCompJson = getCompetitorData();
+            </script>
+
+            <div class="row">
+                <div class="col-md-4 col-sm-12 col-lg-3">
+                    <span class="label">Median PE:</span>
+                    <span class="data" id="spnMedianPE" ><script> document.write(respCompJson.medianPE);</script></span>
+                </div>
+
+                <div class="col-md-4 col-sm-12 col-lg-3">
+                    <span class="label">Median PB:</span>
+                    <span class="data" id="spnMedianPB" ><script> document.write(respCompJson.medianPB);</script></span>
+                </div>
+
+                <div class="col-md-4 col-sm-12 col-lg-3">
+                    <span class="label">Median ROE:</span>
+                    <span class="data" id="spnMedianROE"><script> document.write(respCompJson.medianROE);</script></span>
+                </div>
+
+                <div class="col-md-4 col-sm-12 col-lg-3">
+                    <span class="label">Median DivYield:</span>
+                    <span class="data" id="spnMediaDivYiels"><script> document.write(respCompJson.meanDivYield);</script></span>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table id="tableCompetitors" class="table table-bordered table-striped table-hover">
+                    <thead>
+                    <tr class="table-primary">
+                        <th>BSE Code</th>
+                        <th>Security</th>
+                        <th>Sector</th>
+                        <th>Price</th>
+                        <th>EPS</th>
+                        <th>PE</th>
+                        <th>PB</th>
+                        <th>ROE</th>
+                        <th>Div Yield</th>
+                        <th>Revenue</th>
+                        <th>Profit</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <script>
+                     reRenderTableForCompetitors('tableCompetitors',respCompJson.competitorDataList);
+
+                    </script>
+
+                    </tbody>
+                </table>
+
+
+
         </div>
         <div class="tab-pane fade" id="pills-comments" role="tabpanel" aria-labelledby="pills-comments-tab">
             <span style="color:brown"> This section is under development. shall be done soon </span>
@@ -304,11 +360,5 @@
     </div>
 
   <hr>
-    <div class="row">
-        <div class="col-md-3 col-sm-6 col-lg-2">
-            <button  id ="btnRepButton" onclick="goToStockList();" class="form-control btn-primary">
-                <i class="fa fa-back" id ="btnRepIcon">Back</i>
-            </button>
-        </div>
-    </div>
+
 </div>

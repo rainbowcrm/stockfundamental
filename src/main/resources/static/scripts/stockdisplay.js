@@ -138,6 +138,22 @@ function getStockCompleteData()
 
 }
 
+function getCompetitorData()
+{
+    var params = new window.URLSearchParams(window.location.search);
+    var xyz = params.get('bseCode');
+    console.log('bseCode=' + xyz)
+    let fullURL = url+'/uiapi/getCompetitorData?bseCode=' + xyz  ;
+    let request = formRequest("GET",fullURL);
+      setToken(request);
+      request.send() ;
+      var snapsotresponse  =   JSON.parse(request.responseText)  ;
+      console.log("Responss   e =" + request.responseText );
+
+      return snapsotresponse;
+
+}
+
 function goToStockList()
 {
     $("#frmCont").attr('src','./stocks.html');
@@ -404,7 +420,6 @@ function getAllStockCount()
           while (dataTable.rows.length > 1) {
                   dataTable.deleteRow(dataTable.rows.length -1 );
           }
-
           for ( var i in data) {
                  singleRow=  data[i];
                  console.log(singleRow);
@@ -435,6 +450,41 @@ function getAllStockCount()
              applyColor();
 
   }
+
+  function reRenderTableForCompetitors(tableId,data)
+    {
+            var dataTable = document.getElementById(tableId);
+            while (dataTable.rows.length > 1) {
+                    dataTable.deleteRow(dataTable.rows.length -1 );
+            }
+            for ( var i in data) {
+                   singleRow=  data[i];
+                   console.log(singleRow);
+                   console.log(singleRow.intrinsicData);
+
+                   //innerContent = "<tr>";
+                   var bgColor = i%2==0?'beige':'white';
+                   innerContent = '<tr data-row="' + bgColor +  '">';
+                   innerContent =  innerContent + '<td><a href="../stockDetails.html?bseCode='+ singleRow['bseCode'] +'">' + singleRow['bseCode'] + '</a></td>';
+                   innerContent =  innerContent + '<td>' + singleRow['stock'] + '</td>';
+                   innerContent =  innerContent + '<td>' + singleRow['sector'] + '</td>';
+                   innerContent =  innerContent + '<td>' + singleRow['currentPrice'] + '</td>';
+                   innerContent =  innerContent + '<td>' + singleRow['eps'] + '</td>';
+                   innerContent =  innerContent + '<td>' + singleRow['pe'] + '</td>';
+                   innerContent =  innerContent + '<td>' + singleRow['pb'] + '</td>';
+                   innerContent =  innerContent + '<td>' + singleRow['roe'] + '</td>';
+                   innerContent =  innerContent + '<td>' + singleRow['dividentYield'] + '</td>';
+                   innerContent =  innerContent + '<td>' + singleRow['revenue'] + '</td>';
+                   innerContent =  innerContent + '<td>' + singleRow['profit'] + '</td>';
+
+
+                   innerContent =  innerContent + '</tr>';
+                    var newrow = dataTable.insertRow();
+                    newrow.innerHTML =  innerContent;
+                }
+               applyColor();
+
+    }
 
   function reRenderTableForSwing(tableId,data)
     {

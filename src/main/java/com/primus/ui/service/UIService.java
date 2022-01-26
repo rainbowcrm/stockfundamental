@@ -11,6 +11,7 @@ import com.primus.stock.master.service.FundamentalService;
 import com.primus.stock.master.service.StockMasterService;
 import com.primus.stocktransaction.dao.StockTransactionDAO;
 import com.primus.stocktransaction.model.StockTransaction;
+import com.primus.ui.model.CompetitorData;
 import com.primus.ui.model.DailyPrice;
 import com.primus.ui.model.FullStockProfile;
 import com.primus.ui.model.StockCompleteData;
@@ -25,6 +26,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UIService {
@@ -133,21 +135,55 @@ public class UIService {
 
     }
 
+    public CompetitorData getCompetitorData(String bseCode, BusinessContext businessContext)
+    {
+        CompetitorData competitorData = new CompetitorData();
+        List<StockCompleteData> competitorStocks = getCompetitorStocks (bseCode);
+        competitorData.setCompetitorDataList(competitorStocks);
+        List<Double> peList = new ArrayList<>();
+        List<Double> pbList = new ArrayList<>();
+        List<Double> roeList = new ArrayList<>();
+        List<Double> divYieldList = new ArrayList<>();
 
-    public List<StockCompleteData> getCompetitorStocks(String bseCode)
+        for (StockCompleteData stockCompleteData : competitorStocks) {
+            if (stockCompleteData.getPe() != null)
+                peList.add(stockCompleteData.getPe());
+            if (stockCompleteData.getPb() != null)
+                pbList.add(stockCompleteData.getPb());
+            if (stockCompleteData.getRoe() != null)
+                roeList.add(stockCompleteData.getRoe());
+            if (stockCompleteData.getDividentYield() != null)
+                divYieldList.add(stockCompleteData.getDividentYield());
+        }
+
+        competitorData.setMedianPE(MathUtil.round(MathUtil.getMedian(peList)));
+        competitorData.setMedianPB(MathUtil.round(MathUtil.getMedian(pbList)));
+        competitorData.setMedianROE(MathUtil.round(MathUtil.getMedian(roeList)));
+        competitorData.setMeanDivYield(MathUtil.round(MathUtil.getMedian(divYieldList)));
+
+        return competitorData;
+    }
+
+    private List<StockCompleteData> getCompetitorStocks(String bseCode)
     {
         StocksMaster curStock = stockMasterService.getStocksData(bseCode);
 
-        List<FundamentalData> fundamentalDataList = fundamentalService.getAllFundamentals(null);
+        List<FundamentalData> fundamentalDataList = fundamentalService.getAllFundamentals("");
         List<FinancialData> financialDataList = financialService.getAllFinancials() ;
         List<StocksMaster> stocksMasterList = stockMasterService.getAllStocks();
+        List<StocksMaster> competitorStocks = stocksMasterList.stream().filter( stocksMaster -> {
+           return (
+                   curStock.getIndustry().equalsIgnoreCase(stocksMaster.getIndustry())&&
+                   curStock.getSector().equalsIgnoreCase(stocksMaster.getSector()) &&
+                           stocksMaster.getUseJavaAPI() == true)?true:false;
+        } ).collect(Collectors.toList());
         List<StockCompleteData> returnList = new ArrayList<>();
-        for (FundamentalData fundamentalData : fundamentalDataList) {
+        for (StocksMaster competitorStock : competitorStocks) {
             FinancialData financialDataSel = financialDataList.stream().filter( financialData ->
-            {  return financialData.getBseCode().equalsIgnoreCase(fundamentalData.getBseCode())?true:false; }).findFirst().orElse(null) ;
-            StocksMaster stocksMasterSel = stocksMasterList.stream().filter(stocksMaster ->
-            { return  stocksMaster.getBseCode().equalsIgnoreCase(fundamentalData.getBseCode())?true:false; }).findFirst().orElse(null);
-            StockCompleteData stockCompleteData = new StockCompleteData(fundamentalData,financialDataSel,stocksMasterSel);
+            {  return financialData.getBseCode().equalsIgnoreCase(competitorStock.getBseCode())?true:false; }).findFirst().orElse(null) ;
+            FundamentalData fundamentalData = fundamentalDataList.stream().filter( fundamentalData1 ->  {
+                return fundamentalData1.getBseCode().equalsIgnoreCase(competitorStock.getBseCode())?true:false; }).findFirst().orElse(null) ;
+            StockCompleteData stockCompleteData = new StockCompleteData(fundamentalData,financialDataSel,competitorStock);
             returnList.add(stockCompleteData) ;
         }
         return returnList ;

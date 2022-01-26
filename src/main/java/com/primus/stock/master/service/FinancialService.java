@@ -9,6 +9,7 @@ import com.primus.stock.master.model.StocksMaster;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -154,6 +155,7 @@ public class FinancialService {
 
     }
 
+    @Cacheable( value = "financialsCache")
     public List<FinancialData> getAllFinancials (  )
     {
         return financialsDAO.getAllFinancials();

@@ -4,6 +4,7 @@ import com.primus.common.BusinessContext;
 import com.primus.dashboard.service.DashboardService;
 import com.primus.stock.master.model.StocksMaster;
 import com.primus.stock.master.service.StockMasterService;
+import com.primus.ui.model.CompetitorData;
 import com.primus.ui.model.StockCompleteData;
 import com.primus.ui.service.LookupService;
 import com.primus.ui.service.UIService;
@@ -172,6 +173,16 @@ public class UIController {
         BusinessContext businessContext= BusinessContext.getBusinessContent() ;
         StocksMaster stocksMaster = stockMasterService.getStocksDataFromName(securityName);
         ResponseEntity<StocksMaster> entity =  new ResponseEntity<StocksMaster>(stocksMaster, HttpStatus.OK);
+        return  entity;
+
+    }
+
+    @RequestMapping(value = "/getCompetitorData", method = RequestMethod.GET)
+    public ResponseEntity<CompetitorData> getCompetitorData(@RequestParam String bseCode)
+    {
+        BusinessContext businessContext= BusinessContext.getBusinessContent() ;
+        CompetitorData stockCompleteData = uiService.getCompetitorData(bseCode,businessContext);
+        ResponseEntity<CompetitorData> entity =  new ResponseEntity<CompetitorData>(stockCompleteData, HttpStatus.OK);
         return  entity;
 
     }

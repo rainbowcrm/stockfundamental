@@ -201,9 +201,8 @@ public class StockCompleteData {
             this.profit = financialData.getNetProfit();
             this.equity = financialData.getEquit();
             this.divident = financialData.getDivident();
-            if (divident > 0 ) {
-                this.dividentYield = MathUtil.round((divident/currentPrice) * 100);
-            }
+            this.dividentYield = MathUtil.round((divident/currentPrice) * 100);
+
 
         }
         if(this.eps != 0 ){
