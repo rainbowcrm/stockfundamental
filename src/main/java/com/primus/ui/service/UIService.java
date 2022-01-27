@@ -17,6 +17,7 @@ import com.primus.ui.model.FullStockProfile;
 import com.primus.ui.model.StockCompleteData;
 import com.primus.utils.ExportService;
 import com.primus.utils.MathUtil;
+import com.primus.valuation.service.ValuationHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -46,6 +47,8 @@ public class UIService {
     @Autowired
     ExportService exportService ;
 
+    @Autowired
+    ValuationHelper valuationHelper ;
 
 
     public int getAllStockCount(Map<String,Object> criteriaMap)
@@ -98,6 +101,8 @@ public class UIService {
             closingPrices.add(stockTransaction.getClosePrice());
 
         }
+        stockCompleteData.setTechnicalData(valuationHelper.getPivotPoints(stockTransactionList));
+
         stockCompleteData.setPrices(dataPair);
         Double medPrice = MathUtil.getMedian(closingPrices);
         Double meanPrice = MathUtil.getMean(closingPrices);

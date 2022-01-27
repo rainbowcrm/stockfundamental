@@ -21,6 +21,8 @@ public class FullStockProfile  extends StockCompleteData{
     Double volatality;
     Double percVariation;
 
+    TechnicalData technicalData ;
+
     public List<DailyPrice> getPrices() {
         return prices;
     }
@@ -99,5 +101,13 @@ public class FullStockProfile  extends StockCompleteData{
 
     public void setRelStdDeviation(Double relStdDeviation) {
         this.relStdDeviation = relStdDeviation;
+    }
+
+    public TechnicalData getTechnicalData() {
+        return technicalData;
+    }
+
+    public void setTechnicalData(TechnicalData technicalData) {
+        this.technicalData = technicalData;
     }
 }

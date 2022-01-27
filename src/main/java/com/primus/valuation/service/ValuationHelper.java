@@ -10,6 +10,7 @@ import com.primus.stocktransaction.dao.StockTransactionDAO;
 import com.primus.stocktransaction.model.StockTransaction;
 import com.primus.ui.model.DailyPrice;
 import com.primus.ui.model.FullStockProfile;
+import com.primus.ui.model.TechnicalData;
 import com.primus.utils.MathUtil;
 import com.primus.valuation.data.StockValuationData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +68,9 @@ public class ValuationHelper {
             closingPrices.add(stockTransaction.getClosePrice());
 
         }
+
         stockCompleteData.setPrices(dataPair);
+        stockCompleteData.setTechnicalData(getPivotPoints(stockTransactionList));
         if (closingPrices.size() >0 ) {
             Double medPrice = MathUtil.round(MathUtil.getMedian(closingPrices));
             Double meanPrice = MathUtil.round(MathUtil.getMean(closingPrices));
@@ -84,6 +87,34 @@ public class ValuationHelper {
             stockCompleteData.setVolatality(MathUtil.round(rootSize * stdDeviation));
             stockCompleteData.setPercVariation(MathUtil.round(((minMax.getValue2() - minMax.getValue1()) / minMax.getValue1()) * 100));
         }
+
+    }
+
+    public TechnicalData getPivotPoints(List<StockTransaction> stockTransactionList)
+    {
+        if( stockTransactionList.size() > 0 ) {
+            Double high = Double.MIN_VALUE;
+            Double low = Double.MAX_VALUE;
+            for (StockTransaction stockTransaction : stockTransactionList) {
+                if (stockTransaction.getHighPrice() > high) {
+                    high = stockTransaction.getHighPrice();
+                }
+                if (stockTransaction.getLowPrice() < low) {
+                    low = stockTransaction.getLowPrice();
+                }
+            }
+            Double close = stockTransactionList.get(stockTransactionList.size() - 1).getClosePrice();
+            Double pp = MathUtil.round((high + low + close) / 3);
+            Double support1 = MathUtil.round((pp * 2) - high);
+            Double support2 = MathUtil.round(pp - (high - low));
+            Double resistance1 = MathUtil.round((pp * 2) - low);
+            Double resisance2 = MathUtil.round(pp + (high - low));
+            TechnicalData technicalData = new TechnicalData(pp, resistance1, resisance2, support1, support2);
+            return technicalData;
+        }else
+                return new TechnicalData();
+
+
 
     }
 

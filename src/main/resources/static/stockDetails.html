@@ -296,8 +296,41 @@
                     <span class="label">Rel Deviation:</span>
                     <span class="data" id="spnReldeviation"><script> document.write(responseJson.relStdDeviation);</script></span>
                 </div>
+
+                <div class="col-md-6 col-sm-12 col-lg-4">
+                    <span class="label">Pivot Point:</span>
+                    <span class="data" id="spnpivotPoint"><script> document.write(responseJson.technicalData.pivotPoint);</script></span>
+                </div>
+
             </div>
             <br>
+            <div class="row">
+
+                <div class="col-md-6 col-sm-12 col-lg-4">
+                    <span class="label">Support1:</span>
+                    <span class="data" id="spnsupport1"><script> document.write(responseJson.technicalData.support1);</script></span>
+                </div>
+
+                <div class="col-md-6 col-sm-12 col-lg-4">
+                    <span class="label">Support2:</span>
+                    <span class="data" id="spnsupport2"><script> document.write(responseJson.technicalData.support2);</script></span>
+                </div>
+
+                <div class="col-md-6 col-sm-12 col-lg-4">
+                    <span class="label">Resistance1:</span>
+                    <span class="data" id="spnResistance1"><script> document.write(responseJson.technicalData.resistance1);</script></span>
+                </div>
+
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-6 col-sm-12 col-lg-4">
+                    <span class="label">Resistance2:</span>
+                    <span class="data" id="spnResitance2"><script> document.write(responseJson.technicalData.resistance2);</script></span>
+                </div>
+            </div>
+            <br>
+
             <span style="color:blue" id="idMessage2">Technical Analysis is based on last number of days preferred in user settings</span>
 
         </div>
