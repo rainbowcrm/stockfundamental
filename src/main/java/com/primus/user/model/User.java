@@ -17,6 +17,9 @@ public class User {
     Boolean friendsFamily;
     String password;
 
+    String screenName;
+    String investRange;
+    String investStrategy;
 
     @Column(name  ="EMAIL")
     @Id
@@ -80,5 +83,32 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Column(name  ="screen_name")
+    public String getScreenName() {
+        return screenName;
+    }
+
+    public void setScreenName(String screenName) {
+        this.screenName = screenName;
+    }
+
+    @Column(name  ="invest_amount")
+    public String getInvestRange() {
+        return investRange;
+    }
+
+    public void setInvestRange(String investRange) {
+        this.investRange = investRange;
+    }
+
+    @Column(name  ="strategy")
+    public String getInvestStrategy() {
+        return investStrategy;
+    }
+
+    public void setInvestStrategy(String investStrategy) {
+        this.investStrategy = investStrategy;
     }
 }

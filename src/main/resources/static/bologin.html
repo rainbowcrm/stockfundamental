@@ -130,9 +130,9 @@
     </div>
     <div id="newUserMode" class="modal fade">
         <div class="modal-dialog" style="height:450px;">
-            <div class="modal-content" id="divTermsCond" style="height:770px; width:750px; margin-top:5px; margin-left:-40px;background-color:cadetblue;">
+            <div class="modal-content" id="divTermsCond" style="height:770px; width:750px; margin-top:5px; margin-left:-40px;background-color:#f8f9fa;">
                 <form id="frmTermsCond">
-                    <div class="container-fluid">
+                    <div class="container-fluid" style="height:80%;overflow:scroll">
                         <h4> Terms and Conditions!</h4>
                         <div class="row">
                             <div class="col-md-12 col-sm-12 col-lg-12">
@@ -220,7 +220,7 @@
                     </div>
                 </form>
             </div>
-            <div class="modal-content" id="userFieldsDiv" style="height:450px; margin-top:75px;display:none">
+            <div class="modal-content" id="userFieldsDiv" style="height:550px; margin-top:75px;display:none">
                 <form id="frmgenericAdd">
                     <div class="container-fluid">
                         <span id ="errorText" style="color:red"></span>
@@ -233,7 +233,7 @@
                             <input type="tel" id ="txtPhone" class="form-control"  placeholder="Phone"/>
                         </div>
                     </div>
-                        <br><br>
+                        <br>
                     <div class="row">
                         <div class="col-md-6 col-sm-12 col-lg-6">
                             <input type="text" id ="txtFName" class="form-control"  placeholder="First Name"/>
@@ -242,7 +242,7 @@
                             <input type="text" id ="txtLName" class="form-control"  placeholder="Last Name"/>
                         </div>
                     </div>
-                        <br><br>
+                        <br>
                     <div class="row">
                         <div class="col-md-6 col-sm-12 col-lg-6">
                             <input type="password" id ="txtPass" class="form-control"  placeholder="Password"/>
@@ -252,7 +252,39 @@
                         </div>
 
                     </div>
-                        <br><br>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-12 col-lg-6">
+                                <input type="text" id ="txtScreenName" class="form-control"  placeholder="Choose a Screen name"/>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-lg-12">
+                                <span> How much do you invest per month ?</span> &nbsp;
+                                <select id="lstInvAm" name="lstInvAm"  class="form-control" style="max-width:90%;">
+                                    <option value="1">Less than 1 lakh</option>
+                                    <option value="2">Between 1- 2 lakhs</option>
+                                    <option value="5">Between 2- 5 lakhs</option>
+                                    <option value="10">Between 5- 10 lakhs</option>
+                                    <option value="100">More than 10 lakhs</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-lg-12">
+                                <span> What is your investment strategy ?</span> &nbsp;
+                                <select id="lstInvestStrat" name="lstInvestStrat"  class="form-control" style="max-width:90%;">
+                                    <option value="L">Long Term investment</option>
+                                    <option value="S">Swing Trading</option>
+                                    <option value="I">Intraday</option>
+                                    <option value="OP">options</option>
+                                    <option value="OT">others</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br>
                     <div class="row">
                         <div class="col-md-6 col-sm-12 col-lg-6">
                             <input type="button" class="btn-primary"  onclick="sendOTP();" value="Send OTP"> </input>

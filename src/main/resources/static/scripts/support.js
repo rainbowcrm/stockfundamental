@@ -257,13 +257,20 @@ function submitOTP()
   let lName = $("#txtLName").val();
   let pass = $("#txtPass").val();
   let otp = $("#txpOTP").val();
+  let screenname = $("#txtScreenName").val();
+  let lstInvAm = $("#lstInvAm").val();
+   let strategy = $("#lstInvestStrat").val();
   var data = {
           "emailId" : email,
           "firstName" : fName,
           "lastName": lName,
           "password":pass,
           "phoneNumber": phone,
-          "otp":otp
+          "otp":otp,
+          "screenName":screenname,
+          "investRange" : lstInvAm,
+          "investStrategy":strategy
+
       };
       let request = new XMLHttpRequest () ;
       console.log(url+'user/setOTP');
@@ -307,6 +314,8 @@ function sendOTP()
   let lName = $("#txtLName").val();
   let pass = $("#txtPass").val();
   let confirmPass = $("#txtConfPass").val();
+   let screenname = $("#txtScreenName").val();
+
   if (phone.trim() =='' || email.trim() == '' || fName.trim() == '' || lName.trim() =='' || pass.trim() == '' || confirmPass.trim() == '' )
   {
   console.log('error') ;
@@ -320,7 +329,7 @@ function sendOTP()
   $("#errorText").html('');
 
   let request = new XMLHttpRequest () ;
-  request.open("GET",url+'user/saveOTP?phoneNumber=' + phone +"&email="+ email,false);
+  request.open("GET",url+'user/saveOTP?phoneNumber=' + phone +"&email="+ email +"&screenName=" + screenname,false);
   try {
        request.send(false) ;
        var snresponse = JSON.parse(request.responseText);

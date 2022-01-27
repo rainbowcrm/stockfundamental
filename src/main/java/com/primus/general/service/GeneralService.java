@@ -9,6 +9,7 @@ import com.primus.stocktransaction.service.StockTransactionService;
 import org.apache.log4j.LogManager;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,9 +30,16 @@ public class GeneralService {
     @Autowired
     DashboardService dashboardService ;
 
+    @Autowired
+    CacheManager cacheManager;
+
     public void updateDashBoards()
     {
-        DashboardThread dashboardThread = new DashboardThread(dashboardService,30);
+        cacheManager.getCache("SwingTradeCache").clear();
+        cacheManager.getCache("OVCache").clear();
+        cacheManager.getCache("UVCache").clear();
+
+         DashboardThread dashboardThread = new DashboardThread(dashboardService,30);
         dashboardThread.start();
 
         DashboardThread dashboardThread1 = new DashboardThread(dashboardService,60);

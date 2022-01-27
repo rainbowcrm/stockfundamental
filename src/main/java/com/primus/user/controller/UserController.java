@@ -79,7 +79,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/saveOTP", method = RequestMethod.GET)
-    public ResponseEntity<Map> saveOTP(@RequestParam String phoneNumber,@RequestParam String email)
+    public ResponseEntity<Map> saveOTP(@RequestParam String phoneNumber,@RequestParam String email,@RequestParam String screenName)
     {
         Map<String,Object> map = new HashMap<>() ;
         if (userService.isPhonePresent(phoneNumber))
