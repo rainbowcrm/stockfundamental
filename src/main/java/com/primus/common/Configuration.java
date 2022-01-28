@@ -19,6 +19,10 @@ public class Configuration {
     @Value("${spring.reports.folder}")
     String reportFolder;
 
+    @Value("${textlocal.api.key}")
+    String smsAPIKey;
+
+
 
     public String getEmailHost() {
         return emailHost;
@@ -50,5 +54,14 @@ public class Configuration {
 
     public void setReportFolder(String reportFolder) {
         this.reportFolder = reportFolder;
+    }
+
+    public String getSmsAPIKey() {
+
+        return smsAPIKey;
+    }
+
+    public void setSmsAPIKey(String smsAPIKey) {
+        this.smsAPIKey = smsAPIKey;
     }
 }

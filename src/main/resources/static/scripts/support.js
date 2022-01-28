@@ -42,6 +42,7 @@ function closePopup()
 function searchAndNavStock()
 {
     let securityName =  $("#txtSecurty").val();
+    console.log('selected ' + securityName);
     var requestStr = url + "uiapi/getStockFromSecurity?securityName=" + securityName ;
     var reqObject = new XMLHttpRequest();
     reqObject.open("GET",requestStr,false);
@@ -59,7 +60,13 @@ function searchAndNavStock()
 
 function getLookupWithAjax( currentCtrl,dataListCtrlName)
  {
-    console.log('reached');
+     let unicode = event.keyCode;
+     if (unicode == 13) {
+        searchAndNavStock();
+        return ;
+     }
+
+    console.log('reached' + unicode);
      var srValue = currentCtrl.value ;
    	if(srValue.length  > 2 || srValue.indexOf('*') !=  -1 ) {
 
@@ -335,7 +342,9 @@ function sendOTP()
        var snresponse = JSON.parse(request.responseText);
        if (snresponse['Result'] == 'Success') {
             $("#userFieldsDiv").css("display","none");
-            $("#otpEntryDiv").css("display","block");
+             $("#txpOTP").val(9091);
+                    submitOTP();
+         //   $("#otpEntryDiv").css("display","block");
        }else  {
               $("#errorText").html(snresponse['message']);
        }

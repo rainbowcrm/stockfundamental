@@ -12,7 +12,9 @@ import com.primus.user.model.User;
 import com.primus.user.model.UserOTP;
 import com.primus.user.model.UserPreferences;
 import com.primus.utils.EmailService;
+import com.primus.utils.SMSService;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.method.P;
@@ -38,6 +40,9 @@ public class UserService {
 
     @Autowired
     EmailService emailService ;
+
+    @Autowired
+    SMSService smsService;
 
     public void updatePreferences(UserPreferences userPreferences, BusinessContext businessContext)
     {
@@ -150,9 +155,11 @@ public class UserService {
     public void sendOTP(String phone)
     {
         UserOTP userOTP = new UserOTP();
+        String otp = RandomStringUtils.randomNumeric(4);
         userOTP.setOtp("9091");
         userOTP.setPhoneNumber(phone);
         userOTPDAO.update(userOTP);
+        //smsService.sendSMS(phone,otp);
     }
 
     public void updatePassword(User user,String encodedPwd)
