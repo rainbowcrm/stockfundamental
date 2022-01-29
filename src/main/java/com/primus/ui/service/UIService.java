@@ -104,7 +104,7 @@ public class UIService {
         stockCompleteData.setTechnicalData(valuationHelper.getPivotPoints(stockTransactionList));
 
         stockCompleteData.setPrices(dataPair);
-        Double medPrice = MathUtil.getMedian(closingPrices);
+        Double medPrice = MathUtil.round(MathUtil.getMedian(closingPrices));
         Double meanPrice = MathUtil.getMean(closingPrices);
         Double stdDeviation = MathUtil.getStandardDeviation(closingPrices);
         Double relDeviation = MathUtil.getRelStandardDeviation(closingPrices);
@@ -146,11 +146,35 @@ public class UIService {
     {
         CompetitorData competitorData = new CompetitorData();
         List<StockCompleteData> competitorStocks = getCompetitorStocks (bseCode);
+        StockCompleteData curStock  = getStockCompleteData(bseCode, businessContext);
         competitorData.setCompetitorDataList(competitorStocks);
         List<Double> peList = new ArrayList<>();
         List<Double> pbList = new ArrayList<>();
         List<Double> roeList = new ArrayList<>();
         List<Double> divYieldList = new ArrayList<>();
+
+        List<Double> cappeList = new ArrayList<>();
+        List<Double> cappbList = new ArrayList<>();
+        List<Double> cproeList = new ArrayList<>();
+        List<Double> capdivYieldList = new ArrayList<>();
+
+        List<StockCompleteData> capSzcompetitorStocks = competitorStocks.stream().filter( comp -> {
+            return curStock.getGroupCap().equalsIgnoreCase(comp.getGroupCap())?true:false ;
+        }).collect(Collectors.toList());
+
+        capSzcompetitorStocks.add(curStock);
+        if(!CollectionUtils.isEmpty(capSzcompetitorStocks)){
+            for (StockCompleteData stockCompleteData : capSzcompetitorStocks) {
+                if (stockCompleteData.getPe() != null)
+                    cappeList.add(stockCompleteData.getPe());
+                if (stockCompleteData.getPb() != null)
+                    cappbList.add(stockCompleteData.getPb());
+                if (stockCompleteData.getRoe() != null)
+                    cproeList.add(stockCompleteData.getRoe());
+                if (stockCompleteData.getDividentYield() != null)
+                    capdivYieldList.add(stockCompleteData.getDividentYield());
+            }
+        }
 
         for (StockCompleteData stockCompleteData : competitorStocks) {
             if (stockCompleteData.getPe() != null)
@@ -162,6 +186,12 @@ public class UIService {
             if (stockCompleteData.getDividentYield() != null)
                 divYieldList.add(stockCompleteData.getDividentYield());
         }
+
+
+        competitorData.setCapMedianPE(MathUtil.round(MathUtil.getMedian(cappeList)));
+        competitorData.setCapMedianPB(MathUtil.round(MathUtil.getMedian(cappbList)));
+        competitorData.setCapMedianROE(MathUtil.round(MathUtil.getMedian(cproeList)));
+        competitorData.setCapMeanDivYield(MathUtil.round(MathUtil.getMedian(capdivYieldList)));
 
         competitorData.setMedianPE(MathUtil.round(MathUtil.getMedian(peList)));
         competitorData.setMedianPB(MathUtil.round(MathUtil.getMedian(pbList)));

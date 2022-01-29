@@ -10,6 +10,13 @@ public class CompetitorData {
     Double medianROE;
     Double meanDivYield;
 
+    Double capMedianPE;
+    Double capMedianPB;
+    Double capMedianROE;
+    Double capMeanDivYield;
+
+
+
     List<StockCompleteData> competitorDataList ;
 
     public Double getMedianPE() {
@@ -50,5 +57,37 @@ public class CompetitorData {
 
     public void setCompetitorDataList(List<StockCompleteData> competitorDataList) {
         this.competitorDataList = competitorDataList;
+    }
+
+    public Double getCapMedianPE() {
+        return capMedianPE;
+    }
+
+    public void setCapMedianPE(Double capMedianPE) {
+        this.capMedianPE = capMedianPE;
+    }
+
+    public Double getCapMedianPB() {
+        return capMedianPB;
+    }
+
+    public void setCapMedianPB(Double capMedianPB) {
+        this.capMedianPB = capMedianPB;
+    }
+
+    public Double getCapMedianROE() {
+        return capMedianROE;
+    }
+
+    public void setCapMedianROE(Double capMedianROE) {
+        this.capMedianROE = capMedianROE;
+    }
+
+    public Double getCapMeanDivYield() {
+        return capMeanDivYield;
+    }
+
+    public void setCapMeanDivYield(Double capMeanDivYield) {
+        this.capMeanDivYield = capMeanDivYield;
     }
 }

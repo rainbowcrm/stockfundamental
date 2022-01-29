@@ -241,7 +241,7 @@
             <a class="nav-link" id="pills-comments-tab" data-toggle="pill" href="#pills-comments" role="tab" aria-controls="pills-comments" aria-selected="false">User Comments</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="pills-news-tab" data-toggle="pill" href="#pills-news" role="tab" aria-controls="pills-news" aria-selected="false">User Comments</a>
+            <a class="nav-link" id="pills-news-tab" data-toggle="pill" href="#pills-news" role="tab" aria-controls="pills-news" aria-selected="false">News Feed</a>
         </li>
 
     </ul>
@@ -345,23 +345,45 @@
 
             <div class="row">
                 <div class="col-md-4 col-sm-12 col-lg-3">
-                    <span class="label">Median PE:</span>
+                    <span class="label">All Cap Size Median PE:</span>
                     <span class="data" id="spnMedianPE" ><script> document.write(respCompJson.medianPE);</script></span>
                 </div>
 
                 <div class="col-md-4 col-sm-12 col-lg-3">
-                    <span class="label">Median PB:</span>
+                    <span class="label">All Cap Size Median PB:</span>
                     <span class="data" id="spnMedianPB" ><script> document.write(respCompJson.medianPB);</script></span>
                 </div>
 
                 <div class="col-md-4 col-sm-12 col-lg-3">
-                    <span class="label">Median ROE:</span>
+                    <span class="label">All Cap Size Median ROE:</span>
                     <span class="data" id="spnMedianROE"><script> document.write(respCompJson.medianROE);</script></span>
                 </div>
 
                 <div class="col-md-4 col-sm-12 col-lg-3">
-                    <span class="label">Median DivYield:</span>
+                    <span class="label">All Cap Size Median DivYield:</span>
                     <span class="data" id="spnMediaDivYiels"><script> document.write(respCompJson.meanDivYield);</script></span>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-4 col-sm-12 col-lg-3">
+                    <span class="label">Same Cap Size Median PE:</span>
+                    <span class="data" id="spnCMedianPE" ><script> document.write(respCompJson.capMedianPE);</script></span>
+                </div>
+
+                <div class="col-md-4 col-sm-12 col-lg-3">
+                    <span class="label">Same Cap Size Median PB:</span>
+                    <span class="data" id="spnCMedianPB" ><script> document.write(respCompJson.capMedianPB);</script></span>
+                </div>
+
+                <div class="col-md-4 col-sm-12 col-lg-3">
+                    <span class="label">Same Cap Size Median ROE:</span>
+                    <span class="data" id="spnCMedianROE"><script> document.write(respCompJson.capMedianROE);</script></span>
+                </div>
+
+                <div class="col-md-4 col-sm-12 col-lg-3">
+                    <span class="label">Same Cap Size Median DivYield:</span>
+                    <span class="data" id="spnCMediaDivYiels"><script> document.write(respCompJson.capMeanDivYield);</script></span>
                 </div>
             </div>
             <br>

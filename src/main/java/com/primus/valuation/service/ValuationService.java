@@ -186,7 +186,7 @@ public class ValuationService {
                         :((Math.abs(pbDecr)<Math.abs(roeIncr))?Math.abs(pbDecr):Math.abs(roeIncr));
 
                 Double intrinsicValue = stockCompleteData.getCurrentPrice() + MathUtil.round( ((closestFactor * stockCompleteData.getCurrentPrice())/100) );
-                stockCompleteData.setFairPrice(intrinsicValue);
+                stockCompleteData.setFairPrice(MathUtil.round(intrinsicValue));
                 underValuedShares.add(stockCompleteData);
             }
         }
