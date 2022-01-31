@@ -33,7 +33,7 @@ public class SecurityAdapter extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
           http.authorizeRequests().antMatchers("/scripts/support.js").permitAll().antMatchers("/assets/wp1.jpg").permitAll()
                   .antMatchers("/assets/logo.PNG").permitAll().antMatchers(("/stockapi/user/setOTP")).permitAll().antMatchers(("/stockapi/user/saveOTP"))
-                  .permitAll().antMatchers(("/stockapi/user/sendPassword")).permitAll()
+                  .permitAll().antMatchers("/index.html").permitAll().antMatchers(("/stockapi/user/sendPassword")).permitAll()
                   .anyRequest().authenticated().and().formLogin().and().httpBasic().authenticationEntryPoint(new NoPopupBasicAuthenticationEntryPoint()).and().headers().
                   frameOptions().sameOrigin().and().csrf()
                  .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and().formLogin().loginPage("/bologin.html").failureUrl("/bologin.html?error=true")

@@ -33,19 +33,79 @@ ______________________________________________________
 9.login error ***
 _____________________________________________________
 
-mysql passowrd on AWS - Delhi999
+mysql passowrd on AWS - root@localhost:Delhi999
+Grant all privileges on stocks.* to 'stockuser'@'localhost'
+create user 'stockuser'@'localhost' identified by 'delhi'
+SET GLOBAL time_zone = '+5:30';
+
+Digital Ocean
+admin@stocksparrow.com
+Compaq1-2
+
+Droplet password
+Delhi2255Wolf
+
+ubuntu-gd-2vcpu-8gb-blr1-01
+
+Ubuntu Restore from backup from mysql prompt :  source /home/db/30janback.sql;
+Ubuntu take back up from command prompt:  mysqldump -u root -p stocks > /home/db/testback.sql
+
+
+ nohup java --add-opens java.base/java.lang=ALL-UNNAMED -Xmx2048m -jar webscrap-1.0-SNAPSHOT.jar
+  ps -ef
+
+  kill -9 processId
+
+ windows vm pwd :5p?CSJOTPJ;kodqJ8Hi5Y-OQX3SVdj?Z
 ++++++++++++++++++++++++++++++++++++++++++++
 
 1. SUCCESFULL DEPLOYMENT
 2. DAILY DATA TRACKER **
 3. lOG WRITER **
 4. dASHBOARD UPDATE  **
-5. rEPORT BY INCR
+5. rEPORT BY INCR ***
 6. MSG 91
-7. Share by Volume
+7. Share by Volume ----
+8. market cap update in fundamentals **
+
+________________________________________________________
+
+Issues
+1. Remove Volume from Report **
+2. Remove unwanted download link  **
 
 
 
+Enhancement
+1. Swing Trade recs **
+2. Portfolio & Alerts
+3. User comments/Predict on Stock
+4. Additional user attributes ( display name : investment strategy : investment amount )
+5. Feebdack
+6. Add proper download links *
+7. days on dashboards *
 
 
+Must Fix
+1. Deploy succesfully *
+2. MSG 91
+3. check for email sending
+4. succesfull acessing
+5. error on reporting * *
+6. Detail Page **
+7. Proper Divident for financial services
+______________________________________________________________
+
+Task in Priority
+
+1. Competitor list pagination  * *
+2. Increase User Profile fields **
+3. Deploy again
+4. Check email access **
+5. buy and integ msg91
+6. email api correctiong
+
+______________________________________________________________________________
+
+email password : compaq1-2
 

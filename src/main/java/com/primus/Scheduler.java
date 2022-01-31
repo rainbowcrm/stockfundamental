@@ -24,7 +24,7 @@ public class Scheduler {
 
     Boolean run = false ;
 
-    @Scheduled(cron = "0 15 15 ? * MON-FRI")
+    @Scheduled(cron = "0 05 15 ? * MON-FRI")
     void someExecution()
     {
         if (!run) {
