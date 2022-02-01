@@ -45,8 +45,9 @@ public class DetailReportService extends ReportService{
             if (toDate.after(new Date())) {
                 throw new PrimusError(CommonErrorCodes.TO_DATE_WRONG, "Start Date cannot be after current day");
             }
+            Date endDate =  new Date( toDate.getTime() + ( 24l * 3600l *1000l));
 
-            List<StockTransaction> stockTransactionList = stockTransactionDAO.getDataForStock(fromDate,toDate,stock);
+            List<StockTransaction> stockTransactionList = stockTransactionDAO.getDataForStock(fromDate,endDate,stock);
             for (StockTransaction stockTransaction : stockTransactionList) {
                 TransLine transLine = new TransLine(stockTransaction.getTransDate(),stockTransaction.getOpenPrice(),stockTransaction.getClosePrice(),
                         stockTransaction.getLowPrice(),stockTransaction.getHighPrice(),stockTransaction.getVolume());

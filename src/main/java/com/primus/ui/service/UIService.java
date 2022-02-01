@@ -88,14 +88,22 @@ public class UIService {
         StocksMaster stocksMaster = stockMasterService.getStocksData(bseCode);
         FullStockProfile stockCompleteData = new FullStockProfile(fundamentalData,financialData,stocksMaster);
         long days = businessContext.getUserPreferences().getTechDays();
-        Date toDate = new java.util.Date();
-        Date fromDate = new Date(toDate.getTime() - days * 24l  * 3600l * 1000l ) ;
+        Date toDate = new java.util.Date( new java.util.Date().getTime() +  ( 24l  * 3600l * 1000l) ) ;
+        Date fromDate = new Date(toDate.getTime() - ( days * 24l  * 3600l * 1000l) ) ;
         List<StockTransaction> stockTransactionList = stockTransactionDAO.getDataForStock(fromDate,toDate,stocksMaster.getSecurityName());
         List<DailyPrice> dataPair = new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yy");
         List<Double> closingPrices = new ArrayList<>();
+        Double high = Double.MIN_VALUE;
+        Double low = Double.MAX_VALUE;
         for (StockTransaction stockTransaction :stockTransactionList) {
             String str = sdf.format(stockTransaction.getTransDate());
+            if (stockTransaction.getHighPrice() > high) {
+                high = stockTransaction.getHighPrice();
+            }
+            if (stockTransaction.getLowPrice() < low) {
+                low = stockTransaction.getLowPrice();
+            }
             dataPair.add(new DailyPrice(str,stockTransaction.getOpenPrice(),stockTransaction.getLowPrice(),stockTransaction.getClosePrice(),
                     stockTransaction.getHighPrice()));
             closingPrices.add(stockTransaction.getClosePrice());
@@ -112,21 +120,20 @@ public class UIService {
         stockCompleteData.setMeanPrice(meanPrice);
         stockCompleteData.setStdDeviation(stdDeviation);
         stockCompleteData.setRelStdDeviation(relDeviation);
-        DataPair<Double,Double> minMax =  MathUtil.getMinMax(closingPrices);
-        stockCompleteData.setMinPrice(minMax.getValue1());
-        stockCompleteData.setMaxPrice(minMax.getValue2());
+        stockCompleteData.setMinPrice(low);
+        stockCompleteData.setMaxPrice(high);
         Double rootSize = Math.sqrt(closingPrices.size());
         stockCompleteData.setVolatality(MathUtil.round(rootSize * stdDeviation));
-        stockCompleteData.setPercVariation(MathUtil.round(((minMax.getValue2() - minMax.getValue1()) / minMax.getValue1()) * 100));
+        stockCompleteData.setPercVariation(MathUtil.round(((high-low) / low) * 100));
         return stockCompleteData;
 
     }
 
-    @Cacheable( key="#p0", value = "fullStocksCache")
-    public List<StockCompleteData> getFullStocks(String nkey)
+    @Cacheable( value = "fsCache")
+    public List<StockCompleteData> getFullStocks()
     {
-        LogWriter.debug("Reading the fullStock with " + nkey);
-        List<FundamentalData> fundamentalDataList = fundamentalService.getAllFundamentals(null);
+        LogWriter.debug("Reading the fullStock with " );
+        List<FundamentalData> fundamentalDataList = fundamentalService.getAllFundamentals("");
         List<FinancialData> financialDataList = financialService.getAllFinancials() ;
         List<StocksMaster> stocksMasterList = stockMasterService.getAllStocks();
         List<StockCompleteData> returnList = new ArrayList<>();

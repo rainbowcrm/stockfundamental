@@ -32,7 +32,7 @@ public class QueryService {
 
     public List<StockCompleteData> applyFilter(List<QueryLine> queryLines)
     {
-        List<StockCompleteData> fullStockData = uiService.getFullStocks("nkey");
+        List<StockCompleteData> fullStockData = uiService.getFullStocks();
         List<StockCompleteData> backUpStockData = new ArrayList<>(fullStockData);
         for (QueryLine queryLine : queryLines) {
             if(queryLine.getProperty().equals(QueryLine.PropertySet.INDS)){

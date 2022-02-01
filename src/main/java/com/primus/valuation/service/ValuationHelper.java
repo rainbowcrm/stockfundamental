@@ -93,16 +93,9 @@ public class ValuationHelper {
     public TechnicalData getPivotPoints(List<StockTransaction> stockTransactionList)
     {
         if( stockTransactionList.size() > 0 ) {
-            Double high = Double.MIN_VALUE;
-            Double low = Double.MAX_VALUE;
-            for (StockTransaction stockTransaction : stockTransactionList) {
-                if (stockTransaction.getHighPrice() > high) {
-                    high = stockTransaction.getHighPrice();
-                }
-                if (stockTransaction.getLowPrice() < low) {
-                    low = stockTransaction.getLowPrice();
-                }
-            }
+
+            Double high = stockTransactionList.get(stockTransactionList.size() - 1).getHighPrice();
+            Double low = stockTransactionList.get(stockTransactionList.size() - 1).getLowPrice();
             Double close = stockTransactionList.get(stockTransactionList.size() - 1).getClosePrice();
             Double pp = MathUtil.round((high + low + close) / 3);
             Double support1 = MathUtil.round((pp * 2) - high);
