@@ -200,7 +200,7 @@ public class StockCompleteData {
             this.expenditure = financialData.getExpenditure();
             this.profit = financialData.getNetProfit();
             this.equity = financialData.getEquit();
-            this.divident = financialData.getDivident();
+            this.divident = financialData.getDivident()==null?0:financialData.getDivident();
             this.dividentYield = MathUtil.round((divident/currentPrice) * 100);
 
 

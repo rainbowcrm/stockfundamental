@@ -35,7 +35,7 @@ public class ValuationHelper {
 
     public List<StockValuationData> getStockCompleteDataList(List<StocksMaster> stocksMasterList,Boolean includeTechnicals)
     {
-        List<FundamentalData> fundamentalDataList = fundamentalService.listData(0,900,"","");
+        List<FundamentalData> fundamentalDataList = fundamentalService.listData(0,3000,"","");
         List<FinancialData> financialDataList = financialService.getAllFinancials() ;
 
         List<StockValuationData> stockCompleteDataList = new ArrayList<>();

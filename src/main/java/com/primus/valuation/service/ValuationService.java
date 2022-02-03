@@ -174,7 +174,7 @@ public class ValuationService {
         {
             if(intrinsicData.getPe()> MathUtil.getDoubleValue(stockCompleteData.getPe())
                     && intrinsicData.getPb() > MathUtil.getDoubleValue(stockCompleteData.getPb())
-              && intrinsicData.getRoe() < stockCompleteData.getRoe() && intrinsicData.getDivident() < stockCompleteData.getDivident()
+              && intrinsicData.getRoe() < stockCompleteData.getRoe() &&  (stockCompleteData.getDivident() != null && intrinsicData.getDivident() < stockCompleteData.getDivident())
             && MathUtil.getDoubleValue(stockCompleteData.getPe()) >0 && MathUtil.getDoubleValue(intrinsicData.getPb()) > 0)
             {
                 Double peDecr =  MathUtil.perChange(stockCompleteData.getPe(),intrinsicData.getPe());
@@ -207,7 +207,7 @@ public class ValuationService {
         {
             if(intrinsicData.getPe()< MathUtil.getDoubleValue(stockCompleteData.getPe())
                     && intrinsicData.getPb() < MathUtil.getDoubleValue(stockCompleteData.getPb())
-                    && intrinsicData.getRoe() > stockCompleteData.getRoe() && intrinsicData.getDivident() > stockCompleteData.getDivident()
+                    && intrinsicData.getRoe() > stockCompleteData.getRoe() && (stockCompleteData.getDivident() == null || intrinsicData.getDivident() > stockCompleteData.getDivident())
                     && MathUtil.getDoubleValue(stockCompleteData.getPe()) >0 && MathUtil.getDoubleValue(intrinsicData.getPb()) > 0)
             {
                 Double peDecr =  MathUtil.perChange(stockCompleteData.getPe(),intrinsicData.getPe());
