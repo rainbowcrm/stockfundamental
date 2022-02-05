@@ -76,6 +76,17 @@
 </style>
 
 <body >
+<script>
+    topmeenu= window.parent.document.getElementById("titlenav");
+    if( topmeenu != 'undefined' && topmeenu != null)  {
+        console.log('topmenu identified');
+         let completeURL = window.parent.location.href;
+         let index = completeURL.indexOf("/bol");
+         window.parent.location.replace('./bologin.html');
+    }else
+       console.log('top menu' +  topmeenu);
+
+</script>
 <div class="bg">
 <div class="container" >
     <div class="wrapper"   width= "60%">

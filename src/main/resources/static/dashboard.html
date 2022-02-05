@@ -166,30 +166,30 @@
 
         document.write('<div class= "row">');
         document.write('<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">');
-        document.write('<h4> Group A : '  + groupCData['groupAGainer'] + '/' + groupCData['groupANo'] +'</h4>' );
+        document.write('<h4 style="font-size:15px"> Group A : '  + groupCData['groupAGainer'] + '/' + groupCData['groupANo'] +'</h4>' );
         document.write('</div>');
         document.write('<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">');
-        document.write('<h4>' + Math.abs(groupCData.groupAGainPerc) + '% '+  '<span class="slight"><i class="fa fa-play ' + rotateIcon +'"> </i> </span> </h4>');
+        document.write('<h4 style="font-size:15px">' + Math.abs(groupCData.groupAGainPerc) + '% '+  '<span class="slight"><i class="fa fa-play ' + rotateIcon +'"> </i> </span> </h4>');
         document.write('</div>');
         document.write('</div>');
 
         rotateIcon = groupCData.groupBGainPerc>0?'fa-rotate-270':'fa-rotate-90';
         document.write('<div class= "row">');
         document.write('<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">');
-        document.write('<h4> Group B : '  + groupCData['groupBGainer'] + '/' + groupCData['groupBNo'] +'</h4>' );
+        document.write('<h4 style="font-size:15px"> Group B : '  + groupCData['groupBGainer'] + '/' + groupCData['groupBNo'] +'</h4>' );
         document.write('</div>');
         document.write('<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">');
-        document.write('<h4>' + Math.abs(groupCData.groupBGainPerc) + '% '+  '<span class="slight"><i class="fa fa-play ' + rotateIcon + '"> </i></span> </h4>');
+        document.write('<h4 style="font-size:15px">' + Math.abs(groupCData.groupBGainPerc) + '% '+  '<span class="slight"><i class="fa fa-play ' + rotateIcon + '"> </i></span> </h4>');
         document.write('</div>');
         document.write('</div>');
 
         rotateIcon = groupCData.groupXGainPerc>0?'fa-rotate-270':'fa-rotate-90';
         document.write('<div class= "row">');
         document.write('<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">');
-        document.write('<h4> Group X : '  + groupCData['groupXGainer'] + '/' + groupCData['groupXNo'] +'</h4>'  );
+        document.write('<h4 style="font-size:15px"> Group X : '  + groupCData['groupXGainer'] + '/' + groupCData['groupXNo'] +'</h4>'  );
         document.write('</div>');
         document.write('<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">');
-        document.write('<h4>' + Math.abs(groupCData.groupXGainPerc) + '% '+  '<span class="slight"><i class="fa fa-play ' +rotateIcon+ '"> </i> </span></h4>');
+        document.write('<h4 style="font-size:15px" >' + Math.abs(groupCData.groupXGainPerc) + '% '+  '<span class="slight"><i class="fa fa-play ' +rotateIcon+ '"> </i> </span></h4>');
         document.write('</div>');
         document.write('</div>');
 
@@ -197,10 +197,10 @@
         rotateIcon = groupCData.totalGainPerc>0?'fa-rotate-270':'fa-rotate-90';
         document.write('<div class= "row">');
         document.write('<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">');
-        document.write('<h4> Overall : '  + groupCData['gainers'] + '/' + groupCData['noOfSecurities'] +'</h4>'  );
+        document.write('<h4 style="font-size:15px" > Overall : '  + groupCData['gainers'] + '/' + groupCData['noOfSecurities'] +'</h4>'  );
         document.write('</div>');
         document.write('<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">');
-        document.write('<h4>' + Math.abs(groupCData.totalGainPerc) + '% ' +  '<span class="slight"><i class="fa fa-play ' +rotateIcon+ '"> </i> </span></h4>');
+        document.write('<h4 style="font-size:15px">' + Math.abs(groupCData.totalGainPerc) + '% ' +  '<span class="slight"><i class="fa fa-play ' +rotateIcon+ '"> </i> </span></h4>');
         document.write('</div>');
         document.write('</div>');
 
@@ -227,30 +227,30 @@
         rotateIcon = capSizeData.capLGainPerc>0?'fa-rotate-270':'fa-rotate-90';
         document.write('<div class= "row">');
         document.write('<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">');
-        document.write('<h4> Lg Cap : '  + capSizeData['capLGainer'] + '/' + capSizeData['capLNo'] +'</h4>' );
+        document.write('<h4 style="font-size:15px" > Lg Cap : '  + capSizeData['capLGainer'] + '/' + capSizeData['capLNo'] +'</h4>' );
         document.write('</div>');
         document.write('<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">');
-        document.write('<h4>' + Math.abs(capSizeData.capLGainPerc)+ '% '+  '<span class="slight"><i class="fa fa-play ' + rotateIcon + '"> </i> </span> </h4>');
+        document.write('<h4 style="font-size:15px">' + Math.abs(capSizeData.capLGainPerc)+ '% '+  '<span class="slight"><i class="fa fa-play ' + rotateIcon + '"> </i> </span> </h4>');
         document.write('</div>');
         document.write('</div>');
 
         rotateIcon = capSizeData.capMGainPerc>0?'fa-rotate-270':'fa-rotate-90';
         document.write('<div class= "row">');
         document.write('<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">');
-        document.write('<h4> Md Cap : '  + capSizeData['capMGainer'] + '/' + capSizeData['capMNo'] +'</h4>' );
+        document.write('<h4 style="font-size:15px" > Md Cap : '  + capSizeData['capMGainer'] + '/' + capSizeData['capMNo'] +'</h4>' );
         document.write('</div>');
         document.write('<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">');
-        document.write('<h4>' + Math.abs(capSizeData.capMGainPerc) + '% '+  '<span class="slight"><i class="fa fa-play ' + rotateIcon + '"> </i></span> </h4>');
+        document.write('<h4 style="font-size:15px" >' + Math.abs(capSizeData.capMGainPerc) + '% '+  '<span class="slight"><i class="fa fa-play ' + rotateIcon + '"> </i></span> </h4>');
         document.write('</div>');
         document.write('</div>');
 
         rotateIcon = capSizeData.capSGainPerc>0?'fa-rotate-270':'fa-rotate-90';
         document.write('<div class= "row">');
         document.write('<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">');
-        document.write('<h4> Sm Cap : '  + capSizeData['capSGainer'] + '/' + capSizeData['capSNo'] +'</h4>'  );
+        document.write('<h4 style="font-size:15px" > Sm Cap : '  + capSizeData['capSGainer'] + '/' + capSizeData['capSNo'] +'</h4>'  );
         document.write('</div>');
         document.write('<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">');
-        document.write('<h4>' + Math.abs(capSizeData.capSGainPerc) + '% '+  '<span class="slight"><i class="fa fa-play ' + rotateIcon + '"> </i> </span></h4>');
+        document.write('<h4 style="font-size:15px" >' + Math.abs(capSizeData.capSGainPerc) + '% '+  '<span class="slight"><i class="fa fa-play ' + rotateIcon + '"> </i> </span></h4>');
         document.write('</div>');
         document.write('</div>');
 
@@ -258,10 +258,10 @@
         rotateIcon = capSizeData.totalGainPerc>0?'fa-rotate-270':'fa-rotate-90';
         document.write('<div class= "row">');
         document.write('<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">');
-        document.write('<h4> Overall : '  + capSizeData['gainers'] + '/' + capSizeData['noOfSecurities'] +'</h4>'  );
+        document.write('<h4 style="font-size:15px" > Overall : '  + capSizeData['gainers'] + '/' + capSizeData['noOfSecurities'] +'</h4>'  );
         document.write('</div>');
         document.write('<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">');
-        document.write('<h4>' + Math.abs(capSizeData.totalGainPerc) + '% ' +  '<span class="slight"><i class="fa fa-play ' + rotateIcon + '"> </i> </span></h4>');
+        document.write('<h4 style="font-size:15px" >' + Math.abs(capSizeData.totalGainPerc) + '% ' +  '<span class="slight"><i class="fa fa-play ' + rotateIcon + '"> </i> </span></h4>');
         document.write('</div>');
         document.write('</div>');
 
@@ -401,7 +401,7 @@
             </div>
                 <div class="row">
                     <!-- Barchart -->
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-11">
                         <!-- <div class="panel panel-bd lobidisable" style="height:250px">
                              <div class="panel-heading">
                                  <div class="panel-title">
@@ -481,7 +481,7 @@
                          <div class="panel panel-bd lobidisable">
                              <div class="panel-heading">
                                  <div class="panel-title">
-                                     <h4>Hot Stocks!!</h4>
+                                     <h4>Hot Stocks[Penny Stocks Incl]</h4>
                                  </div>
                              </div>
                              <div class="panel-body">
