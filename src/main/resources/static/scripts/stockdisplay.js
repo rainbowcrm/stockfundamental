@@ -153,7 +153,43 @@ function getCompetitorData()
       return snapsotresponse;
 
 }
+function getUserComments()
+{
+  var params = new window.URLSearchParams(window.location.search);
+      var xyz = params.get('bseCode');
+      console.log('bseCode=' + xyz)
+      let fullURL = url+'/usercomments/getUserComments?bseCode=' + xyz  ;
+      let request = formRequest("GET",fullURL);
+        setToken(request);
+        request.send() ;
+        var snapsotresponse  =   JSON.parse(request.responseText)  ;
+        console.log("Responss   e =" + request.responseText );
+        return snapsotresponse;
+}
 
+function postComment()
+{
+      var params = new window.URLSearchParams(window.location.search);
+      var xyz = params.get('bseCode');
+      console.log('bseCode=' + xyz)
+     let postContent = { };
+     let comment = $("#txtUserComment").val();
+     postContent['comments'] = comment;
+     postContent['bseCode'] = xyz;
+     let request = formRequest("POST",url+'usercomments/saveUserComments');
+     setToken(request);
+     request.send(JSON.stringify(postContent),true) ;
+     var snapsotresponse  =   JSON.parse(request.responseText)  ;
+
+     let content = $("#rwComments").html();
+     curContent = '<b>'  + snapsotresponse['screenName'] + ':</b>' ;
+     curContent  =  curContent + snapsotresponse['comments'];
+     $("#rwComments").html(curContent + '<br>' + content);
+     return false;
+
+
+
+}
 function goToStockList()
 {
     $("#frmCont").attr('src','./stocks.html');

@@ -202,12 +202,20 @@ public class DashboardService {
         return  reverseSortedMap;
     }
 
+    private Boolean isFundamentallyStrong(String bseCode)
+    {
+        StocksMaster stocksMaster = stockMasterService.getStocksData(bseCode);
+        FundamentalData fundamentalData = fundamentalService.getFundamentalData(bseCode);
+        return false;
+
+    }
     private void setHotStocks(List<StockTransaction> stockTransactionList,List<StocksMaster> stocksMasterList,DashboardData dashboardData)
     {
         Map<String,Double> reverseSortedMap  =sortStockSales(stocksMasterList,stockTransactionList);
         Map<String,Double> priorSortedMap = new LinkedHashMap<>();
         int j =0 ;
         for (Map.Entry<String,Double> entry: reverseSortedMap.entrySet()) {
+
             if ( j < 5 )
                 priorSortedMap.put(entry.getKey(),entry.getValue());
             else
