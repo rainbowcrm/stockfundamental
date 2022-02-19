@@ -132,7 +132,7 @@ function buildQuery()
                 //innerContent = "<tr>";
                 var bgColor = i%2==0?'beige':'white';
                 innerContent = '<tr data-row="' + bgColor +  '">';
-                innerContent =  innerContent + '<td>' + singleRow['bseCode'] + '</td>';
+                innerContent =  innerContent + '<td><a href="../stockDetails.html?bseCode='+ singleRow['bseCode'] +'">' + singleRow['bseCode'] + '</a></td>';
                 innerContent =  innerContent + '<td>' + singleRow['stock'] + '</td>';
                 innerContent =  innerContent + '<td>' + singleRow['industry'] + '</td>';
                 innerContent =  innerContent + '<td>' + singleRow['sector'] + '</td>';
@@ -148,6 +148,7 @@ function buildQuery()
                 innerContent =  innerContent + '<td>' + singleRow['pe'] + '</td>';
                 innerContent =  innerContent + '<td>' + singleRow['pb'] + '</td>';
                 innerContent =  innerContent + '<td>' + singleRow['roe'] + '</td>';
+                innerContent =  innerContent + '<td>' + singleRow['dividentYield'] + '</td>';
                 innerContent =  innerContent + '</tr>';
                  var newrow = dataTable.insertRow();
                  newrow.innerHTML =  innerContent;

@@ -24,7 +24,7 @@ public class Scheduler {
 
     Boolean run = false ;
 
-    @Scheduled(cron = "0 05 15 ? * MON-FRI")
+    @Scheduled(cron = "0 30 15 ? * MON-FRI")
     void someExecution()
     {
         if (!run) {
@@ -38,11 +38,13 @@ public class Scheduler {
         }
     }
 
-    @Scheduled(cron = "0 09 11 ? * SAT")
+    @Scheduled(cron = "0 30 11 ? * SAT")
     void updateFundamentals()
     {
         LogWriter.debug(" Updating fundamentals for " + new java.util.Date());
         generalService.readWeeklyFundamentals();
+        generalService.readWeeklyFinancials();
+        generalService.updateDashBoards();
 
     }
 }

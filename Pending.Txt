@@ -42,13 +42,14 @@ Digital Ocean
 admin@stocksparrow.com
 Compaq1-2
 
+
 Droplet password
 Delhi2255Wolf
 
 ubuntu-gd-2vcpu-8gb-blr1-01
 
 Ubuntu Restore from backup from mysql prompt :  source /home/db/30janback.sql;
-Ubuntu take back up from command prompt:  mysqldump -u root -p stocks > /home/db/testback.sql
+Ubuntu take back up from command prompt:  mysqldump -u root -p stocks > /home/db/12Feb22.sql
 
 
  nohup java --add-opens java.base/java.lang=ALL-UNNAMED -Xmx2048m -jar webscrap-1.0-SNAPSHOT.jar
@@ -56,8 +57,48 @@ Ubuntu take back up from command prompt:  mysqldump -u root -p stocks > /home/db
 
   kill -9 processId
 
+  to zip a file; zip jan3122.zip  jan3122.sql
+  to unzip : unzip jan3122.zip
+
+CSR Gen
+openssl req -new -newkey  rsa:2048 -nodes -keyout stocksparrow.key -out stocksparrow.csr
+
+
+
  windows vm pwd :5p?CSJOTPJ;kodqJ8Hi5Y-OQX3SVdj?Z
 ++++++++++++++++++++++++++++++++++++++++++++
+
+
+sudo openssl genrsa -out server.key 2048
+
+sudo openssl req -new -key server.key  -out cert.csr
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [AU]:IN
+State or Province Name (full name) [Some-State]:Karnataka
+Locality Name (eg, city) []:Bangalore
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:StockSparrow
+Organizational Unit Name (eg, section) []:StockSparrow
+Common Name (e.g. server FQDN or YOUR name) []:stocksparrow.com
+Email Address []:admin@stocksparrow.com
+
+Please enter the following 'extra' attributes
+to be sent with your certificate request
+A challenge password []:Laptop@10
+An optional company name []:StockSparrow
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ormeon
+admin@stocksparrow.com
+Laptop@10
+++++++++++++++++++++
+
+
 
 1. SUCCESFULL DEPLOYMENT
 2. DAILY DATA TRACKER **
@@ -109,3 +150,15 @@ ______________________________________________________________________________
 
 email password : compaq1-2
 
+___________________________________________________________________________
+
+1. User Comments
+2. news feed
+3. logut top nav defect**
+4. Tab issue defect in details *
+5. My Portfolio
+_______________________________________________________________________
+1. Show Div Yield in List
+2. Capture user actions
+3. Dev Tools and Recommendations
+_______________________________________________________________________

@@ -112,6 +112,13 @@ public class QueryService {
                 }else
                     fullStockData = filterOnRev(fullStockData,Double.parseDouble(queryLine.getValue()),queryLine.getOperator());
             }
+            else if(queryLine.getProperty().equals(QueryLine.PropertySet.DIVY)){
+                if ("OR".equalsIgnoreCase(queryLine.getCondition())) {
+                    List<StockCompleteData> subData = filterOnDivYield(backUpStockData,Double.parseDouble(queryLine.getValue()),queryLine.getOperator());
+                    addSubData(fullStockData,subData) ;
+                }else
+                    fullStockData = filterOnDivYield(fullStockData,Double.parseDouble(queryLine.getValue()),queryLine.getOperator());
+            }
 
         }
         return fullStockData;
@@ -249,6 +256,21 @@ public class QueryService {
             return presentData.stream().filter( current -> { return current.getRevenue()!=null && current.getRevenue()<=price?true:false; }).collect(Collectors.toList());
         else if (operator.equalsIgnoreCase("<"))
             return presentData.stream().filter( current -> { return current.getRevenue()!=null && current.getRevenue()<price?true:false; }).collect(Collectors.toList());
+        return presentData;
+    }
+
+    private List<StockCompleteData> filterOnDivYield(List<StockCompleteData> presentData , Double divyield, String operator)
+    {
+        if (operator.equalsIgnoreCase("=="))
+            return presentData.stream().filter( current -> { return current.getDividentYield()!=null && current.getDividentYield()==divyield?true:false; }).collect(Collectors.toList());
+        else if (operator.equalsIgnoreCase(">="))
+            return presentData.stream().filter( current -> { return current.getDividentYield()!=null &&  current.getDividentYield()>=divyield?true:false; }).collect(Collectors.toList());
+        else if (operator.equalsIgnoreCase(">"))
+            return presentData.stream().filter( current -> { return current.getDividentYield()!=null && current.getDividentYield()>divyield?true:false; }).collect(Collectors.toList());
+        else if (operator.equalsIgnoreCase("<="))
+            return presentData.stream().filter( current -> { return current.getDividentYield()!=null && current.getDividentYield()<=divyield?true:false; }).collect(Collectors.toList());
+        else if (operator.equalsIgnoreCase("<"))
+            return presentData.stream().filter( current -> { return current.getDividentYield()!=null && current.getDividentYield()<divyield?true:false; }).collect(Collectors.toList());
         return presentData;
     }
 

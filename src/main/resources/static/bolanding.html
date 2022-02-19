@@ -46,7 +46,7 @@ var loadPage = function(pageId) {
     <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0" >
             <li class="nav-item">
-                <a class="nav-link" style="color:#f8f9fa" onclick="loadPage('dashboard.html');" href="#">Home<span class="sr-only">(current)</span></a>
+                <a class="nav-link" style="color:#f8f9fa" onclick="loadPage('dashboard.html');" href="#">Dashboard<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link"  style="color:#f8f9fa" onclick="loadPage('stocks.html');"  href="#">Stocks</a>
@@ -114,7 +114,7 @@ var loadPage = function(pageId) {
 <script>
     let lp = getLandingPage();
     console.log(lp);
-    let page = "./dashboard.html";
+    let page = "./valuation/valuations.html?val=Under";
     if (lp == 'Stocks')
         page = './stocks.html';
     else if (lp == 'Reps')
@@ -123,6 +123,8 @@ var loadPage = function(pageId) {
         page = './query/Queries.html';
     else if (lp == 'VLTS')
         page = './valuation/valuations.html?val=Under';
+    else if (lp == 'Dashboard')
+        page = './dashboard.html';
 
     document.write('<iframe id ="frmCont" src="'+ page + '" style="width:100%;height:100%"></iframe>');
 
