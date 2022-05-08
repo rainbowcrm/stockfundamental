@@ -24,18 +24,17 @@ public class Scheduler {
 
     Boolean run = false ;
 
-    @Scheduled(cron = "0 30 15 ? * MON-FRI")
+    @Scheduled(cron = "0 00 21 ? * MON-FRI")
     void someExecution()
     {
-        if (!run) {
-            run = true;
+
             LogWriter.debug( "Daily Processing for " + new java.util.Date());
             generalService.readDailyTransactionData();
             generalService.updateDashBoards();
            // generalService.readWeeklyFundamentals();
             //stockMasterService.updateMarketCap();
             //fundamentalService.updateMarketCap();
-        }
+
     }
 
     @Scheduled(cron = "0 30 11 ? * SAT")

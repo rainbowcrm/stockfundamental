@@ -4,6 +4,7 @@ import com.primus.common.BusinessContext;
 import com.primus.reports.service.DetailReportService;
 import com.primus.reports.service.PriceHikeReportService;
 import com.primus.reports.service.ReportService;
+import com.primus.useractions.service.UserActionFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,9 @@ public class ReportController {
     @Autowired
     PriceHikeReportService priceHikeReportService ;
 
+    @Autowired
+    UserActionFacade userActionFacade;
+
     @RequestMapping(value = "/getGrowthReport", method = RequestMethod.GET)
     public void getGrowthReport(@RequestParam String fromDate, @RequestParam String toDate, @RequestParam String groupBy,
                                 @RequestParam String repFormat,
@@ -37,6 +41,7 @@ public class ReportController {
     {
         try {
             BusinessContext businessContext = BusinessContext.getBusinessContent();
+
             Resource resource = priceHikeReportService.generateReport(fromDate, toDate,  repFormat,businessContext);
             if("PDF".equalsIgnoreCase(repFormat)) {
                 response.setContentType("application/pdf");
@@ -47,6 +52,7 @@ public class ReportController {
             }
             byte[] bytes = resource.getInputStream().readAllBytes();
             response.getOutputStream().write(bytes,0,(int)resource.getFile().length());
+            userActionFacade.saveUserAction(businessContext,"Growth Report",fromDate.toString() + " " + toDate.toString());
         }catch (Exception ex){
             ex.printStackTrace();
             throw new HttpServerErrorException(HttpStatus.BAD_REQUEST,ex.getMessage(),ex.getMessage().getBytes(),null);
@@ -71,6 +77,7 @@ public class ReportController {
            }
             byte[] bytes = resource.getInputStream().readAllBytes();
             response.getOutputStream().write(bytes,0,(int)resource.getFile().length());
+            userActionFacade.saveUserAction(businessContext,"Summary Report",fromDate.toString() + " " + toDate.toString());
         }catch (Exception ex){
             ex.printStackTrace();
             throw new HttpServerErrorException(HttpStatus.BAD_REQUEST,ex.getMessage(),ex.getMessage().getBytes(),null);
@@ -94,6 +101,8 @@ public class ReportController {
             }
             byte[] bytes = resource.getInputStream().readAllBytes();
             response.getOutputStream().write(bytes,0,(int)resource.getFile().length());
+            userActionFacade.saveUserAction(businessContext,"Detail Report", stock
+                    + " :" + fromDate.toString() + " " + toDate.toString());
         }catch (Exception ex){
             ex.printStackTrace();
             throw new HttpServerErrorException(HttpStatus.BAD_REQUEST,ex.getMessage(),ex.getMessage().getBytes(),null);

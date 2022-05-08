@@ -66,7 +66,7 @@ public class UserService {
         userPreferences.setDashboardDays(30);
         userPreferences.setValidationAlgo("Default");
         userPreferences.setLandingPage("Default");
-        userPreferences.setTechDays(90);
+        userPreferences.setTechDays(180);
         return userPreferences;
     }
     public UserPreferences getPreferences(String  email)

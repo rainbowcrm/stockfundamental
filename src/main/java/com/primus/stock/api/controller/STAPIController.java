@@ -5,6 +5,7 @@ import com.primus.stock.api.service.APIService;
 import com.primus.stock.master.model.FundamentalData;
 import com.primus.stock.master.service.FinancialService;
 import com.primus.stock.master.service.FundamentalService;
+import com.primus.stock.master.service.QuarterReportService;
 import com.primus.stock.master.service.StockMasterService;
 import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,9 @@ public class STAPIController {
 
     @Autowired
     StockMasterService stockMasterService;
+
+    @Autowired
+    QuarterReportService quarterReportService;
 
 
     @RequestMapping(value="/logout", method=RequestMethod.GET)
@@ -161,6 +165,24 @@ public class STAPIController {
 
         try {
             financialService.saveAllFinancialData("X ");
+            ResponseEntity entity =  new ResponseEntity<String>("Success", HttpStatus.OK);
+            return  entity;
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+
+        }
+        ResponseEntity entity =  new ResponseEntity<String>("error", HttpStatus.BAD_REQUEST);
+        return  entity;
+
+    }
+
+    @RequestMapping(value = "/saveQuarterly", method = RequestMethod.GET)
+    public ResponseEntity<String> saveQuarterly(@RequestParam long year, @RequestParam int quarter )
+    {
+
+        try {
+            quarterReportService.saveQuarterData(year,quarter);
             ResponseEntity entity =  new ResponseEntity<String>("Success", HttpStatus.OK);
             return  entity;
 

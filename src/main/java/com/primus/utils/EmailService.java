@@ -70,4 +70,10 @@ public class EmailService {
 
 
     }
+
+
+    public void sendRecordsEmail()
+    {
+
+    }
 }

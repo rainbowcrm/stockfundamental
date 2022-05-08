@@ -10,6 +10,7 @@ import com.primus.ui.service.LookupService;
 import com.primus.ui.service.UIService;
 import com.primus.user.model.UserPreferences;
 import com.primus.user.service.UserService;
+import com.primus.useractions.service.UserActionFacade;
 import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -46,6 +47,9 @@ public class UIController {
     @Autowired
     StockMasterService stockMasterService;
 
+    @Autowired
+    UserActionFacade userActionFacade ;
+
 
     @RequestMapping(value = "/getDistinctSector", method = RequestMethod.GET)
     public ResponseEntity<List<String>> getDistinctSector()
@@ -77,6 +81,7 @@ public class UIController {
                                                        @RequestBody Map<String,Object> filterCriteria )
     {
         List<Map> returnData = uiService.applyFilterStocks(from,to,filterCriteria);
+        userActionFacade.saveUserAction(BusinessContext.getBusinessContent(),"View Stocks",filterCriteria);
         ResponseEntity entity =  new ResponseEntity<List<Map>>(returnData, HttpStatus.OK);
         return  entity;
 
@@ -128,6 +133,7 @@ public class UIController {
             byte[] bytes = resource.getInputStream().readAllBytes();
 
             response.getOutputStream().write(bytes,0,(int)resource.getFile().length());
+            userActionFacade.saveUserAction(BusinessContext.getBusinessContent(),"Download Stock",criteriaMap);
 
                           /*  byte[] bytes=  ResponseEntity<byte[]>.ok()
                     .contentType(MediaType.APPLICATION_OCTET_STREAM)
@@ -152,6 +158,7 @@ public class UIController {
             days = userPreferences.getDashboardDays();
         }
         Map returnData = dashboardService.getPersistedDashboardData(days);
+        userActionFacade.saveUserAction(businessContext,"Dashboard",days);
         ResponseEntity<Map> entity =  new ResponseEntity<Map>(returnData, HttpStatus.OK);
         return  entity;
 
@@ -162,6 +169,7 @@ public class UIController {
     {
         BusinessContext businessContext= BusinessContext.getBusinessContent() ;
         StockCompleteData stockCompleteData = uiService.getStockCompleteData(bseCode,businessContext);
+        userActionFacade.saveUserAction(businessContext,"View Details",bseCode);
         ResponseEntity<StockCompleteData> entity =  new ResponseEntity<StockCompleteData>(stockCompleteData, HttpStatus.OK);
         return  entity;
 
