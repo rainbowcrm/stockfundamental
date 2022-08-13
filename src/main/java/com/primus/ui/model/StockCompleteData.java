@@ -33,6 +33,7 @@ public class StockCompleteData {
     Double pb;
     Double marketCap;
     String groupCap;
+    Double profitIncr;
 
 
     public String getBseCode() {
@@ -275,4 +276,14 @@ public class StockCompleteData {
     public void setDividentYield(Double dividentYield) {
         this.dividentYield = dividentYield;
     }
+
+    public Double getProfitIncr() {
+        return profitIncr;
+    }
+
+    public void setProfitIncr(Double profitIncr) {
+        this.profitIncr = profitIncr;
+    }
+
+
 }

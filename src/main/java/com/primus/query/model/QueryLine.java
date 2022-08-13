@@ -3,7 +3,7 @@ package com.primus.query.model;
 public class QueryLine {
 
     public  enum  PropertySet {
-        INDS,SCT,CRPRC,EPS,PE,BV,PB,ROE,DIV,CPSZ,RVN,DIVY
+        INDS,SCT,CRPRC,EPS,PE,BV,PB,ROE,DIV,CPSZ,RVN,DIVY,PROFITINCR
     };
 
 

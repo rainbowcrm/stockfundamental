@@ -11,6 +11,10 @@ public class TransReportData {
     Double finalPricde;
     Double change;
 
+    Double relDeviation;
+    Double median ;
+
+
     public TransReportData() {
     }
 
@@ -86,6 +90,22 @@ public class TransReportData {
         this.change = change;
     }
 
+    public Double getRelDeviation() {
+        return relDeviation;
+    }
+
+    public void setRelDeviation(Double relDeviation) {
+        this.relDeviation = relDeviation;
+    }
+
+    public Double getMedian() {
+        return median;
+    }
+
+    public void setMedian(Double median) {
+        this.median = median;
+    }
+
     @Override
     public String toString() {
         return "TransReportData{" +
@@ -97,6 +117,8 @@ public class TransReportData {
                 ", openingPrice=" + openingPrice +
                 ", finalPricde=" + finalPricde +
                 ", change=" + change +
+                ", relDeviation=" + relDeviation +
+                ", median=" + median +
                 '}';
     }
 }

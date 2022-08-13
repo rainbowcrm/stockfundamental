@@ -149,6 +149,7 @@ function buildQuery()
                 innerContent =  innerContent + '<td>' + singleRow['pb'] + '</td>';
                 innerContent =  innerContent + '<td>' + singleRow['roe'] + '</td>';
                 innerContent =  innerContent + '<td>' + singleRow['dividentYield'] + '</td>';
+                innerContent =  innerContent + '<td>' + singleRow['profitIncr'] + '</td>';
                 innerContent =  innerContent + '</tr>';
                  var newrow = dataTable.insertRow();
                  newrow.innerHTML =  innerContent;

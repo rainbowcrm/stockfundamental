@@ -1,5 +1,6 @@
 package com.primus.query.service;
 
+import com.primus.common.BusinessContext;
 import com.primus.query.model.QueryLine;
 import com.primus.ui.controller.UIController;
 import com.primus.ui.model.StockCompleteData;
@@ -32,7 +33,8 @@ public class QueryService {
 
     public List<StockCompleteData> applyFilter(List<QueryLine> queryLines)
     {
-        List<StockCompleteData> fullStockData = uiService.getFullStocks();
+        BusinessContext businessContext = BusinessContext.getBusinessContent();
+        List<StockCompleteData> fullStockData = uiService.getFullStocks(businessContext);
         List<StockCompleteData> backUpStockData = new ArrayList<>(fullStockData);
         for (QueryLine queryLine : queryLines) {
             if(queryLine.getProperty().equals(QueryLine.PropertySet.INDS)){
@@ -118,6 +120,12 @@ public class QueryService {
                     addSubData(fullStockData,subData) ;
                 }else
                     fullStockData = filterOnDivYield(fullStockData,Double.parseDouble(queryLine.getValue()),queryLine.getOperator());
+            }else if(queryLine.getProperty().equals(QueryLine.PropertySet.PROFITINCR)){
+                if ("OR".equalsIgnoreCase(queryLine.getCondition())) {
+                    List<StockCompleteData> subData = filterOnProfitDelta(backUpStockData,Double.parseDouble(queryLine.getValue()),queryLine.getOperator());
+                    addSubData(fullStockData,subData) ;
+                }else
+                    fullStockData = filterOnProfitDelta(fullStockData,Double.parseDouble(queryLine.getValue()),queryLine.getOperator());
             }
 
         }
@@ -271,6 +279,21 @@ public class QueryService {
             return presentData.stream().filter( current -> { return current.getDividentYield()!=null && current.getDividentYield()<=divyield?true:false; }).collect(Collectors.toList());
         else if (operator.equalsIgnoreCase("<"))
             return presentData.stream().filter( current -> { return current.getDividentYield()!=null && current.getDividentYield()<divyield?true:false; }).collect(Collectors.toList());
+        return presentData;
+    }
+
+    private List<StockCompleteData> filterOnProfitDelta(List<StockCompleteData> presentData , Double profitIncr, String operator)
+    {
+        if (operator.equalsIgnoreCase("=="))
+            return presentData.stream().filter( current -> { return current.getProfitIncr()!=null && current.getProfitIncr()==profitIncr?true:false; }).collect(Collectors.toList());
+        else if (operator.equalsIgnoreCase(">="))
+            return presentData.stream().filter( current -> { return current.getProfitIncr()!=null &&  current.getProfitIncr()>=profitIncr?true:false; }).collect(Collectors.toList());
+        else if (operator.equalsIgnoreCase(">"))
+            return presentData.stream().filter( current -> { return current.getProfitIncr()!=null && current.getProfitIncr()>profitIncr?true:false; }).collect(Collectors.toList());
+        else if (operator.equalsIgnoreCase("<="))
+            return presentData.stream().filter( current -> { return current.getProfitIncr()!=null && current.getProfitIncr()<=profitIncr?true:false; }).collect(Collectors.toList());
+        else if (operator.equalsIgnoreCase("<"))
+            return presentData.stream().filter( current -> { return current.getProfitIncr()!=null && current.getProfitIncr()<profitIncr?true:false; }).collect(Collectors.toList());
         return presentData;
     }
 

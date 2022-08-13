@@ -15,6 +15,7 @@ public class MathUtil {
     public static Double round(Double dblValue)
     {
         MathContext mc = new MathContext(3, RoundingMode.CEILING);
+
         BigDecimal bigDecimal = new BigDecimal(dblValue).round(mc);
         return  bigDecimal.doubleValue();
 

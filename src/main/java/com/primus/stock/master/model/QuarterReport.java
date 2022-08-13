@@ -2,6 +2,7 @@ package com.primus.stock.master.model;
 
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name ="quarter_reports")
@@ -122,5 +123,25 @@ public class QuarterReport {
         this.profit = financialData.getNetProfit();
         this.equity = financialData.getEquit();
         this.divident = financialData.getDivident();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        QuarterReport that = (QuarterReport) o;
+        return
+                Objects.equals(bseCode, that.bseCode) &&
+                Objects.equals(stock, that.stock) &&
+                Objects.equals(revenue, that.revenue) &&
+                Objects.equals(expenditure, that.expenditure) &&
+                Objects.equals(profit, that.profit) &&
+                Objects.equals(equity, that.equity) &&
+                Objects.equals(divident, that.divident);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(bseCode, stock, year, quarter, revenue, expenditure, profit, equity, divident);
     }
 }

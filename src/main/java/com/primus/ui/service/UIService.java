@@ -5,9 +5,11 @@ import com.primus.common.LogWriter;
 import com.primus.common.datastructures.DataPair;
 import com.primus.stock.master.model.FinancialData;
 import com.primus.stock.master.model.FundamentalData;
+import com.primus.stock.master.model.QuarterReport;
 import com.primus.stock.master.model.StocksMaster;
 import com.primus.stock.master.service.FinancialService;
 import com.primus.stock.master.service.FundamentalService;
+import com.primus.stock.master.service.QuarterReportService;
 import com.primus.stock.master.service.StockMasterService;
 import com.primus.stocktransaction.dao.StockTransactionDAO;
 import com.primus.stocktransaction.model.StockTransaction;
@@ -50,6 +52,9 @@ public class UIService {
     @Autowired
     ValuationHelper valuationHelper ;
 
+    @Autowired
+    QuarterReportService quarterReportService;
+
 
     public int getAllStockCount(Map<String,Object> criteriaMap)
     {
@@ -81,12 +86,8 @@ public class UIService {
 
     }
 
-    public StockCompleteData getStockCompleteData(String bseCode, BusinessContext businessContext)
+    private  void setStatisticalData(BusinessContext businessContext,FullStockProfile stockCompleteData,StocksMaster stocksMaster )
     {
-        FundamentalData fundamentalData = fundamentalService.getFundamentalData(bseCode);
-        FinancialData financialData= financialService.getFinancialData(bseCode);
-        StocksMaster stocksMaster = stockMasterService.getStocksData(bseCode);
-        FullStockProfile stockCompleteData = new FullStockProfile(fundamentalData,financialData,stocksMaster);
         long days = businessContext.getUserPreferences().getTechDays();
         Date toDate = new java.util.Date( new java.util.Date().getTime() +  ( 24l  * 3600l * 1000l) ) ;
         Date fromDate = new Date(toDate.getTime() - ( days * 24l  * 3600l * 1000l) ) ;
@@ -125,24 +126,49 @@ public class UIService {
         Double rootSize = Math.sqrt(closingPrices.size());
         stockCompleteData.setVolatality(MathUtil.round(rootSize * stdDeviation));
         stockCompleteData.setPercVariation(MathUtil.round(((high-low) / low) * 100));
+
+    }
+    public StockCompleteData getStockCompleteData(String bseCode, BusinessContext businessContext)
+    {
+        FundamentalData fundamentalData = fundamentalService.getFundamentalData(bseCode);
+        FinancialData financialData= financialService.getFinancialData(bseCode);
+        StocksMaster stocksMaster = stockMasterService.getStocksData(bseCode);
+        FullStockProfile stockCompleteData = new FullStockProfile(fundamentalData,financialData,stocksMaster);
+        setStatisticalData(businessContext,stockCompleteData,stocksMaster);
         return stockCompleteData;
 
     }
 
     @Cacheable( value = "fsCache")
-    public List<StockCompleteData> getFullStocks()
+    public List<StockCompleteData> getFullStocks(BusinessContext businessContext)
     {
         LogWriter.debug("Reading the fullStock with " );
         List<FundamentalData> fundamentalDataList = fundamentalService.getAllFundamentals("");
         List<FinancialData> financialDataList = financialService.getAllFinancials() ;
         List<StocksMaster> stocksMasterList = stockMasterService.getAllStocks();
+        List<QuarterReport> quarterReportList2= quarterReportService.getQuarterReport(2022l,1);
+
+
         List<StockCompleteData> returnList = new ArrayList<>();
         for (FundamentalData fundamentalData : fundamentalDataList) {
             FinancialData financialDataSel = financialDataList.stream().filter( financialData ->
             {  return financialData.getBseCode().equalsIgnoreCase(fundamentalData.getBseCode())?true:false; }).findFirst().orElse(null) ;
             StocksMaster stocksMasterSel = stocksMasterList.stream().filter(stocksMaster ->
             { return  stocksMaster.getBseCode().equalsIgnoreCase(fundamentalData.getBseCode())?true:false; }).findFirst().orElse(null);
-            StockCompleteData stockCompleteData = new StockCompleteData(fundamentalData,financialDataSel,stocksMasterSel);
+
+            QuarterReport quarterReport = quarterReportList2.stream().filter( quarterReport1 ->  {
+                return quarterReport1.getBseCode().equalsIgnoreCase(fundamentalData.getBseCode())?true:false; }).findFirst().orElse(null);
+            FullStockProfile stockCompleteData = new FullStockProfile(fundamentalData,financialDataSel,stocksMasterSel);
+            if (quarterReport != null && financialDataSel.getNetProfit()!=null && quarterReport.getProfit() != null && quarterReport.getProfit()  != 0  ) {
+                Double profitIcr = ((financialDataSel.getNetProfit()-quarterReport.getProfit()   ) / quarterReport.getProfit()   ) *100;
+                stockCompleteData.setProfitIncr(profitIcr);
+               /* try {
+                    setStatisticalData(businessContext, stockCompleteData, stocksMasterSel);
+                }catch (Exception ex)
+                {
+                    ex.printStackTrace();
+                }*/
+            }
             returnList.add(stockCompleteData) ;
         }
         return returnList ;

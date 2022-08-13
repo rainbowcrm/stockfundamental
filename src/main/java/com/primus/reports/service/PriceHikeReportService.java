@@ -87,6 +87,8 @@ public class PriceHikeReportService extends ReportService{
         stringBuffer.append("<TH>Open Price</TH>");
         stringBuffer.append("<TH>Close Price</TH>");
         stringBuffer.append("<TH>Change%</TH>");
+        stringBuffer.append("<TH>Median</TH>");
+        stringBuffer.append("<TH>Rel Deviation</TH>");
         stringBuffer.append("</TR>");
 
         Iterator<DataPair<Double,Double>> it = valueRange.iterator();
@@ -121,6 +123,8 @@ public class PriceHikeReportService extends ReportService{
             stringBuffer.append("<TD>" +  transReportData.getOpeningPrice() + "</TD>");
             stringBuffer.append("<TD>" +  transReportData.getFinalPricde() + "</TD>");
             stringBuffer.append("<TD><B>" +  transReportData.getChange() + "</B></TD>");
+            stringBuffer.append("<TD><B>" +  transReportData.getMedian() + "</B></TD>");
+            stringBuffer.append("<TD><B>" +  transReportData.getRelDeviation() + "</B></TD>");
             stringBuffer.append("</TR>");
         }
         stringBuffer.append("</TABLE>");

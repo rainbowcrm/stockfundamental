@@ -79,13 +79,13 @@ public class ReportService {
             File file = new File(csvFileName);
             FileWriter outputfile = new FileWriter(file);
             CSVWriter writer = new CSVWriter(outputfile);
-            String[] header = { "Sector", "Industry", "Security" , "Group","Cap Size" ,"Open" ,"Close","Incr"  };
+            String[] header = { "Sector", "Industry", "Security" , "Group","Cap Size" ,"Open" ,"Close","Incr","Median","Rel Deviation"  };
             writer.writeNext(header);
             for (TransReportData transReportData : transReportDataList) {
                 String[] row= {transReportData.getSector(),transReportData.getIndustry(),transReportData.getSecurity(),transReportData.getGroup(),
                         transReportData.getMarketCapGroup(),
                         String.valueOf(transReportData.getOpeningPrice()),String.valueOf(transReportData.getFinalPricde()),
-                        String.valueOf(transReportData.getChange()) };
+                        String.valueOf(transReportData.getChange()),String.valueOf(transReportData.getMedian()) , String.valueOf(transReportData.getRelDeviation()) };
                 writer.writeNext(row);
                 }
             writer.close();
@@ -271,6 +271,9 @@ public class ReportService {
                     transReportData.setFinalPricde(indTransactionList.get(indTransactionList.size()-1).getClosePrice());
                     double change = MathUtil.perChange(indTransactionList.get(0).getOpenPrice(),
                             indTransactionList.get(indTransactionList.size()-1).getClosePrice());
+                    List<Double> priceList = getPricesInList(indTransactionList) ;
+                    transReportData.setRelDeviation(MathUtil.getRelStandardDeviation(priceList));
+                    transReportData.setMedian(MathUtil.getMedian(priceList));
                     transReportData.setChange(change);
                     transReportDataList.add(transReportData);
                 }
@@ -285,4 +288,14 @@ public class ReportService {
 
 
     }
+    private List<Double> getPricesInList(List<StockTransaction> indTransactionList)
+    {
+        List<Double> prices = new ArrayList<Double> ();
+        for (StockTransaction stockTransaction : indTransactionList) {
+            prices.add(stockTransaction.getClosePrice());
+        }
+        return prices;
+
+    }
+
 }

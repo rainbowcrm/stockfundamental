@@ -194,7 +194,7 @@ function updateName()
   let lastName = $("#txtLname").val();
   if ( firstName.trim() == '' || lastName.trim() == '' )
     {
-    console.log('error') ;
+    console.log('error') ;l
      $("#errorText").css("color","red");
      $("#errorText").html('<br>Please enter First Name and Last Name');
      return ;
