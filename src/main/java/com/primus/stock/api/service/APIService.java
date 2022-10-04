@@ -91,7 +91,7 @@ public class APIService {
 
     }
 
-    public Map<String,Object> getDividentData (String scripCode,Integer year) throws Exception
+    public Map<String,Object> getDividentData (String scripCode) throws Exception
     {
         String api = "https://api.bseindia.com/BseIndiaAPI/api/CorporateAction/w?scripcode=" +  scripCode   ;
         URL obj = new URL(api);

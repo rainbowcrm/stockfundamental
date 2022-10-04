@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
-@CrossOrigin(origins = "http://localhost:20452", maxAge = 3600)
+@CrossOrigin(origins = "https://localhost:443", maxAge = 3600)
 @RequestMapping("/stockapi/api")
 @RestController
 public class STAPIController {
@@ -164,7 +164,7 @@ public class STAPIController {
     {
 
         try {
-            financialService.saveAllFinancialData("X ");
+            financialService.saveAllFinancialData("A ");
             ResponseEntity entity =  new ResponseEntity<String>("Success", HttpStatus.OK);
             return  entity;
 

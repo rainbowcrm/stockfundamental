@@ -3,6 +3,7 @@ package com.primus.stock.master.service;
 import com.primus.common.LogWriter;
 import com.primus.stock.api.service.APIService;
 import com.primus.stock.master.dao.FinancialsDAO;
+import com.primus.stock.master.model.DividentHistory;
 import com.primus.stock.master.model.FinancialData;
 import com.primus.stock.master.model.FundamentalData;
 import com.primus.stock.master.model.StocksMaster;
@@ -37,6 +38,9 @@ public class FinancialService {
 
     @Autowired
     FinancialsDAO financialsDAO ;
+
+    @Autowired
+    DividentHistoryService dividentHistoryService;
 
 
     public void createFinancials(FinancialData financialData){
@@ -80,11 +84,11 @@ public class FinancialService {
 
     }
 
-    private Double getDivident(String scripCode,Integer year)
+    private Double getDivident(String scripCode,Date lastYearDate)
     {
         try {
 
-            Map<String, Object> responseData = apiService.getDividentData(scripCode, year);
+            Map<String, Object> responseData = apiService.getDividentData(scripCode);
             Object finContent = responseData.get("Table");
             double yearDiv = 0.0;
             if (finContent != null && finContent instanceof List) {
@@ -93,10 +97,16 @@ public class FinancialService {
                     String divDateString = (String) map.get("BCRD_from");
                     DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
                     Date divDate = dateFormat.parse(divDateString);
-                    if (divDate.getYear()  + 1900 >= year) {
-                        Double divAmount = (Double) map.get("Amount");
+                    Double divAmount = (Double) map.get("Amount");
+                    if (divDate.after(lastYearDate)) {
                         yearDiv += divAmount != null ? divAmount.doubleValue() : 0.0;
                     }
+                    DividentHistory dividentHistory = new DividentHistory();
+                    dividentHistory.setBseCode(scripCode);
+                    dividentHistory.setExDate(divDate);
+                    dividentHistory.setDivident(divAmount);
+                    dividentHistoryService.createDividentHistory(dividentHistory);
+
                 }
             }
             return yearDiv;
@@ -126,7 +136,9 @@ public class FinancialService {
                 String expenditure = getValue(node, 4);
                 String netProfit = getValue(node, 10);
                 String equity = getValue(node, 11);
-                Double divident = getDivident(scripCode, 2021);
+                long iyearDuration = 367l * 24l * 3600l * 1000l;
+                Date lastYearDate= new Date (new Date().getTime() - iyearDuration );
+                Double divident = getDivident(scripCode, lastYearDate);
                 FinancialData financialData = new FinancialData();
                 financialData.setBseCode(scripCode);
                 if (NumberUtils.isNumber(equity))
