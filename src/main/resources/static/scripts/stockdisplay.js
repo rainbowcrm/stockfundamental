@@ -386,6 +386,12 @@ function submitReport()
   runReport('reports/getTransSummary',"groupBy="+grp)
 }
 
+function submitDividentReport()
+{
+
+  runReport('reports/getDividentReport',"groupBy=A");
+}
+
 function submitGrowthReport()
 {
 

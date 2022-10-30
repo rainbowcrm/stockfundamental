@@ -30,6 +30,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.OutputStream;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
@@ -96,6 +97,28 @@ public class ReportService {
                         String.valueOf(transReportData.getChange()),String.valueOf(transReportData.getMedian()) , String.valueOf(transReportData.getRelDeviation()) };
                 writer.writeNext(row);
                 }
+            writer.close();
+        }catch (Exception ex){
+            LogWriter.logException("Ex in ReportService" ,this.getClass(),ex);
+            throw new PrimusError(CommonErrorCodes.CSV_COULDNOTBE_GEN,"CSV file could not be generated");
+
+        }
+    }
+
+    protected void createCSVDividentReport(List<List<String>> transReportDataList,String csvFileName) throws PrimusError
+    {
+
+        try {
+            File file = new File(csvFileName);
+            FileWriter outputfile = new FileWriter(file);
+            CSVWriter writer = new CSVWriter(outputfile);
+            String[] header = { "BSE Code", "Security" , "Sector","Industry","Cap Size" ,"Ex Date" ,"Divident","before Price","After Price" };
+            writer.writeNext(header);
+            for (List<String> transReportData : transReportDataList) {
+                String[] row= {transReportData.get(0), transReportData.get(1),transReportData.get(2), transReportData.get(3),
+                        transReportData.get(4), transReportData.get(5),transReportData.get(6), transReportData.get(7),transReportData.get(8)};
+                writer.writeNext(row);
+            }
             writer.close();
         }catch (Exception ex){
             LogWriter.logException("Ex in ReportService" ,this.getClass(),ex);
@@ -269,7 +292,7 @@ public class ReportService {
           {
               closestDate = stockTransaction.getTransDate();
           }
-          int diff = (int) (Math.abs(exDate.getTime() - closestDate.getTime())/1000*24*3600);
+          int diff = (int) (Math.abs(exDate.getTime() - stockTransaction.getTransDate().getTime())/1000*24*3600);
           if ( diff < dateDiffMin)  {
               dateDiffMin = diff ;
               closestDate = stockTransaction.getTransDate() ;
@@ -277,13 +300,13 @@ public class ReportService {
           }
       }
 
-      if ( closestIndex > 0 ) {
-          beforePrice = stockTransactionList.get(closestIndex-1).getClosePrice();
+      if ( closestIndex > 1 ) {
+          beforePrice = stockTransactionList.get(closestIndex-2).getClosePrice();
 
       }
-      if ( closestIndex < stockTransactionList.size()-1)
+      if ( closestIndex < stockTransactionList.size()-2)
       {
-          afterPrice = stockTransactionList.get(closestIndex+1).getClosePrice();
+          afterPrice = stockTransactionList.get(closestIndex+2).getClosePrice();
       }else
       {
           afterPrice = stockTransactionList.get(closestIndex).getClosePrice();
@@ -293,7 +316,7 @@ public class ReportService {
 
     }
 
-    protected List<TransReportData> generateDividentReport(Date fromDate, Date toDate) throws PrimusError
+    protected List<List<String>> generateDividentReport(Date fromDate, Date toDate) throws PrimusError
     {
         try {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -305,24 +328,26 @@ public class ReportService {
                 throw new PrimusError(CommonErrorCodes.TO_DATE_WRONG, "Start Date cannot be after current day");
             }
             List<StockTransaction> stockTransactionList = stockTransactionDAO.getData(fromDate, toDate);
-            List<TransReportData> transReportDataList = new ArrayList<>();
+            List<List<String>> transReportDataList = new ArrayList<>();
             List<StocksMaster> stocksMasterList = stockMasterDAO.listAllTrackedData();
             List<DividentHistory> dividentHistoryList = dividentHistoryService.getDividentHistory(fromDate,toDate);
             for (DividentHistory dividentHistory : dividentHistoryList) {
                 List<String> reportContent = new ArrayList<>();
                 StocksMaster selStock = stocksMasterList.stream().filter( stocksMaster ->
                 { return stocksMaster.getBseCode().equalsIgnoreCase(dividentHistory.getBseCode())?true:false;}).findFirst().orElse(null);
+                reportContent.add(selStock.getBseCode());
                 reportContent.add(selStock.getSecurityName());
                 reportContent.add(selStock.getSector());
                 reportContent.add(selStock.getIndustry());
                 reportContent.add(selStock.getMarketGroup());
                 List<StockTransaction> selTransactions =  stockTransactionList.stream().filter( stockTransaction ->
-                { return stockTransaction.getApi_code().equalsIgnoreCase(dividentHistory.getBseCode())?true:false; }).collect(Collectors.toList());
+                { return stockTransaction.getStocksMaster().getBseCode().equalsIgnoreCase(dividentHistory.getBseCode())?true:false; }).collect(Collectors.toList());
                 DataPair<Double,Double> dataPair = findAdjacentPrices(dividentHistory.getExDate(),selTransactions);
                 reportContent.add(simpleDateFormat.format(dividentHistory.getExDate()));
                 reportContent.add(String.valueOf(dividentHistory.getDivident()));
                 reportContent.add(String.valueOf(dataPair.getValue1()));
                 reportContent.add(String.valueOf(dataPair.getValue2()));
+                transReportDataList.add(reportContent);
             }
             return transReportDataList;
         }catch (Exception ex) {
@@ -339,10 +364,10 @@ public class ReportService {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date fromDate = simpleDateFormat.parse(fromDateS);
         Date toDate = simpleDateFormat.parse(toDateS);
-        List<TransReportData> transReportDataList = generateDividentReport(fromDate, toDate);
+        List<List<String>> transReportDataList = generateDividentReport(fromDate, toDate);
         String unqValue =  ExportService.randomStr()   +".csv";
         String rootFolder = configuration.getReportFolder();
-        createCSV(transReportDataList,rootFolder + "/" + unqValue);
+        createCSVDividentReport(transReportDataList,rootFolder + "/" + unqValue);
         Resource resource = new FileSystemResource(configuration.getReportFolder()  + unqValue);
         return  resource ;
     }
