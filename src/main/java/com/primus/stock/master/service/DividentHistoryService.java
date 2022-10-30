@@ -5,6 +5,7 @@ import com.primus.stock.master.model.DividentHistory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Date;
 
 @Service
 public class DividentHistoryService {
@@ -29,5 +30,12 @@ public class DividentHistoryService {
         }
 
     }
+
+    public List<DividentHistory> getDividentHistory(Date fromDate,Date toDate)
+    {
+        return dividentHistoryDAO.getDividentHistory(fromDate,toDate);
+    }
+
+
 
 }

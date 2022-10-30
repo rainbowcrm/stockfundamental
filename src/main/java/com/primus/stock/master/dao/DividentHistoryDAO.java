@@ -46,4 +46,13 @@ public class DividentHistoryDAO {
 
     }
 
+    public List<DividentHistory> getDividentHistory(Date fromDate, Date toDate)
+    {
+        Query query =  em.createQuery("  from DividentHistory where  exDate >= :fromDate and exDate<= :toDate " );
+        query.setParameter("fromDate",fromDate);
+        query.setParameter("toDate",toDate);
+        List<DividentHistory> ans = query.getResultList();
+        return ans ;
+    }
+
 }

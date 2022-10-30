@@ -108,4 +108,25 @@ public class ReportController {
             throw new HttpServerErrorException(HttpStatus.BAD_REQUEST,ex.getMessage(),ex.getMessage().getBytes(),null);
         }
     }
+
+
+    @RequestMapping(value = "/getDividentReport", method = RequestMethod.GET)
+    public void getDividentReport(@RequestParam String fromDate, @RequestParam String toDate,
+                                HttpServletRequest request, HttpServletResponse response)
+    {
+        try {
+            BusinessContext businessContext = BusinessContext.getBusinessContent();
+            Resource resource = reportService.getDividentReport(fromDate, toDate);
+
+                response.setContentType("application/CSV");
+                response.setHeader("Content-Disposition", "attachment; filename=repNew.csv");
+            byte[] bytes = resource.getInputStream().readAllBytes();
+            response.getOutputStream().write(bytes,0,(int)resource.getFile().length());
+            userActionFacade.saveUserAction(businessContext,"Detail Report",
+                     " :" + fromDate.toString() + " " + toDate.toString());
+        }catch (Exception ex){
+            ex.printStackTrace();
+            throw new HttpServerErrorException(HttpStatus.BAD_REQUEST,ex.getMessage(),ex.getMessage().getBytes(),null);
+        }
+    }
 }

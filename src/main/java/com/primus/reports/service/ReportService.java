@@ -2,13 +2,18 @@ package com.primus.reports.service;
 
 import com.opencsv.CSVWriter;
 import com.primus.common.*;
+import com.primus.common.datastructures.DataPair;
 import com.primus.reports.data.TransReportData;
 import com.primus.stock.master.dao.StockMasterDAO;
+import com.primus.stock.master.model.DividentHistory;
 import com.primus.stock.master.model.StocksMaster;
+import com.primus.stock.master.service.DividentHistoryService;
 import com.primus.stocktransaction.dao.StockTransactionDAO;
 import com.primus.stocktransaction.model.StockTransaction;
 import com.primus.utils.ExportService;
 import com.primus.utils.MathUtil;
+import org.apache.commons.collections.map.HashedMap;
+import org.ehcache.xml.model.TimeUnit;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +49,9 @@ public class ReportService {
 
     @Autowired
     StockMasterDAO stockMasterDAO ;
+
+    @Autowired
+    DividentHistoryService dividentHistoryService;
 
 
     protected void savePDF(String xhtml,String pdfNAME) throws PrimusError
@@ -246,6 +254,98 @@ public class ReportService {
 
     }
 
+    private DataPair<Double,Double> findAdjacentPrices(Date exDate, List<StockTransaction> stockTransactionList)  {
+
+      int dateDiffMin= Integer.MAX_VALUE ;
+      Date closestDate = null ;
+      int closestIndex = 0 ;
+      Double beforePrice =0d;
+      Double afterPrice = 0d ;
+
+      for (int i  = 0 ; i <  stockTransactionList.size(); i  ++)
+      {
+          StockTransaction stockTransaction =  stockTransactionList.get(i);
+          if (closestDate == null )
+          {
+              closestDate = stockTransaction.getTransDate();
+          }
+          int diff = (int) (Math.abs(exDate.getTime() - closestDate.getTime())/1000*24*3600);
+          if ( diff < dateDiffMin)  {
+              dateDiffMin = diff ;
+              closestDate = stockTransaction.getTransDate() ;
+              closestIndex = i;
+          }
+      }
+
+      if ( closestIndex > 0 ) {
+          beforePrice = stockTransactionList.get(closestIndex-1).getClosePrice();
+
+      }
+      if ( closestIndex < stockTransactionList.size()-1)
+      {
+          afterPrice = stockTransactionList.get(closestIndex+1).getClosePrice();
+      }else
+      {
+          afterPrice = stockTransactionList.get(closestIndex).getClosePrice();
+      }
+
+    return new DataPair<Double, Double>(beforePrice,afterPrice) ;
+
+    }
+
+    protected List<TransReportData> generateDividentReport(Date fromDate, Date toDate) throws PrimusError
+    {
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            Date startDate = simpleDateFormat.parse("01-06-2021");
+            if (fromDate.before(startDate)) {
+                throw new PrimusError(CommonErrorCodes.FROM_DATE_WRONG, "Start Date cannot be post 01-06-2021");
+            }
+            if (toDate.after(new Date())) {
+                throw new PrimusError(CommonErrorCodes.TO_DATE_WRONG, "Start Date cannot be after current day");
+            }
+            List<StockTransaction> stockTransactionList = stockTransactionDAO.getData(fromDate, toDate);
+            List<TransReportData> transReportDataList = new ArrayList<>();
+            List<StocksMaster> stocksMasterList = stockMasterDAO.listAllTrackedData();
+            List<DividentHistory> dividentHistoryList = dividentHistoryService.getDividentHistory(fromDate,toDate);
+            for (DividentHistory dividentHistory : dividentHistoryList) {
+                List<String> reportContent = new ArrayList<>();
+                StocksMaster selStock = stocksMasterList.stream().filter( stocksMaster ->
+                { return stocksMaster.getBseCode().equalsIgnoreCase(dividentHistory.getBseCode())?true:false;}).findFirst().orElse(null);
+                reportContent.add(selStock.getSecurityName());
+                reportContent.add(selStock.getSector());
+                reportContent.add(selStock.getIndustry());
+                reportContent.add(selStock.getMarketGroup());
+                List<StockTransaction> selTransactions =  stockTransactionList.stream().filter( stockTransaction ->
+                { return stockTransaction.getApi_code().equalsIgnoreCase(dividentHistory.getBseCode())?true:false; }).collect(Collectors.toList());
+                DataPair<Double,Double> dataPair = findAdjacentPrices(dividentHistory.getExDate(),selTransactions);
+                reportContent.add(simpleDateFormat.format(dividentHistory.getExDate()));
+                reportContent.add(String.valueOf(dividentHistory.getDivident()));
+                reportContent.add(String.valueOf(dataPair.getValue1()));
+                reportContent.add(String.valueOf(dataPair.getValue2()));
+            }
+            return transReportDataList;
+        }catch (Exception ex) {
+            LogWriter.logException("Ex in ReportService" ,this.getClass(),ex);
+            throw new PrimusError(CommonErrorCodes.FROM_DATE_WRONG, "Start Date cannot be post 01-06-2021");
+        }
+
+
+
+    }
+
+    public Resource getDividentReport(String fromDateS, String toDateS) throws Exception
+    {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date fromDate = simpleDateFormat.parse(fromDateS);
+        Date toDate = simpleDateFormat.parse(toDateS);
+        List<TransReportData> transReportDataList = generateDividentReport(fromDate, toDate);
+        String unqValue =  ExportService.randomStr()   +".csv";
+        String rootFolder = configuration.getReportFolder();
+        createCSV(transReportDataList,rootFolder + "/" + unqValue);
+        Resource resource = new FileSystemResource(configuration.getReportFolder()  + unqValue);
+        return  resource ;
+    }
     protected List<TransReportData> generateReport(Date fromDate, Date toDate) throws PrimusError
     {
         try {
