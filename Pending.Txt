@@ -163,3 +163,47 @@ _______________________________________________________________________
 3. CAPTURE MORE DATA
 4. Dev Tools and Recommendations
 _______________________________________________________________________
+email https://webmail.stocksparrow.com/
+admin@stocksparrow.com
+compaq1-2
+________________________________________________________________________
+
+SSL
+writing new private key to 'stocksparrow.com.key'
+-----
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [AU]:IN
+State or Province Name (full name) [Some-State]:KA
+Locality Name (eg, city) []:Bangalore
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:Magallion
+Organizational Unit Name (eg, section) []:stocks
+Common Name (e.g. server FQDN or YOUR name) []:https://stocksparrow.com
+Email Address []:unnikrishnan.dn@gmail.com
+
+Please enter the following 'extra' attributes
+to be sent with your certificate request
+A challenge password []:Delhi
+An optional company name []:Magallion
+------------------------------------------------------------
+
+ openssl req -newkey rsa:2048 -nodes -keyout stocksparrow.com.key -out stocksparrow.com.csr
+
+ Creates CSR file.
+
+ uplpad csr to codomo ssl provider.
+ get cert file and key file and run
+./openssl pkcs12 -export -out  stocksparrow.p12 -in stocksparrow_com.crt -inkey stocksparrow.com.key
+
+this creates p12 file
+
+copy the p12 in resources folder.
+
+in your production profilep properties
+
+server.ssl.key-store-type=PKCS12
+server.ssl.key-store=classpath:stocksparrow.p12
+server.ssl.key-store-password=Delhi
+server.ssl.key-alias=tomcat
+
+

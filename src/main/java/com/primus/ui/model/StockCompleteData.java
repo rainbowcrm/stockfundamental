@@ -2,13 +2,16 @@ package com.primus.ui.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.primus.stock.master.model.DividentHistory;
 import com.primus.stock.master.model.FinancialData;
 import com.primus.stock.master.model.FundamentalData;
 import com.primus.stock.master.model.StocksMaster;
 import com.primus.utils.MathUtil;
 
+import java.sql.Date;
 import java.util.Map;
 import java.util.Objects;
+import java.util.List;
 
 public class StockCompleteData {
 
@@ -34,6 +37,10 @@ public class StockCompleteData {
     Double marketCap;
     String groupCap;
     Double profitIncr;
+
+    Double latestDivident;
+    Date latestDivExDate;
+
 
 
     public String getBseCode() {
@@ -180,8 +187,14 @@ public class StockCompleteData {
     }
 
     public StockCompleteData() {
+
     }
-    public StockCompleteData(FundamentalData fundamentalData, FinancialData financialData, StocksMaster stocksMaster) {
+    public StockCompleteData(FundamentalData fundamentalData, FinancialData financialData, StocksMaster stocksMaster)
+    {
+        this(fundamentalData,financialData,stocksMaster,null);
+    }
+
+    public StockCompleteData(FundamentalData fundamentalData, FinancialData financialData, StocksMaster stocksMaster, List<DividentHistory> dividentHistoryList) {
         this.bseCode = fundamentalData.getBseCode() ;
         this.stock = fundamentalData.getCompany() ;
         this.industry= fundamentalData.getIndustry();
@@ -286,4 +299,19 @@ public class StockCompleteData {
     }
 
 
+    public Double getLatestDivident() {
+        return latestDivident;
+    }
+
+    public void setLatestDivident(Double latestDivident) {
+        this.latestDivident = latestDivident;
+    }
+
+    public Date getLatestDivExDate() {
+        return latestDivExDate;
+    }
+
+    public void setLatestDivExDate(Date latestDivExDate) {
+        this.latestDivExDate = latestDivExDate;
+    }
 }

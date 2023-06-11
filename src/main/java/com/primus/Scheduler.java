@@ -37,7 +37,7 @@ public class Scheduler {
 
     }
 
-    @Scheduled(cron = "0 30 11 ? * SAT")
+    @Scheduled(cron = "0 30 10 ? * SAT")
     void updateFundamentals()
     {
         LogWriter.debug(" Updating fundamentals for " + new java.util.Date());

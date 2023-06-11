@@ -164,7 +164,7 @@ public class STAPIController {
     {
 
         try {
-            financialService.saveAllFinancialData("A ");
+            financialService.saveAllFinancialData("X ");
             ResponseEntity entity =  new ResponseEntity<String>("Success", HttpStatus.OK);
             return  entity;
 
