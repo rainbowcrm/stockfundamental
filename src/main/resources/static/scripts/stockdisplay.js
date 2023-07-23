@@ -105,7 +105,7 @@ function getStockCompleteData()
     var params = new window.URLSearchParams(window.location.search);
     var xyz = params.get('bseCode');
     console.log('bseCode=' + xyz)
-    let fullURL = url+'/uiapi/getStockCompleteData?bseCode=' + xyz  ;
+    let fullURL = url+'uiapi/getStockCompleteData?bseCode=' + xyz  ;
     let request = formRequest("GET",fullURL);
       setToken(request);
       request.send() ;
@@ -143,7 +143,7 @@ function getCompetitorData()
     var params = new window.URLSearchParams(window.location.search);
     var xyz = params.get('bseCode');
     console.log('bseCode=' + xyz)
-    let fullURL = url+'/uiapi/getCompetitorData?bseCode=' + xyz  ;
+    let fullURL = url+'uiapi/getCompetitorData?bseCode=' + xyz  ;
     let request = formRequest("GET",fullURL);
       setToken(request);
       request.send() ;
@@ -158,7 +158,7 @@ function getUserComments()
   var params = new window.URLSearchParams(window.location.search);
       var xyz = params.get('bseCode');
       console.log('bseCode=' + xyz)
-      let fullURL = url+'/usercomments/getUserComments?bseCode=' + xyz  ;
+      let fullURL = url+'usercomments/getUserComments?bseCode=' + xyz  ;
       let request = formRequest("GET",fullURL);
         setToken(request);
         request.send() ;

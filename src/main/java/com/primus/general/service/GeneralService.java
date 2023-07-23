@@ -6,7 +6,7 @@ import com.primus.stock.master.service.DailyUpdateService;
 import com.primus.stock.master.service.FinancialService;
 import com.primus.stock.master.service.FundamentalService;
 import com.primus.stocktransaction.service.StockTransactionService;
-import org.apache.log4j.LogManager;
+import org.apache.logging.log4j.LogManager;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
