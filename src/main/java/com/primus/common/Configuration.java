@@ -23,6 +23,16 @@ public class Configuration {
     String smsAPIKey;
 
 
+    @Value("${chrome.driver}")
+    String chromeDriver;
+
+    public String getChromeDriver() {
+        return chromeDriver;
+    }
+
+    public void setChromeDriver(String chromeDriver) {
+        this.chromeDriver = chromeDriver;
+    }
 
     public String getEmailHost() {
         return emailHost;

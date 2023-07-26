@@ -1,5 +1,6 @@
 package com.primus.stocktransaction.service;
 
+import com.primus.common.Configuration;
 import com.primus.common.LogWriter;
 import com.primus.stock.api.service.APIService;
 import com.primus.stock.master.model.FundamentalData;
@@ -8,6 +9,7 @@ import com.primus.stock.master.service.FundamentalService;
 import com.primus.stock.master.service.StockMasterService;
 import com.primus.stocktransaction.dao.StockTransactionDAO;
 import com.primus.stocktransaction.model.StockTransaction;
+import com.primus.webscrap.fundamentals.BSEDailyTransactionSearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,12 +33,15 @@ public class StockTransactionService {
     @Autowired
     FundamentalService fundamentalService;
 
+    @Autowired
+    Configuration configuration;
+
     public void saveDailyTransactions(String groupC)
     {
         List<StocksMaster> stocksMasterList =  stockMasterService.getAllTrackedStocks(groupC);
         for (StocksMaster stocksMaster : stocksMasterList) {
             try {
-                Map<String, Object> scripHeaderData = apiService.getScripHeaderData(stocksMaster.getBseCode());
+               /* Map<String, Object> scripHeaderData = apiService.getScripHeaderData(stocksMaster.getBseCode());
                 Map<String, String> headerMap = (Map) scripHeaderData.get("Header");
                 Double openPrice =  Double.parseDouble(headerMap.get("Open"));
                 Double highPrice =  Double.parseDouble(headerMap.get("High"));
@@ -44,23 +49,21 @@ public class StockTransactionService {
                 Double closePrice=  Double.parseDouble(headerMap.get("LTP"));
                 String transDateStr = headerMap.get("Ason");
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMM yy | hh:mm");
-                Date transDate = simpleDateFormat.parse(transDateStr);
+                Date transDate = simpleDateFormat.parse(transDateStr);*/
 
-                StockTransaction stockTransaction = new StockTransaction();
+                BSEDailyTransactionSearch bseDailyTransactionSearch = new BSEDailyTransactionSearch();
+
+
+                StockTransaction stockTransaction = bseDailyTransactionSearch.getDailyTransaction(stocksMaster.getApiCode(),configuration.getChromeDriver());
                 stockTransaction.setApi_code(stocksMaster.getApiCode());
                 stockTransaction.setSecurity_name(stocksMaster.getSecurityName());
                 stockTransaction.setStocksMaster(stocksMaster);
-                stockTransaction.setOpenPrice(openPrice);
-                stockTransaction.setClosePrice(closePrice);
-                stockTransaction.setLowPrice(lowPrice);
-                stockTransaction.setHighPrice(highPrice);
-                stockTransaction.setTransDate(transDate);
                 LogWriter.debug(stockTransaction.toString());
                 stockTransactionDAO.update(stockTransaction);
 
                 FundamentalData fundamentalData = fundamentalService.getFundamentalData(stocksMaster.getBseCode());
                 if (fundamentalData != null ) {
-                    fundamentalData.setCurPrice(closePrice);
+                    fundamentalData.setCurPrice(stockTransaction.getClosePrice());
                     LogWriter.debug(fundamentalData.toString());
                     fundamentalService.updateFundamentals(fundamentalData);
                 }

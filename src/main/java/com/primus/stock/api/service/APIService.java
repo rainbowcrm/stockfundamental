@@ -36,7 +36,7 @@ public class APIService {
 
     public Map<String,Object> getCompanyHeader(String scripCode) throws  Exception
     {
-        String api = "https://api.bseindia.com/BseIndiaAPI/api/ComHeader/w?quotetype=EQ&scripcode=" +  scripCode + "&seriesid="  ;
+        String api = "https://api.bseindia.com/BseIndiaAPI/api/ComHeadernew/w?quotetype=EQ&scripcode=" +  scripCode + "&seriesid="  ;
         URL obj = new URL(api);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("GET");

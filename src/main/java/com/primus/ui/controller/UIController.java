@@ -1,6 +1,7 @@
 package com.primus.ui.controller;
 
 import com.primus.common.BusinessContext;
+import com.primus.common.Configuration;
 import com.primus.dashboard.service.DashboardService;
 import com.primus.stock.master.model.StocksMaster;
 import com.primus.stock.master.service.StockMasterService;
@@ -11,19 +12,15 @@ import com.primus.ui.service.UIService;
 import com.primus.user.model.UserPreferences;
 import com.primus.user.service.UserService;
 import com.primus.useractions.service.UserActionFacade;
-import org.apache.poi.util.IOUtils;
+import com.primus.webscrap.fundamentals.BSEDailyTransactionSearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -50,12 +47,19 @@ public class UIController {
     @Autowired
     UserActionFacade userActionFacade ;
 
+    @Autowired
+    Configuration configuration;
+
 
     @RequestMapping(value = "/getDistinctSector", method = RequestMethod.GET)
     public ResponseEntity<List<String>> getDistinctSector()
     {
         List<String> returnData = uiService.getDistinctSector();
         ResponseEntity entity =  new ResponseEntity<List<String>>(returnData, HttpStatus.OK);
+
+       /* BSEDailyTransactionSearch fundamentalsSearch = new BSEDailyTransactionSearch();
+        fundamentalsSearch.controller("500180", configuration.getChromeDriver());*/
+
         return  entity;
     }
 

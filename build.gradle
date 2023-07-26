@@ -53,6 +53,13 @@ dependencies {
     implementation group: 'com.opencsv', name: 'opencsv', version: '4.3'
     implementation group: 'org.ehcache', name: 'ehcache', version: '3.6.1'
     implementation group: 'javax.cache', name: 'cache-api', version: '1.0.0'
+    implementation 'org.seleniumhq.selenium:selenium-java:4.8.1'
+    implementation 'org.seleniumhq.selenium:selenium-chrome-driver:4.8.1'
+    implementation 'org.seleniumhq.selenium:selenium-firefox-driver:4.8.1'
+    implementation group: 'org.seleniumhq.selenium', name: 'selenium-api', version: '4.8.1'
+    implementation group: 'org.seleniumhq.selenium', name: 'htmlunit-driver', version: '4.8.1'
+    implementation group: 'org.seleniumhq.selenium', name: 'selenium-remote-driver', version: '4.8.1'
+    implementation group: 'org.jsoup', name: 'jsoup', version: '1.7.2'
 
 
 
