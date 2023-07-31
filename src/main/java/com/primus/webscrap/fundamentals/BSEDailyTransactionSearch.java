@@ -1,5 +1,10 @@
 package com.primus.webscrap.fundamentals;
 
+import com.primus.common.LogWriter;
+import com.primus.stock.master.model.FundamentalData;
+import com.primus.stock.master.model.StocksMaster;
+import com.primus.stock.master.service.FundamentalService;
+import com.primus.stocktransaction.dao.StockTransactionDAO;
 import com.primus.stocktransaction.model.StockTransaction;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -18,17 +23,47 @@ public class BSEDailyTransactionSearch extends  Thread{
 
 
 
-    public StockTransaction getDailyTransaction(String scripCode,String chromeDriver)
+    public StockTransaction getDailyTransaction(List<StocksMaster> stocksMasterList, String chromeDriver, StockTransactionDAO stockTransactionDAO,
+                                                FundamentalService fundamentalService)
     {
-        System.setProperty("webdriver.chrome.driver", chromeDriver);
-        ChromeOptions options = new ChromeOptions();
-        //add the headless argument
-        options.addArguments("headless");
-        options.addArguments("--remote-allow-origins=*");
-        WebDriver webDriver = new ChromeDriver(options);
-        hitHomeScreen(webDriver);
-        StockTransaction fundamentalData = getStockTransactionData(scripCode,webDriver);
-        return fundamentalData ;
+
+            System.setProperty("webdriver.chrome.driver", chromeDriver);
+            ChromeOptions options = new ChromeOptions();
+            //add the headless argument
+            options.addArguments("headless");
+            options.addArguments("--remote-allow-origins=*");
+            WebDriver webDriver = new ChromeDriver(options);
+        try {
+            hitHomeScreen(webDriver);
+            for (StocksMaster stocksMaster : stocksMasterList ) {
+                String scripCode = stocksMaster.getApiCode();
+                try {
+                    StockTransaction stockTransaction = getStockTransactionData(scripCode, webDriver);
+                    if (stockTransaction == null)
+                        continue;
+                    stockTransaction.setApi_code(stocksMaster.getApiCode());
+                    stockTransaction.setSecurity_name(stocksMaster.getSecurityName());
+                    stockTransaction.setStocksMaster(stocksMaster);
+                    LogWriter.debug(stockTransaction.toString());
+                    stockTransactionDAO.update(stockTransaction);
+                    FundamentalData fundamentalData = fundamentalService.getFundamentalData(stocksMaster.getBseCode());
+                    if (fundamentalData != null) {
+                        fundamentalData.setCurPrice(stockTransaction.getClosePrice());
+                        LogWriter.debug(fundamentalData.toString());
+                        fundamentalService.updateFundamentals(fundamentalData);
+                    }
+                }catch (Exception e2) {
+                    e2.printStackTrace();
+                }
+
+            }
+            return null;
+        }catch (Exception ex) {
+            ex.printStackTrace();
+        }finally{
+            webDriver.quit();
+        }
+        return null;
 
     }
 

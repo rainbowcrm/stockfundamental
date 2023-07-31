@@ -39,7 +39,6 @@ public class StockTransactionService {
     public void saveDailyTransactions(String groupC)
     {
         List<StocksMaster> stocksMasterList =  stockMasterService.getAllTrackedStocks(groupC);
-        for (StocksMaster stocksMaster : stocksMasterList) {
             try {
                /* Map<String, Object> scripHeaderData = apiService.getScripHeaderData(stocksMaster.getBseCode());
                 Map<String, String> headerMap = (Map) scripHeaderData.get("Header");
@@ -52,27 +51,13 @@ public class StockTransactionService {
                 Date transDate = simpleDateFormat.parse(transDateStr);*/
 
                 BSEDailyTransactionSearch bseDailyTransactionSearch = new BSEDailyTransactionSearch();
-
-
-                StockTransaction stockTransaction = bseDailyTransactionSearch.getDailyTransaction(stocksMaster.getApiCode(),configuration.getChromeDriver());
-                stockTransaction.setApi_code(stocksMaster.getApiCode());
-                stockTransaction.setSecurity_name(stocksMaster.getSecurityName());
-                stockTransaction.setStocksMaster(stocksMaster);
-                LogWriter.debug(stockTransaction.toString());
-                stockTransactionDAO.update(stockTransaction);
-
-                FundamentalData fundamentalData = fundamentalService.getFundamentalData(stocksMaster.getBseCode());
-                if (fundamentalData != null ) {
-                    fundamentalData.setCurPrice(stockTransaction.getClosePrice());
-                    LogWriter.debug(fundamentalData.toString());
-                    fundamentalService.updateFundamentals(fundamentalData);
-                }
+                bseDailyTransactionSearch.getDailyTransaction(stocksMasterList,configuration.getChromeDriver(),stockTransactionDAO,fundamentalService);
                 Thread.sleep(100);
 
             }catch (Exception exception) {
                 LogWriter.logException("Ex in StockTransactionservice" ,this.getClass(),exception);
             }
-        }
+
 
     }
 

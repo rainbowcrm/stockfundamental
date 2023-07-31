@@ -24,26 +24,26 @@ public class Scheduler {
 
     Boolean run = false ;
 
-    @Scheduled(cron = "0 00 21 ? * MON-FRI")
+    @Scheduled(cron = "0 56 21 ? * MON-FRI")
     void someExecution()
     {
 
             LogWriter.debug( "Daily Processing for " + new java.util.Date());
             generalService.readDailyTransactionData();
-            generalService.updateDashBoards();
+          //  generalService.updateDashBoards();
            // generalService.readWeeklyFundamentals();
             //stockMasterService.updateMarketCap();
             //fundamentalService.updateMarketCap();
 
     }
 
-    @Scheduled(cron = "0 01 05 ? * MON")
+    @Scheduled(cron = "0 03 09 ? * MON")
     void updateFundamentals()
     {
         LogWriter.debug(" Updating fundamentals for " + new java.util.Date());
         generalService.readWeeklyFundamentals();
-        generalService.readWeeklyFinancials();
-        generalService.updateDashBoards();
+    //    generalService.readWeeklyFinancials();
+      //  generalService.updateDashBoards();
 
     }
 }

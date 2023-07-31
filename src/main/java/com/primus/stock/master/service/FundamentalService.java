@@ -1,5 +1,6 @@
 package com.primus.stock.master.service;
 
+import com.primus.common.Configuration;
 import com.primus.common.LogWriter;
 import com.primus.stock.api.service.APIService;
 import com.primus.stock.master.dao.FundamentalsDAO;
@@ -7,6 +8,7 @@ import com.primus.stock.master.model.FinancialData;
 import com.primus.stock.master.model.FundamentalData;
 import com.primus.stock.master.model.ReportData;
 import com.primus.stock.master.model.StocksMaster;
+import com.primus.webscrap.fundamentals.BSEFundamentalsSearch;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -30,6 +32,9 @@ public class FundamentalService {
 
     @Autowired
     StockMasterService stockMasterService ;
+
+    @Autowired
+    Configuration configuration ;
 
     public void createFundamentals(FundamentalData fundamentalData){
         fundamentalsDAO.create(fundamentalData);
@@ -178,9 +183,8 @@ public class FundamentalService {
     public void saveAllFundamentals(String groupC)
     {
         List<StocksMaster> stocksMasterList =  stockMasterService.getAllTrackedStocks(groupC);
-        for (StocksMaster stocksMaster : stocksMasterList) {
             try {
-                Map<String, Object> comHeaderData = apiService.getCompanyHeader(stocksMaster.getBseCode());
+               /* Map<String, Object> comHeaderData = apiService.getCompanyHeader(stocksMaster.getBseCode());
                 Map<String, Object> scripHeaderData = apiService.getScripHeaderData(stocksMaster.getBseCode());
                 Map<String, Object> fdMAP = new HashMap<>();
                 fdMAP.put("CompHeaderData", comHeaderData);
@@ -194,12 +198,18 @@ public class FundamentalService {
                     System.out.println("Skipping =  " + fundamentalData);
                 }
                 Thread.sleep(100);
+*/
+                BSEFundamentalsSearch bseFundamentalsSearch =new BSEFundamentalsSearch();
+                bseFundamentalsSearch.saveFundamentalData(stocksMasterList,configuration.getChromeDriver());
+
+
+
             }catch (Exception ex)
             {
                 LogWriter.logException("Ex in FundamentalService" ,this.getClass(),ex);
 
             }
-        }
+
 
 
     }

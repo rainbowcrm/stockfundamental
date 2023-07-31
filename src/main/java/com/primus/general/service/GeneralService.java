@@ -58,28 +58,31 @@ public class GeneralService {
     }
     public void readDailyTransactionData()
     {
+        System.out.println("Start Time" + new java.util.Date().toString());
 
-        if (dailyUpdateService.getDailyService("A ", new java.util.Date()) == null) {
-            stockTransactionService.saveDailyTransactions("A ");
-            dailyUpdateService.updateDailyService("A ", new java.util.Date() );
-        }
-        if (dailyUpdateService.getDailyService("B ", new java.util.Date()) == null) {
-            stockTransactionService.saveDailyTransactions("B ");
-            dailyUpdateService.updateDailyService("B ", new java.util.Date() );
-        }
-        if (dailyUpdateService.getDailyService("X ", new java.util.Date()) == null) {
-            stockTransactionService.saveDailyTransactions("X ");
-            dailyUpdateService.updateDailyService("X ", new java.util.Date() );
-        }
+        ReadDailyRecord readDailyRecordA = new ReadDailyRecord(dailyUpdateService,stockTransactionService, "A ");
+        readDailyRecordA.start();
+
+
+        ReadDailyRecord readDailyRecordB = new ReadDailyRecord(dailyUpdateService,stockTransactionService, "B ");
+        readDailyRecordB.start();
+
+        ReadDailyRecord readDailyRecordC = new ReadDailyRecord(dailyUpdateService,stockTransactionService, "C ");
+        readDailyRecordC.start();
+
         LogWriter.debug("Daily Record Imported");
 
     }
 
+
+
     public void readWeeklyFundamentals()
     {
-        fundamentalService.saveAllFundamentals("A ");
+        ReadWeeklyRecord readDailyRecordA = new ReadWeeklyRecord(fundamentalService, "A ");
+        readDailyRecordA.start();
+        /*fundamentalService.saveAllFundamentals("A ");
         fundamentalService.saveAllFundamentals("B ");
-        fundamentalService.saveAllFundamentals("X ");
+        fundamentalService.saveAllFundamentals("X ");*/
         fundamentalService.updateMarketCap();
         LogWriter.debug("Completed Fundamentals");
     }
@@ -93,4 +96,47 @@ public class GeneralService {
     }
 
 
+}
+
+
+class ReadWeeklyRecord extends  Thread {
+
+
+    FundamentalService fundamentalService ;
+
+    String group;
+
+    public ReadWeeklyRecord(FundamentalService fundamentalService,String group){
+        this.fundamentalService =  fundamentalService;
+        this.group=group ;
+    }
+
+    public void run(){
+       fundamentalService.saveAllFundamentals(group);
+
+    }
+
+}
+class ReadDailyRecord extends  Thread {
+
+    DailyUpdateService dailyUpdateService ;
+
+    StockTransactionService stockTransactionService ;
+
+    String group ;
+    public ReadDailyRecord(DailyUpdateService dailyUpdateService , StockTransactionService stockTransactionService, String group) {
+        this.dailyUpdateService = dailyUpdateService ;
+        this.stockTransactionService = stockTransactionService ;
+        this.group = group ;
+    }
+
+
+    public void run(){
+        if (dailyUpdateService.getDailyService(group, new java.util.Date()) == null) {
+            stockTransactionService.saveDailyTransactions(group);
+            dailyUpdateService.updateDailyService(group, new java.util.Date() );
+            System.out.println("End Time " + group + new java.util.Date().toString());
+        }
+
+    }
 }
